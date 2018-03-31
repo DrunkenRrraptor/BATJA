@@ -3,6 +3,7 @@ package com.example.robs.batja_v1;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(userName.isEmpty() || userPassword.isEmpty())
         {
-            showAlert(View v, new String("You forgot either the name or the password"));
+            showAlert(new String("You forgot either the name or the password"));
         }
 
     }
@@ -74,9 +75,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void showAlert(View v, String message){
+    public void showAlert(String message){
 
         missingTextAlert.setMessage(message)
+                .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
                 .create()
                 .show();
 
