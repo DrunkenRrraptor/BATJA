@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -33,14 +34,14 @@ public class MainActivity extends AppCompatActivity {
         textUserName = (EditText) findViewById(R.id.userName);
         textUserPassword = (EditText) findViewById(R.id.userPWD);
 
-        button1.setOnClickListener(new View.OnClickListener() {
+        button1.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                handleButton1OnClick();
+                button1OnClickHandler();
 
             }
-        });
+        } );
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,20 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void handleButton1OnClick(){
-
-        userName = textUserName.getText().toString();
-        userPassword = textUserPassword.getText().toString();
-
-        Toast toast1 = Toast.makeText(MainActivity.this, "Name: " + userName + " , PWD: " + userPassword, Toast.LENGTH_SHORT);
-        toast1.show();
-
-        if(userName.isEmpty() || userPassword.isEmpty())
-        {
-            showAlert(new String("You forgot either the name or the password"));
-        }
-
-    }
 
     public void handleButton2OnClick(){
 
@@ -87,6 +74,21 @@ public class MainActivity extends AppCompatActivity {
                 .create()
                 .show();
 
+
+    }
+
+    public void button1OnClickHandler () {
+
+        userName = textUserName.getText().toString();
+        userPassword = textUserPassword.getText().toString();
+
+        Toast toast1 = Toast.makeText(MainActivity.this, "Name: " + userName + " , PWD: " + userPassword, Toast.LENGTH_SHORT);
+        toast1.show();
+
+        if(userName.isEmpty() || userPassword.isEmpty())
+        {
+            showAlert(new String("You forgot either the name or the password"));
+        }
 
     }
 
