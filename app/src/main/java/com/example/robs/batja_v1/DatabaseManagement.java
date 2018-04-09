@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -14,12 +13,12 @@ import static android.content.ContentValues.TAG;
  * Created by Robs on 31.03.18.
  */
 
-public class DatabaseCommunication {
+public class DatabaseManagement {
 
 
     DatabaseHelper dbHelper;
 
-    public DatabaseCommunication(Context applicationContext) {
+    public DatabaseManagement(Context applicationContext) {
 
         dbHelper = new DatabaseHelper( applicationContext );
 
@@ -49,18 +48,18 @@ public class DatabaseCommunication {
         private static final String DB_FULL_PATH = "";
 
 
-        private static com.example.robs.batja_v1.DatabaseCommunication sInstance;
+        private static DatabaseManagement sInstance;
 
         /*public DatabaseHelper() {
             super();
         }*/
 
-        public static synchronized com.example.robs.batja_v1.DatabaseCommunication getInstance(Context context) {
+        public static synchronized DatabaseManagement getInstance(Context context) {
             // Use the application context, which will ensure that you
             // don't accidentally leak an Activity's context.
             // See this article for more information: http://bit.ly/6LRzfx
             if (sInstance == null) {
-                sInstance = new com.example.robs.batja_v1.DatabaseCommunication(context.getApplicationContext());
+                sInstance = new DatabaseManagement(context.getApplicationContext());
             }
             return sInstance;
         }
@@ -99,7 +98,18 @@ public class DatabaseCommunication {
 
         }
 
-        public long addOrUpdateUser(String userName, String password) {
+        public long addUser(String userName, String password){
+
+            SQLiteDatabase db = getWritableDatabase();
+
+            String ADD_USERS = "INSERT INTO " + TABLE_USERS +
+                    "(" +
+                    ;
+
+
+        }
+
+        /*public long addOrUpdateUser(String userName, String password) {
             // The database connection is cached so it's not expensive to call getWriteableDatabase() multiple times.
             SQLiteDatabase db = getWritableDatabase();
             long userId = -1;
@@ -140,7 +150,7 @@ public class DatabaseCommunication {
                 db.endTransaction();
             }
             return userId;
-        }
+        }*/
 
        /* private boolean checkDataBase() {
             SQLiteDatabase checkDB = null;
