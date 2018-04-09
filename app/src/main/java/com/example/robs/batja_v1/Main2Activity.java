@@ -26,6 +26,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         button1Log.setOnClickListener( this );
         button2New.setOnClickListener( this );
 
+        DatabaseManagement dbm = new DatabaseManagement( this );
+
+
     }
 
     @Override
@@ -85,14 +88,17 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     public void showAlert(String message){
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setCancelable( true );
+        alertDialogBuilder.setTitle( "Altert" );
         alertDialogBuilder.setMessage(message);
-                alertDialogBuilder.setPositiveButton("got it",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                Toast.makeText(Main2Activity.this,"You clicked yes button",Toast.LENGTH_LONG).show();
-                            }
-                        });
+        alertDialogBuilder.setPositiveButton( "got it", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.cancel();
+
+            }
+        });
 
         /*AlertDialog.Builder alertDialog1 = new AlertDialog.Builder(this);
 

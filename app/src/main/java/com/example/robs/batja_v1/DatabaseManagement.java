@@ -143,13 +143,13 @@ public class DatabaseManagement {
                     "SELECT * FROM " + TABLE_USERS +
                             " WHERE " + KEY_USERS_NAME + " = ?";
 
-            Cursor c2 = db.rawQuery( CHECK_USER_COMPLETELY_RIGHT, new String[]{userName});
+            Cursor c2 = db.rawQuery( CHECK_USER_PARTLY_RIGHT, new String[]{userName});
 
             if (c2.moveToNext()){
                 // username stimmt, passwort auch
             }
             else if (c2.moveToNext()){
-                // username stimmt, passwort nicht
+                String m = "Ya password happens to be wrong";
 
             }
 
