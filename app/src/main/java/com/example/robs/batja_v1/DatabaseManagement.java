@@ -123,9 +123,34 @@ public class DatabaseManagement {
 
         }
 
-        public String checkUsers(String userName, String password){
+        public void checkUsers(String userName, String password){
 
-            String CHECK_USER_COMPLETLY_RIGHT =
+            SQLiteDatabase db = getWritableDatabase();
+
+          //  String CHECK_USER_COMPLETLY_RIGHT = "SELECT * FROM " + TABLE_USERS +
+            //        " WHERE " + KEY_USERS_NAME + " = " + userName +
+              //      " AND " + KEY_USERS_PASSWORD + " = " + password + ";";
+
+            String CHECK_USER_COMPLETELY_RIGHT =
+                    "SELECT * FROM " + TABLE_USERS +
+                    " WHERE " + KEY_USERS_NAME + " = ?" +
+                    " AND " + KEY_USERS_PASSWORD + " = ?;";
+
+
+            Cursor c1 = db.rawQuery( CHECK_USER_COMPLETELY_RIGHT, new String[]{userName, password});
+
+            String CHECK_USER_PARTLY_RIGHT =
+                    "SELECT * FROM " + TABLE_USERS +
+                            " WHERE " + KEY_USERS_NAME + " = ?";
+
+            Cursor c2 = db.rawQuery( CHECK_USER_COMPLETELY_RIGHT, new String[]{userName});
+
+            if (c2.moveToNext()){
+                // username stimmt, passwort auch
+            }
+            else if (c2.moveToNext()){
+                // username stimmt, passwort nicht
+            }
 
         }
 
