@@ -13,20 +13,30 @@ import static android.content.ContentValues.TAG;
  * Created by Robs on 31.03.18.
  */
 
-public class DatabaseManagement {
+public class DatabaseManagement extends SQLiteOpenHelper  {
 
 
-    DatabaseHelper dbHelper;
+   /* DatabaseHelper dbHelper;
 
     public DatabaseManagement(Context applicationContext) {
+        super();
 
         dbHelper = new DatabaseHelper( applicationContext );
 
     }
 
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
 
 
-    static class DatabaseHelper extends SQLiteOpenHelper {
+    static class DatabaseHelper extends SQLiteOpenHelper {*/
 
         // Database Info
         private static final String DATABASE_NAME = "batjaDatabase";
@@ -64,7 +74,7 @@ public class DatabaseManagement {
             return sInstance;
         }
 
-        public DatabaseHelper(Context context) {
+        public DatabaseManagement(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
@@ -123,7 +133,7 @@ public class DatabaseManagement {
 
         }
 
-        public void checkUsers(String userName, String password){
+        public void checkUser(String userName, String password){
 
             SQLiteDatabase db = getWritableDatabase();
 
@@ -211,7 +221,7 @@ public class DatabaseManagement {
             return checkDB != null;
         }*/
 
-    }
+   // }
 
 
 
