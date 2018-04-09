@@ -104,7 +104,7 @@ public class DatabaseManagement {
 
             String ADD_USERS = "INSERT INTO " + TABLE_USERS +
                     "(" +
-                    ;
+                    s;
 
 
         }
