@@ -1,13 +1,10 @@
 package com.example.robs.batja_v1;
 
-import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by Robs on 31.03.18.
@@ -133,9 +130,10 @@ public class DatabaseManagement extends SQLiteOpenHelper  {
 
         }
 
-        public void checkUser(String userName, String password){
+        public String checkUser(String userName, String password){
 
             SQLiteDatabase db = getWritableDatabase();
+            String m = "";
 
           //  String CHECK_USER_COMPLETLY_RIGHT = "SELECT * FROM " + TABLE_USERS +
             //        " WHERE " + KEY_USERS_NAME + " = " + userName +
@@ -157,11 +155,16 @@ public class DatabaseManagement extends SQLiteOpenHelper  {
 
             if (c2.moveToNext()){
                 // username stimmt, passwort auch
-            }
-            else if (c2.moveToNext()){
-                String m = "Ya password happens to be wrong";
+             //   Intent startMaps = new Intent( intent, MapsActivity.class );
+            //    startActivity(startMaps);
 
             }
+            else if (c2.moveToNext()){
+                m = "Ya password happens to be wrong. Try again or create user.";
+
+            }
+
+            return m;
 
         }
 
