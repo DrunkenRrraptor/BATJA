@@ -6,4 +6,10 @@
     android:layout_height="match_parent"
     tools:context="com.example.robs.batja_v1.MainActivityB">
 
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="362dp"
+        android:layout_height="513dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-2dp" />
 </android.support.constraint.ConstraintLayout>
