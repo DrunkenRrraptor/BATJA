@@ -150,6 +150,7 @@ public class DatabaseManagement {
             }
             else if (c2.moveToNext()){
                 // username stimmt, passwort nicht
+
             }
 
         }
