@@ -78,7 +78,7 @@ public class DatabaseManagement {
         public void onCreate(SQLiteDatabase db) {
             String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS +
                     "(" +
-                    KEY_USERS_ID + " INTEGER PRIMARY KEY," + // Define a primary key
+                    KEY_USERS_ID + " INTEGER PRIMARY KEY AUTO_INCREMENT," + // Define a primary key
                     KEY_USERS_NAME + " TEXT," +
                     KEY_USERS_PASSWORD + " TEXT" +
                     ")";
@@ -98,14 +98,34 @@ public class DatabaseManagement {
 
         }
 
-        public long addUser(String userName, String password){
+        public void addUser(String userName, String password){
 
             SQLiteDatabase db = getWritableDatabase();
 
             String ADD_USERS = "INSERT INTO " + TABLE_USERS +
                     "(" +
-                    s;
+                    KEY_USERS_NAME + ", " +
+                    KEY_USERS_PASSWORD + ") VALUES ('" +
+                    userName + "', '" +
+                    password + "');"
+                    ;
 
+            db.execSQL( ADD_USERS );
+
+        }
+
+        public void deleteTable(String db_name){
+
+            SQLiteDatabase db = getWritableDatabase();
+
+            db.execSQL("DROP TABLE " + db_name);
+
+
+        }
+
+        public String checkUsers(String userName, String password){
+
+            String CHECK_USER_COMPLETLY_RIGHT =
 
         }
 
