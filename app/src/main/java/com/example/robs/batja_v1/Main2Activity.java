@@ -2,6 +2,7 @@ package com.example.robs.batja_v1;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,12 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
+
 public class Main2Activity extends AppCompatActivity implements View.OnClickListener {
 
 
     //AlertDialog.Builder missingTextAlert = new AlertDialog.Builder(this);
 
-    DatabaseManagement dbm;
+   // DatabaseManagement dbm;
 
 
     @Override
@@ -22,15 +25,20 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main2 );
 
-        dbm = new DatabaseManagement( this );
+       // dbm = new DatabaseManagement( this );
 
 
         Button button1Log = (Button) findViewById( R.id.buttonLog );
         Button button2New = (Button) findViewById( R.id.buttonNew );
+        Button button3 = (Button) findViewById( R.id.button2 );
         button1Log.setOnClickListener( this );
         button2New.setOnClickListener( this );
+        button3.setOnClickListener( this );
+
 
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -49,6 +57,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             case R.id.buttonNew:
                 button2NewOnClickHandler(userName, userPassword);
                 break;
+            case R.id.button2:
+                button3ConClickHandler();
+                break;
 
             default: break;
 
@@ -56,6 +67,14 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         }
 
 
+
+
+    }
+
+
+    public void button3ConClickHandler(){
+
+       // dbm.deleteTable( "users" );
 
 
     }
@@ -69,10 +88,15 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         if(userName.isEmpty() || userPassword.isEmpty())
         {
-            showAlert( "You moron, either ya name or password are empty. Like mee ol' rum." );
-            dbm.checkUser( userName, userPassword );
+            showAlert( "Y'moron, either ya name or password are empty. Like mee ol' rum." );
+           // dbm.checkUser( userName, userPassword );
         }
 
+        Intent intent = new Intent(this, MapsActivity.class);
+        //EditText editText = (EditText) findViewById(R.id.editText);
+        //String message = editText.getText().toString();
+        //intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
 
 
     }
@@ -85,9 +109,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         if(userName.isEmpty() || userPassword.isEmpty())
         {
-            showAlert( "You moron, either ya name or password are empty. Like mee ol' rum." );
+            showAlert( "Y'moron, either ya name or password are empty. Like mee ol' rum." );
         } else {
-            dbm.addUser( userName, userPassword );
+           // dbm.addUser( userName, userPassword );
         }
 
 
