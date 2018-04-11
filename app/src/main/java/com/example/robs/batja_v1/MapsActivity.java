@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -14,12 +15,17 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private int request_code_loc1 = 1;
+    private LocationManagement lm;
+    private UiSettings mUiSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +49,54 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
+
+        mUiSettings = mMap.getUiSettings();
+
+        lm = (LocationManagement) new LocationManagement();
+
+
+
+        mUiSettings.setCompassEnabled( true );
+        mUiSettings.setAllGesturesEnabled( true );
+
+
+        if (ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {       // = 23
+
+                requestPermissions( new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, request_code_loc1);
+
+            }
+
+            return;
+        } else {
+
+           // mMap.setMyLocationEnabled( true );
+
+        }
+
+        mMap.setMyLocationEnabled( true );
+
+
+
+
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng( -34, 151 );
-        LatLng htw = new LatLng(48.239078, 16.378282 );
+        LatLng htw = new LatLng( 48.239078, 16.378282 );
 
-        mMap.addMarker( new MarkerOptions().position( htw ).title( "Marker at the HTW" ) );
-        mMap.moveCamera( CameraUpdateFactory.newLatLng( htw ) );
+
+        mMap.addMarker( new MarkerOptions().position( htw ).title( "Marker at the HTW" ) ).setIcon( BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN) );
+        //mMap.moveCamera( CameraUpdateFactory.newLatLng( htw ) );
+        //mMap.moveCamera( lm.currentLoc );
+        mMap.moveCamera( CameraUpdateFactory.zoomTo( 15 ) );
+
+
+
+
     }
 
 /*

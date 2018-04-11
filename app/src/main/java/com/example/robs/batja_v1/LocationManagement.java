@@ -14,6 +14,8 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by Robs on 11.04.18.
  */
@@ -22,6 +24,8 @@ public class LocationManagement extends Service {
 
     LocationListener locListener;
     LocationManager locManager;
+
+    LatLng currentLoc;
 
 
     @Nullable
@@ -37,9 +41,16 @@ public class LocationManagement extends Service {
 
         //super.onCreate();
 
+
+
         locListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                Intent i = new Intent("location_update");
+                i.putExtra("coordinates",location.getLongitude()+" "+location.getLatitude());
+                sendBroadcast(i);
+
+                currentLoc = new LatLng( location.getLatitude(), location.getLongitude() );
 
             }
 
@@ -50,14 +61,14 @@ public class LocationManagement extends Service {
 
             @Override
             public void onProviderEnabled(String provider) {
-                Intent i = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS );
-                i.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-                startActivity( i );
+
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-
+                Intent i = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS );
+                i.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+                startActivity( i );
             }
         };
 
