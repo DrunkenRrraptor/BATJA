@@ -54,7 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mUiSettings = mMap.getUiSettings();
 
-        lm = (LocationManagement) new LocationManagement();
+        //lm = (LocationManagement) new LocationManagement();
 
 
 
@@ -74,11 +74,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         } else {
 
-           // mMap.setMyLocationEnabled( true );
+            mMap.setMyLocationEnabled( true );
 
         }
 
-        mMap.setMyLocationEnabled( true );
+        //mMap.setMyLocationEnabled( true );
 
 
 
@@ -90,11 +90,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         mMap.addMarker( new MarkerOptions().position( htw ).title( "Marker at the HTW" ) ).setIcon( BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN) );
-        //mMap.moveCamera( CameraUpdateFactory.newLatLng( htw ) );
-        //mMap.moveCamera( lm.currentLoc );
+        mMap.moveCamera( CameraUpdateFactory.newLatLng( htw ) );
         mMap.moveCamera( CameraUpdateFactory.zoomTo( 15 ) );
 
-
+        //mMap.moveCamera( CameraUpdateFactory.newLatLng( lm.currentLoc ));
 
 
     }

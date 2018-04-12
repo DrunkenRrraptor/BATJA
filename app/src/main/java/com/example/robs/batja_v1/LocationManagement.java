@@ -70,6 +70,12 @@ public class LocationManagement extends Service {
                 i.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
                 startActivity( i );
             }
+
+            public LatLng getLoc(Location location){
+
+                return new LatLng( location.getLatitude(), location.getLongitude() );
+
+            }
         };
 
         locManager = (LocationManager) getApplicationContext().getSystemService( Context.LOCATION_SERVICE );
@@ -86,6 +92,7 @@ public class LocationManagement extends Service {
             return;
         }
         locManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 3000, 0, locListener );
+
 
 
 
