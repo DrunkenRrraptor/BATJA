@@ -85,7 +85,7 @@ public class DatabaseManagement extends SQLiteOpenHelper  {
         public void onCreate(SQLiteDatabase db) {
             String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS +
                     "(" +
-                    KEY_USERS_ID + " INTEGER PRIMARY KEY AUTO_INCREMENT," + // Define a primary key
+                    KEY_USERS_ID + " INTEGER PRIMARY KEY AUTO INCREMENT," + // Define a primary key
                     KEY_USERS_NAME + " TEXT," +
                     KEY_USERS_PASSWORD + " TEXT" +
                     ")";

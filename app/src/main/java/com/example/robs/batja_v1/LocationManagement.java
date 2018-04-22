@@ -39,8 +39,9 @@ public class LocationManagement extends Service {
     @Override
     public void onCreate() {
 
-        //super.onCreate();
+        super.onCreate();
 
+        locManager = (LocationManager) getApplicationContext().getSystemService( Context.LOCATION_SERVICE );
 
 
         locListener = new LocationListener() {
@@ -78,7 +79,6 @@ public class LocationManagement extends Service {
             }
         };
 
-        locManager = (LocationManager) getApplicationContext().getSystemService( Context.LOCATION_SERVICE );
 
         //noinspection MissingPermission
         if (ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
@@ -91,6 +91,11 @@ public class LocationManagement extends Service {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
+
+        locManager = (LocationManager) getApplicationContext().getSystemService( Context.LOCATION_SERVICE );
+
+
         locManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 3000, 0, locListener );
 
 

@@ -17,7 +17,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
     //AlertDialog.Builder missingTextAlert = new AlertDialog.Builder(this);
 
-   // DatabaseManagement dbm;
+    DatabaseManagement dbm;
 
 
     @Override
@@ -25,7 +25,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main2 );
 
-       // dbm = new DatabaseManagement( this );
+        dbm = new DatabaseManagement( this );
 
 
         Button button1Log = (Button) findViewById( R.id.buttonLog );
@@ -86,11 +86,14 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         Toast toast1 = Toast.makeText(this, "Name: " + userName + " , PWD: " + userPassword, Toast.LENGTH_SHORT);
         toast1.show();
 
+        dbm.checkUser( userName, userPassword );
+
+        /*
         if(userName.isEmpty() || userPassword.isEmpty())
         {
             showAlert( "Y'moron, either ya name or password are empty. Like mee ol' rum." );
            // dbm.checkUser( userName, userPassword );
-        }
+        }*/
 
         Intent intent = new Intent(this, MapsActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
@@ -105,16 +108,22 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         Toast.makeText( this, "Button 'New Here' works", Toast.LENGTH_SHORT ).show();
 
+        dbm.addUser( userName, userPassword );
 
-
+        /*
         if(userName.isEmpty() || userPassword.isEmpty())
         {
             showAlert( "Y'moron, either ya name or password are empty. Like mee ol' rum." );
         } else {
            // dbm.addUser( userName, userPassword );
-        }
+        }*/
 
 
+        Intent intent = new Intent(this, MapsActivity.class);
+        //EditText editText = (EditText) findViewById(R.id.editText);
+        //String message = editText.getText().toString();
+        //intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
 
 
     }
