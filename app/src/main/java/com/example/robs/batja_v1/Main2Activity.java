@@ -83,17 +83,21 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         //Toast.makeText( this, "Button 'Log In' works", Toast.LENGTH_SHORT ).show();
 
-        Toast toast1 = Toast.makeText(this, "Name: " + userName + " , PWD: " + userPassword, Toast.LENGTH_SHORT);
-        toast1.show();
+        //Toast toast1 = Toast.makeText(this, "Name: " + userName + " , PWD: " + userPassword, Toast.LENGTH_SHORT);
+        //toast1.show();
+        String m;
+        m = dbm.checkUser( userName, userPassword );
 
-        dbm.checkUser( userName, userPassword );
+        //Toast toast2 = Toast.makeText(this, "Message: (blank = log in)" + m, Toast.LENGTH_SHORT);
+        //toast2.show();
 
-        /*
+
+
         if(userName.isEmpty() || userPassword.isEmpty())
         {
             showAlert( "Y'moron, either ya name or password are empty. Like mee ol' rum." );
            // dbm.checkUser( userName, userPassword );
-        }*/
+        }
 
         Intent intent = new Intent(this, MapsActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
@@ -106,17 +110,17 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
     public void button2NewOnClickHandler (String userName, String userPassword) {                           // registrieren
 
-        Toast.makeText( this, "Button 'New Here' works", Toast.LENGTH_SHORT ).show();
+        //Toast.makeText( this, "Button 'New Here' works", Toast.LENGTH_SHORT ).show();
 
         dbm.addUser( userName, userPassword );
 
-        /*
+
         if(userName.isEmpty() || userPassword.isEmpty())
         {
             showAlert( "Y'moron, either ya name or password are empty. Like mee ol' rum." );
         } else {
-           // dbm.addUser( userName, userPassword );
-        }*/
+            dbm.addUser( userName, userPassword );
+        }
 
 
         Intent intent = new Intent(this, MapsActivity.class);

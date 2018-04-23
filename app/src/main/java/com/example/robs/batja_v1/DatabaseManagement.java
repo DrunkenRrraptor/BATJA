@@ -45,12 +45,16 @@ public class DatabaseManagement extends SQLiteOpenHelper  {
 
         // User Table Columns
         private static final String KEY_USERS_ID = "users_id";
-        private static final String KEY_USERS_NAME = "usersNAme";
-        private static final String KEY_USERS_PASSWORD = "usersPassword";
+        private static final String KEY_USERS_NAME = "users_name";
+        private static final String KEY_USERS_PASSWORD = "users_password";
 
         // GPS Table Columns
-        private static final String KEY_GPS_ID = "id";
-        private static final String KEY_GPS_USERS_ID_FK = "userId";
+        private static final String KEY_GPS_SYSDATE = "gps_sys_date";
+        private static final String KEY_GPS_START_LAT = "gps_start_lat";
+        private static final String KEY_GPS_START_LONG = "gps_start_long";
+        private static final String KEY_GPS_END_LAT = "gps_end_lat";
+        private static final String KEY_GPS_END_LONG = "gps_en_long";
+
 
         private static final String DB_FULL_PATH = "";
 
@@ -84,13 +88,25 @@ public class DatabaseManagement extends SQLiteOpenHelper  {
         @Override
         public void onCreate(SQLiteDatabase db) {
             String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS +
-                    "(" +
-                    KEY_USERS_ID + " INTEGER PRIMARY KEY AUTO INCREMENT," + // Define a primary key
-                    KEY_USERS_NAME + " TEXT," +
+                    " (" +
+                    KEY_USERS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
+                    KEY_USERS_NAME + " TEXT, " +
                     KEY_USERS_PASSWORD + " TEXT" +
                     ")";
 
             db.execSQL(CREATE_USERS_TABLE);
+
+            String CREATE_GPS_TABLE = "CREATE TABLE " + TABLE_GPS +
+                    " (" +
+                    KEY_GPS_SYSDATE + " TEXT PRIMARY KEY, " + // Define a primary key
+                    KEY_GPS_START_LAT + " REAL, " +
+                    KEY_GPS_START_LONG + " REAL, " +
+                    KEY_GPS_END_LAT + " REAL, " +
+                    KEY_GPS_END_LONG + " REAL" +
+                    ")";
+
+            db.execSQL(CREATE_USERS_TABLE);
+
         }
 
         @Override

@@ -16,6 +16,8 @@ import android.support.v4.app.ActivityCompat;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by Robs on 11.04.18.
  */
@@ -52,6 +54,12 @@ public class LocationManagement extends Service {
                 sendBroadcast(i);
 
                 currentLoc = new LatLng( location.getLatitude(), location.getLongitude() );
+
+                long date = System.currentTimeMillis();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String dateString = sdf.format(date);
+
+
 
             }
 
