@@ -26,7 +26,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main2 );
 
-        dbm = new DatabaseManagement( this );
+        dbm = new DatabaseManagement( this);
 
 
         Button button1Log = (Button) findViewById( R.id.buttonLog );
@@ -36,6 +36,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         button2New.setOnClickListener( this );
         button3.setOnClickListener( this );
 
+        dbm.onClearBoth();
 
     }
 
@@ -97,7 +98,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             // dbm.checkUser( userName, userPassword );
         }*/
 
-        m = dbm.checkUser( userName, userPassword );
+        //m = dbm.checkUser( userName, userPassword );
 
         /*
         switch (m){
@@ -121,7 +122,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
 
 
-        Intent intent = new Intent(this, MapsActivity.class);
+        Intent intent = new Intent(this, Maps2Activity.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
         //String message = editText.getText().toString();
         //intent.putExtra(EXTRA_MESSAGE, message);
@@ -134,7 +135,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         //Toast.makeText( this, "Button 'New Here' works", Toast.LENGTH_SHORT ).show();
 
-        dbm.addUser( userName, userPassword );
+        //dbm.addUser( userName, userPassword );
 
 
         /*if(userName.isEmpty() || userPassword.isEmpty())

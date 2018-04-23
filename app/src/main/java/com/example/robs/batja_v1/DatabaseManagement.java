@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by Robs on 31.03.18.
  */
@@ -88,6 +90,8 @@ public class DatabaseManagement extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        Log.i("DB", "START");
+
         db.beginTransaction();
 
         try {
@@ -96,21 +100,25 @@ public class DatabaseManagement extends SQLiteOpenHelper {
                     KEY_USERS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
                     KEY_USERS_NAME + " TEXT, " +
                     KEY_USERS_PASSWORD + " TEXT" +
-                    ")";
+                    ");";
 
             db.execSQL( CREATE_USERS_TABLE );
 
             String CREATE_GPS_TABLE = "CREATE TABLE " + TABLE_GPS +
                     " (" +
                     KEY_GPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
-                    KEY_GPS_SYSDATE + " REAL, " +
+                    KEY_GPS_SYSDATE + " TEXT, " +
                     KEY_GPS_LAT + " REAL, " +
                     KEY_GPS_LONG + " REAL" +
-                    ")";
+                    ");";
 
             db.execSQL( CREATE_GPS_TABLE );
+
+            Log.e( "DB", CREATE_USERS_TABLE );
+
+
         } catch (Exception e) {
-            Log.e( "DB", "error in on create - users" );
+            Log.e( "DB", "error in on create" );
         } finally {
             db.endTransaction();
         }
@@ -130,15 +138,27 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
     }
 
+    public void onClearBoth(){
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.execSQL( "DROP TABLE IF EXISTS " + TABLE_GPS );
+        db.execSQL( "DROP TABLE IF EXISTS " + TABLE_USERS );
+        onCreate( db );
+
+    }
+
     public void addUser(String userName, String password) {
 
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
 
+        String ADD_USERS = "";
+
         try {
 
-            String ADD_USERS = "INSERT INTO " + TABLE_USERS +
+            ADD_USERS = "INSERT INTO " + TABLE_USERS +
                     " (" +
                     KEY_USERS_NAME + ", " +
                     KEY_USERS_PASSWORD + ") VALUES ('" +
@@ -148,12 +168,47 @@ public class DatabaseManagement extends SQLiteOpenHelper {
             db.execSQL( ADD_USERS );
 
         } catch (Exception e) {
-            Log.e( "DB", "error in on create - users" );
+            Log.e( "DB", "error in on insert - users" + ADD_USERS);
         } finally {
             db.endTransaction();
         }
 
     }
+
+
+    public void addLocation(double lat, double lng){
+
+        long date = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = sdf.format(date);
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String ADD_GPS = "";
+
+        db.beginTransaction();
+
+        try {
+
+            ADD_GPS = "INSERT INTO " + TABLE_USERS +
+                    " (" +
+                    KEY_GPS_SYSDATE + ", " +
+                    KEY_GPS_LAT +
+                    KEY_GPS_LONG + ") VALUES ('" +
+                    dateString + "', '" +
+                    lat + "', '" +
+                    lng + "');";
+
+                db.execSQL( ADD_GPS );
+
+        } catch (Exception e) {
+            Log.e( "DB", "error in add gps" );
+        } finally {
+            db.endTransaction();
+        }
+
+    }
+
 
     public void deleteTable(String db_name) {
 

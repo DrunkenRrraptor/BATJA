@@ -29,6 +29,8 @@ public class LocationManagement extends Service {
 
     LatLng currentLoc;
 
+    DatabaseManagement dbm;
+
 
     @Nullable
     @Override
@@ -43,6 +45,8 @@ public class LocationManagement extends Service {
 
         super.onCreate();
 
+        dbm = new DatabaseManagement( this );
+
         locManager = (LocationManager) getApplicationContext().getSystemService( Context.LOCATION_SERVICE );
 
 
@@ -55,9 +59,10 @@ public class LocationManagement extends Service {
 
                 currentLoc = new LatLng( location.getLatitude(), location.getLongitude() );
 
-                long date = System.currentTimeMillis();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String dateString = sdf.format(date);
+                double lat = location.getLatitude();
+                double lng = location.getLongitude();
+
+                //dbm.addLocation( lat, lng );
 
 
 
@@ -118,6 +123,12 @@ public class LocationManagement extends Service {
             //noinspection MissingPermission
             locManager.removeUpdates(locListener);
         }
+    }
+
+    public void saveData(double lat, double lng){
+
+
+
     }
 
 }
