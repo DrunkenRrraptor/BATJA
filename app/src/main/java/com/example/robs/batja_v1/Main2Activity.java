@@ -18,6 +18,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     //AlertDialog.Builder missingTextAlert = new AlertDialog.Builder(this);
 
     DatabaseManagement dbm;
+    int m;
 
 
     @Override
@@ -74,7 +75,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
     public void button3ConClickHandler(){
 
-       // dbm.deleteTable( "users" );
+        dbm.deleteTable( "users" );
 
 
     }
@@ -85,19 +86,40 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         //Toast toast1 = Toast.makeText(this, "Name: " + userName + " , PWD: " + userPassword, Toast.LENGTH_SHORT);
         //toast1.show();
-        String m;
+
+        /*if(userName.isEmpty() || userPassword.isEmpty())
+        {
+
+            Toast toast3 = Toast.makeText(this, "Y'moron, either ya name or password are empty. Like mee ol' rum.", Toast.LENGTH_SHORT);
+            toast3.show();
+
+            //showAlert( "Y'moron, either ya name or password are empty. Like mee ol' rum." );
+            // dbm.checkUser( userName, userPassword );
+        }*/
+
         m = dbm.checkUser( userName, userPassword );
+
+        /*
+        switch (m){
+            case 0: Toast toast1 = Toast.makeText(this, "Y'moron, ya name and password are wrong.", Toast.LENGTH_SHORT);
+                    toast1.show();
+                break;
+            case 1: Toast toast2 = Toast.makeText(this, "Y'moron, ya password is wrong.", Toast.LENGTH_SHORT);
+                    toast2.show();
+                break;
+            case 2: Intent intent = new Intent(this, MapsActivity.class);
+                    startActivity(intent);
+                break;
+
+            default: break;
+        }*/
 
         //Toast toast2 = Toast.makeText(this, "Message: (blank = log in)" + m, Toast.LENGTH_SHORT);
         //toast2.show();
 
 
 
-        if(userName.isEmpty() || userPassword.isEmpty())
-        {
-            showAlert( "Y'moron, either ya name or password are empty. Like mee ol' rum." );
-           // dbm.checkUser( userName, userPassword );
-        }
+
 
         Intent intent = new Intent(this, MapsActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
@@ -115,12 +137,12 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         dbm.addUser( userName, userPassword );
 
 
-        if(userName.isEmpty() || userPassword.isEmpty())
+        /*if(userName.isEmpty() || userPassword.isEmpty())
         {
             showAlert( "Y'moron, either ya name or password are empty. Like mee ol' rum." );
         } else {
             dbm.addUser( userName, userPassword );
-        }
+        }*/
 
 
         Intent intent = new Intent(this, MapsActivity.class);
@@ -129,6 +151,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         //intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
 
+
+        //"Ya password happens to be wrong. Try again or create user.";
 
     }
 

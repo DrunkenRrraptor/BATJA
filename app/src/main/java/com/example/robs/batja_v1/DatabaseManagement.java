@@ -5,12 +5,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by Robs on 31.03.18.
  */
 
-public class DatabaseManagement extends SQLiteOpenHelper  {
+public class DatabaseManagement extends SQLiteOpenHelper {
 
 
    /* DatabaseHelper dbHelper;
@@ -35,58 +36,61 @@ public class DatabaseManagement extends SQLiteOpenHelper  {
 
     static class DatabaseHelper extends SQLiteOpenHelper {*/
 
-        // Database Info
-        private static final String DATABASE_NAME = "batjaDatabase";
-        private static final int DATABASE_VERSION = 1;
+    // Database Info
+    private static final String DATABASE_NAME = "batjaDatabase";
+    private static final int DATABASE_VERSION = 1;
 
-        // Table Names
-        private static final String TABLE_USERS = "users";
-        private static final String TABLE_GPS = "gps";
+    // Table Names
+    private static final String TABLE_USERS = "users";
+    private static final String TABLE_GPS = "gps";
 
-        // User Table Columns
-        private static final String KEY_USERS_ID = "users_id";
-        private static final String KEY_USERS_NAME = "users_name";
-        private static final String KEY_USERS_PASSWORD = "users_password";
+    // User Table Columns
+    private static final String KEY_USERS_ID = "users_id";
+    private static final String KEY_USERS_NAME = "users_name";
+    private static final String KEY_USERS_PASSWORD = "users_password";
 
-        // GPS Table Columns
-        private static final String KEY_GPS_SYSDATE = "gps_sys_date";
-        private static final String KEY_GPS_START_LAT = "gps_start_lat";
-        private static final String KEY_GPS_START_LONG = "gps_start_long";
-        private static final String KEY_GPS_END_LAT = "gps_end_lat";
-        private static final String KEY_GPS_END_LONG = "gps_en_long";
-
-
-        private static final String DB_FULL_PATH = "";
+    // GPS Table Columns
+    private static final String KEY_GPS_ID = "gps_id";
+    private static final String KEY_GPS_SYSDATE = "gps_sys_date";
+    private static final String KEY_GPS_LAT = "gps_start_lat";
+    private static final String KEY_GPS_LONG = "gps_start_long";
 
 
-        private static DatabaseManagement sInstance;
+    private static final String DB_FULL_PATH = "";
+
+
+    private static DatabaseManagement sInstance;
 
         /*public DatabaseHelper() {
             super();
         }*/
 
-        public static synchronized DatabaseManagement getInstance(Context context) {
-            // Use the application context, which will ensure that you
-            // don't accidentally leak an Activity's context.
-            // See this article for more information: http://bit.ly/6LRzfx
-            if (sInstance == null) {
-                sInstance = new DatabaseManagement(context.getApplicationContext());
-            }
-            return sInstance;
+    public static synchronized DatabaseManagement getInstance(Context context) {
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (sInstance == null) {
+            sInstance = new DatabaseManagement( context.getApplicationContext() );
         }
+        return sInstance;
+    }
 
-        public DatabaseManagement(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        }
+    public DatabaseManagement(Context context) {
+        super( context, DATABASE_NAME, null, DATABASE_VERSION );
+    }
 
-        @Override
-        public void onConfigure(SQLiteDatabase db) {
-            super.onConfigure(db);
-            db.setForeignKeyConstraintsEnabled(true);
-        }
+    @Override
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure( db );
+        db.setForeignKeyConstraintsEnabled( true );
+    }
 
-        @Override
-        public void onCreate(SQLiteDatabase db) {
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+
+        db.beginTransaction();
+
+        try {
             String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS +
                     " (" +
                     KEY_USERS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
@@ -94,95 +98,112 @@ public class DatabaseManagement extends SQLiteOpenHelper  {
                     KEY_USERS_PASSWORD + " TEXT" +
                     ")";
 
-            db.execSQL(CREATE_USERS_TABLE);
+            db.execSQL( CREATE_USERS_TABLE );
 
             String CREATE_GPS_TABLE = "CREATE TABLE " + TABLE_GPS +
                     " (" +
-                    KEY_GPS_SYSDATE + " TEXT PRIMARY KEY, " + // Define a primary key
-                    KEY_GPS_START_LAT + " REAL, " +
-                    KEY_GPS_START_LONG + " REAL, " +
-                    KEY_GPS_END_LAT + " REAL, " +
-                    KEY_GPS_END_LONG + " REAL" +
+                    KEY_GPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
+                    KEY_GPS_SYSDATE + " REAL, " +
+                    KEY_GPS_LAT + " REAL, " +
+                    KEY_GPS_LONG + " REAL" +
                     ")";
 
-            db.execSQL(CREATE_USERS_TABLE);
-
+            db.execSQL( CREATE_GPS_TABLE );
+        } catch (Exception e) {
+            Log.e( "DB", "error in on create - users" );
+        } finally {
+            db.endTransaction();
         }
 
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-            if (oldVersion != newVersion) {
-                // Simplest implementation is to drop all old tables and recreate them
-                db.execSQL("DROP TABLE IF EXISTS " + TABLE_GPS);
-                db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
-                onCreate(db);
-            }
+    }
 
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        if (oldVersion != newVersion) {
+            // Simplest implementation is to drop all old tables and recreate them
+            db.execSQL( "DROP TABLE IF EXISTS " + TABLE_GPS );
+            db.execSQL( "DROP TABLE IF EXISTS " + TABLE_USERS );
+            onCreate( db );
         }
 
-        public void addUser(String userName, String password){
+    }
 
-            SQLiteDatabase db = getWritableDatabase();
+    public void addUser(String userName, String password) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.beginTransaction();
+
+        try {
 
             String ADD_USERS = "INSERT INTO " + TABLE_USERS +
-                    "(" +
+                    " (" +
                     KEY_USERS_NAME + ", " +
                     KEY_USERS_PASSWORD + ") VALUES ('" +
                     userName + "', '" +
-                    password + "');"
-                    ;
+                    password + "');";
 
             db.execSQL( ADD_USERS );
 
+        } catch (Exception e) {
+            Log.e( "DB", "error in on create - users" );
+        } finally {
+            db.endTransaction();
         }
 
-        public void deleteTable(String db_name){
+    }
 
-            SQLiteDatabase db = getWritableDatabase();
+    public void deleteTable(String db_name) {
 
-            db.execSQL("DROP TABLE " + db_name);
+        SQLiteDatabase db = getWritableDatabase();
 
+        db.execSQL( "DROP TABLE " + db_name );
+
+
+    }
+
+    public int checkUser(String userName, String password) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        int m = 0;                                                                              // m = 0 ... nichts stimmt
+
+        //  String CHECK_USER_COMPLETLY_RIGHT = "SELECT * FROM " + TABLE_USERS +
+        //        " WHERE " + KEY_USERS_NAME + " = " + userName +
+        //      " AND " + KEY_USERS_PASSWORD + " = " + password + ";";
+
+        String CHECK_USER_COMPLETELY_RIGHT =
+                "SELECT * FROM " + TABLE_USERS +
+                        " WHERE " + KEY_USERS_NAME + " = ?" +
+                        " AND " + KEY_USERS_PASSWORD + " = ?;";
+
+
+        Cursor c1 = db.rawQuery( CHECK_USER_COMPLETELY_RIGHT, new String[]{userName, password} );
+
+        String CHECK_USER_PARTLY_RIGHT =
+                "SELECT * FROM " + TABLE_USERS +
+                        " WHERE " + KEY_USERS_NAME + " = ?";
+
+        Cursor c2 = db.rawQuery( CHECK_USER_PARTLY_RIGHT, new String[]{userName} );
+
+
+        if (c2.moveToNext()) {
+            // username stimmt, passwort auch
+
+            m = 1;                                                                              // m = 1 ... name und passwort stimmen
+
+        } else if (c1.moveToNext()) {
+            // username stimmt, passwort nicht                                                  // m = 2 ... name stimmt, passwort nicht
+
+            m = 2;
 
         }
 
-        public String checkUser(String userName, String password){
+        return m;
 
-            SQLiteDatabase db = getWritableDatabase();
-            String m = "";
-
-          //  String CHECK_USER_COMPLETLY_RIGHT = "SELECT * FROM " + TABLE_USERS +
-            //        " WHERE " + KEY_USERS_NAME + " = " + userName +
-              //      " AND " + KEY_USERS_PASSWORD + " = " + password + ";";
-
-            String CHECK_USER_COMPLETELY_RIGHT =
-                    "SELECT * FROM " + TABLE_USERS +
-                    " WHERE " + KEY_USERS_NAME + " = ?" +
-                    " AND " + KEY_USERS_PASSWORD + " = ?;";
-
-
-            Cursor c1 = db.rawQuery( CHECK_USER_COMPLETELY_RIGHT, new String[]{userName, password});
-
-            String CHECK_USER_PARTLY_RIGHT =
-                    "SELECT * FROM " + TABLE_USERS +
-                            " WHERE " + KEY_USERS_NAME + " = ?";
-
-            Cursor c2 = db.rawQuery( CHECK_USER_PARTLY_RIGHT, new String[]{userName});
-
-            if (c2.moveToNext()){
-                // username stimmt, passwort auch
-             //   Intent startMaps = new Intent( intent, MapsActivity.class );
-            //    startActivity(startMaps);
-
-            }
-            else if (c2.moveToNext()){
-                m = "Ya password happens to be wrong. Try again or create user.";
-
-            }
-
-            return m;
-
-        }
+    }
 
         /*public long addOrUpdateUser(String userName, String password) {
             // The database connection is cached so it's not expensive to call getWriteableDatabase() multiple times.
@@ -240,9 +261,7 @@ public class DatabaseManagement extends SQLiteOpenHelper  {
             return checkDB != null;
         }*/
 
-   // }
-
-
+    // }
 
 
 }

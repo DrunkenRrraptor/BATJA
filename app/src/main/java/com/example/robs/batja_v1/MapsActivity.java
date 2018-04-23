@@ -54,6 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mUiSettings = mMap.getUiSettings();
 
+
         //lm = (LocationManagement) new LocationManagement();
 
 
