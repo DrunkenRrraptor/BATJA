@@ -13,85 +13,61 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import java.text.SimpleDateFormat;
+import android.util.Log;
 
 /**
- * Created by Robs on 11.04.18.
+ * Created by Robs on 24.04.18.
  */
 
-public class LocationManagement extends Service {
+public class GPS_Service extends Service {
 
-    LocationListener locListener;
-    LocationManager locManager;
-
-    LatLng currentLoc;
-
-    DatabaseManagement dbm;
-
+    private LocationListener listener;
+    private LocationManager locationManager;
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-
     }
-
 
     @Override
     public void onCreate() {
 
-        super.onCreate();
+        Log.e( "SRVC", "onCreate Service" );
 
-        //dbm = new DatabaseManagement( this );
-
-        //locManager = (LocationManager) getApplicationContext().getSystemService( Context.LOCATION_SERVICE );
-
-
-        locListener = new LocationListener() {
+        listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Intent i = new Intent("location_update");
-                i.putExtra("coordinates",location.getLongitude()+" "+location.getLatitude());
-                sendBroadcast(i);
+                Intent i = new Intent( "location_update" );
+                i.putExtra( "coordinates", location.getLongitude() + " " + location.getLatitude() );
+                sendBroadcast( i );
 
-                //currentLoc = new LatLng( location.getLatitude(), location.getLongitude() );
-
-                //double lat = location.getLatitude();
-                //double lng = location.getLongitude();
-
-                //dbm.addLocation( lat, lng );
-
-
+                Log.e("SRVC", "onLocChanged");
 
             }
 
             @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
+            public void onStatusChanged(String s, int i, Bundle bundle) {
 
             }
 
             @Override
-            public void onProviderEnabled(String provider) {
+            public void onProviderEnabled(String s) {
 
             }
 
             @Override
-            public void onProviderDisabled(String provider) {
+            public void onProviderDisabled(String s) {
                 Intent i = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS );
                 i.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
                 startActivity( i );
-            }
 
-            public LatLng getLoc(Location location){
-
-                return new LatLng( location.getLatitude(), location.getLongitude() );
+                Log.e("SRVC", "onProviderDisabled");
 
             }
         };
 
+        locationManager = (LocationManager) getApplicationContext().getSystemService( Context.LOCATION_SERVICE );
 
         //noinspection MissingPermission
         if (ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( this, Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
@@ -104,31 +80,20 @@ public class LocationManagement extends Service {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-
-
-        locManager = (LocationManager) getApplicationContext().getSystemService( Context.LOCATION_SERVICE );
-
-
-        locManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 3000, 0, locListener );
-
-
-
+        locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 3000, 0, listener );
 
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(locManager != null){
+        if(locationManager != null){
             //noinspection MissingPermission
-            locManager.removeUpdates(locListener);
+            locationManager.removeUpdates(listener);
+
+            Log.e("SRVC", "onDestroy");
+
         }
-    }
-
-    public void saveData(double lat, double lng){
-
-
-
     }
 
 }

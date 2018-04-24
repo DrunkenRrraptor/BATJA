@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,6 +37,45 @@ public class Maps2Activity extends FragmentActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById( R.id.map );
         mapFragment.getMapAsync( this );
+
+        Button button1Start = (Button) findViewById( R.id.button_start );
+        Button button2Stop = (Button) findViewById( R.id.button_stop );
+        button1Start.setOnClickListener( (View.OnClickListener) this );
+        button2Stop.setOnClickListener( (View.OnClickListener) this );
+
+
+
+
+    }
+
+
+    public void onClick(View v) {
+
+        switch (v.getId()){
+
+            case R.id.buttonLog:
+                button1StartOnClickHandler();
+                break;
+            case R.id.buttonNew:
+                button2StopOnClickHandler();
+                break;
+
+            default: break;
+
+
+        }
+
+
+
+
+    }
+
+    public void button1StartOnClickHandler(){
+
+    }
+
+    public void button2StopOnClickHandler(){
+
     }
 
 

@@ -32,9 +32,11 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         Button button1Log = (Button) findViewById( R.id.buttonLog );
         Button button2New = (Button) findViewById( R.id.buttonNew );
         Button button3 = (Button) findViewById( R.id.button2 );
+        Button button4Show = (Button) findViewById( R.id.buttonShow );
         button1Log.setOnClickListener( this );
         button2New.setOnClickListener( this );
         button3.setOnClickListener( this );
+        button4Show.setOnClickListener( this );
 
         dbm.onClearBoth();
 
@@ -60,7 +62,10 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 button2NewOnClickHandler(userName, userPassword);
                 break;
             case R.id.button2:
-                button3ConClickHandler();
+                button3onClickHandler();
+                break;
+            case R.id.buttonShow:
+                button4ShowOnClickHandler();
                 break;
 
             default: break;
@@ -74,7 +79,19 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    public void button3ConClickHandler(){
+    public void button4ShowOnClickHandler(){
+
+        Intent intent = new Intent(this, Main3Activity.class);
+        //EditText editText = (EditText) findViewById(R.id.editText);
+        //String message = editText.getText().toString();
+        //intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
+
+
+
+    }
+
+    public void button3onClickHandler(){
 
         dbm.deleteTable( "users" );
 
@@ -122,7 +139,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
 
 
-        Intent intent = new Intent(this, Maps2Activity.class);
+        Intent intent = new Intent(this, MapsActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
         //String message = editText.getText().toString();
         //intent.putExtra(EXTRA_MESSAGE, message);
