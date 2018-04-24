@@ -81,7 +81,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
     public void button4ShowOnClickHandler(){
 
-        Intent intent = new Intent(this, Main3Activity.class);
+        Intent intent = new Intent(this, ShowLocActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
         //String message = editText.getText().toString();
         //intent.putExtra(EXTRA_MESSAGE, message);
@@ -119,10 +119,10 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         /*
         switch (m){
-            case 0: Toast toast1 = Toast.makeText(this, "Y'moron, ya name and password are wrong.", Toast.LENGTH_SHORT);
+            case 0: Toast toast1 = Toast.makeText(this, "Ya name and password are wrong.", Toast.LENGTH_SHORT);
                     toast1.show();
                 break;
-            case 1: Toast toast2 = Toast.makeText(this, "Y'moron, ya password is wrong.", Toast.LENGTH_SHORT);
+            case 1: Toast toast2 = Toast.makeText(this, "Ya password is wrong.", Toast.LENGTH_SHORT);
                     toast2.show();
                 break;
             case 2: Intent intent = new Intent(this, MapsActivity.class);
@@ -157,7 +157,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         /*if(userName.isEmpty() || userPassword.isEmpty())
         {
-            showAlert( "Y'moron, either ya name or password are empty. Like mee ol' rum." );
+            showAlert( "Ya either ya name or password are empty. Like mee ol' rum." );
         } else {
             dbm.addUser( userName, userPassword );
         }*/

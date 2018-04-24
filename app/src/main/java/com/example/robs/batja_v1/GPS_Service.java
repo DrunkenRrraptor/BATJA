@@ -33,6 +33,8 @@ public class GPS_Service extends Service {
     @Override
     public void onCreate() {
 
+        super.onCreate();
+
         Log.e( "SRVC", "onCreate Service" );
 
         listener = new LocationListener() {

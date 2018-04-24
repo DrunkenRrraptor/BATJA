@@ -74,7 +74,7 @@ public class ShowLocActivity extends AppCompatActivity {
         button_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(getApplicationContext(), LocationManagement.class);
+                Intent i = new Intent(getApplicationContext(), LocationManagement.class);
                 startService(i);
             }
         });

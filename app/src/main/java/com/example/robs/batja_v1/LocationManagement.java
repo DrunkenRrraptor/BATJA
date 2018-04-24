@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -45,6 +46,8 @@ public class LocationManagement extends Service {
 
         super.onCreate();
 
+        Log.e( "SRVC", "onCreate" );
+
         //dbm = new DatabaseManagement( this );
 
         //locManager = (LocationManager) getApplicationContext().getSystemService( Context.LOCATION_SERVICE );
@@ -56,6 +59,8 @@ public class LocationManagement extends Service {
                 Intent i = new Intent("location_update");
                 i.putExtra("coordinates",location.getLongitude()+" "+location.getLatitude());
                 sendBroadcast(i);
+
+                Log.e( "SRVC", "onLocationChanged" );
 
                 //currentLoc = new LatLng( location.getLatitude(), location.getLongitude() );
 
@@ -85,11 +90,7 @@ public class LocationManagement extends Service {
                 startActivity( i );
             }
 
-            public LatLng getLoc(Location location){
 
-                return new LatLng( location.getLatitude(), location.getLongitude() );
-
-            }
         };
 
 
@@ -116,6 +117,12 @@ public class LocationManagement extends Service {
 
     }
 
+    public LatLng getLoc(Location location){
+
+        return new LatLng( location.getLatitude(), location.getLongitude() );
+
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -125,10 +132,5 @@ public class LocationManagement extends Service {
         }
     }
 
-    public void saveData(double lat, double lng){
-
-
-
-    }
 
 }
