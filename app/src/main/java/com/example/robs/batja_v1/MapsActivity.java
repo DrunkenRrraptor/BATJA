@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -82,7 +83,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.setMyLocationEnabled( true );
 
 
-
+        float hueThemeColor = 0.545098f;
 
 
         // Add a marker in Sydney and move the camera
@@ -90,7 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng htw = new LatLng( 48.239078, 16.378282 );
 
 
-        mMap.addMarker( new MarkerOptions().position( htw ).title( "Marker at the HTW" ) ).setIcon( BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN) );
+        mMap.addMarker( new MarkerOptions().position( htw ).title( "Marker at the HTW" ) ).setIcon( BitmapDescriptorFactory.defaultMarker(hueThemeColor));
         mMap.moveCamera( CameraUpdateFactory.newLatLng( htw ) );
         mMap.moveCamera( CameraUpdateFactory.zoomTo( 15 ) );
 

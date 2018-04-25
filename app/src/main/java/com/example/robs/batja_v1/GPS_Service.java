@@ -35,6 +35,8 @@ public class GPS_Service extends Service {
 
         super.onCreate();
 
+        //dbm = new DatabaseManagement( this );
+
         Log.e( "SRVC", "onCreate Service" );
 
         listener = new LocationListener() {
@@ -45,6 +47,14 @@ public class GPS_Service extends Service {
                 sendBroadcast( i );
 
                 Log.e("SRVC", "onLocChanged");
+
+
+                //currentLoc = new LatLng( location.getLatitude(), location.getLongitude() );
+
+                //double lat = location.getLatitude();
+                //double lng = location.getLongitude();
+
+                //dbm.addLocation( lat, lng );
 
             }
 

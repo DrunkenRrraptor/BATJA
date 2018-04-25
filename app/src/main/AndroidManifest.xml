@@ -48,6 +48,8 @@
         <activity android:name=".Maps2Activity" />
         <activity android:name=".ShowLocActivity" />
         <activity android:name=".Main3Activity"></activity>
+        <service android:name=".GPS_Service" />
+        <service android:name=".LocationManagement" />
     </application>
 
 </manifest>
