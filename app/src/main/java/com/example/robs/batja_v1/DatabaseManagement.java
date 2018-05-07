@@ -39,12 +39,12 @@ public class DatabaseManagement extends SQLiteOpenHelper {
     static class DatabaseHelper extends SQLiteOpenHelper {*/
 
     // Database Info
-    private static final String DATABASE_NAME = "batjaDatabase";
+    private static final String DATABASE_NAME = "batjaDatabase_";
     private static final int DATABASE_VERSION = 1;
 
     // Table Names
-    private static final String TABLE_USERS = "users";
-    private static final String TABLE_GPS = "gps";
+    private static final String TABLE_USERS = "users_3";
+    private static final String TABLE_GPS = "gps_3";
 
     // User Table Columns
     private static final String KEY_USERS_ID = "users_id";
@@ -54,8 +54,9 @@ public class DatabaseManagement extends SQLiteOpenHelper {
     // GPS Table Columns
     private static final String KEY_GPS_ID = "gps_id";
     private static final String KEY_GPS_SYSDATE = "gps_sys_date";
-    private static final String KEY_GPS_LAT = "gps_start_lat";
-    private static final String KEY_GPS_LONG = "gps_start_long";
+    private static final String KEY_GPS_LAT = "gps_lat";
+    private static final String KEY_GPS_LONG = "gps_long";
+    private static final String KEY_GPS_SPEED = "gps_speed";
 
 
     private static final String DB_FULL_PATH = "";
@@ -108,17 +109,20 @@ public class DatabaseManagement extends SQLiteOpenHelper {
                     " (" +
                     KEY_GPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
                     KEY_GPS_SYSDATE + " TEXT, " +
-                    KEY_GPS_LAT + " REAL, " +
-                    KEY_GPS_LONG + " REAL" +
+                    KEY_GPS_LAT + " FLOAT, " +
+                    KEY_GPS_LONG + " FLOAT, " +
+                    KEY_GPS_SPEED + " FLOAT" +
                     ");";
 
             db.execSQL( CREATE_GPS_TABLE );
+            db.setTransactionSuccessful();
 
+            Log.e( "DB", CREATE_GPS_TABLE );
             Log.e( "DB", CREATE_USERS_TABLE );
 
 
         } catch (Exception e) {
-            Log.e( "DB", "error in on create" );
+            Log.e( "DB", "error in on create tables");
         } finally {
             db.endTransaction();
         }
@@ -135,6 +139,9 @@ public class DatabaseManagement extends SQLiteOpenHelper {
             db.execSQL( "DROP TABLE IF EXISTS " + TABLE_USERS );
             onCreate( db );
         }
+
+
+
 
     }
 
@@ -166,9 +173,11 @@ public class DatabaseManagement extends SQLiteOpenHelper {
                     password + "');";
 
             db.execSQL( ADD_USERS );
+            Log.e( "DB", ADD_USERS);
+            db.setTransactionSuccessful();
 
         } catch (Exception e) {
-            Log.e( "DB", "error in on insert - users" + ADD_USERS);
+            Log.e( "DB", "error in insert - users" + ADD_USERS);
         } finally {
             db.endTransaction();
         }
@@ -176,7 +185,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
     }
 
 
-    public void addLocation(double lat, double lng){
+    public void addLocation(double lat, double lng, double speed){
 
         long date = System.currentTimeMillis();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -194,15 +203,20 @@ public class DatabaseManagement extends SQLiteOpenHelper {
                     " (" +
                     KEY_GPS_SYSDATE + ", " +
                     KEY_GPS_LAT +
-                    KEY_GPS_LONG + ") VALUES ('" +
+                    KEY_GPS_LONG +
+                    KEY_GPS_LAT + ") VALUES ('" +
                     dateString + "', '" +
                     lat + "', '" +
-                    lng + "');";
+                    lng + "', '" +
+                    speed + "');";
 
                 db.execSQL( ADD_GPS );
 
+                Log.e( "DB", ADD_GPS );
+                db.setTransactionSuccessful();
+
         } catch (Exception e) {
-            Log.e( "DB", "error in add gps" );
+            Log.e( "DB", "error in add gps" + ADD_GPS );
         } finally {
             db.endTransaction();
         }

@@ -91,10 +91,10 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         //Toast.makeText( this, "Button 'Log In' works", Toast.LENGTH_SHORT ).show();
 
-        //Toast toast1 = Toast.makeText(this, "Name: " + userName + " , PWD: " + userPassword, Toast.LENGTH_SHORT);
-        //toast1.show();
+        Toast toast1 = Toast.makeText(this, "Name: " + userName + " , PWD: " + userPassword, Toast.LENGTH_SHORT);
+        toast1.show();
 
-        /*if(userName.isEmpty() || userPassword.isEmpty())
+        if(userName.isEmpty() || userPassword.isEmpty())
         {
 
             Toast toast3 = Toast.makeText(this, "Y'moron, either ya name or password are empty. Like mee ol' rum.", Toast.LENGTH_SHORT);
@@ -102,14 +102,14 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
             //showAlert( "Y'moron, either ya name or password are empty. Like mee ol' rum." );
             // dbm.checkUser( userName, userPassword );
-        }*/
+        }
 
-        //m = dbm.checkUser( userName, userPassword );
+        m = dbm.checkUser( userName, userPassword );
 
-        /*
+
         switch (m){
-            case 0: Toast toast1 = Toast.makeText(this, "Ya name and password are wrong.", Toast.LENGTH_SHORT);
-                    toast1.show();
+            case 0: Toast toast4 = Toast.makeText(this, "Ya name and password are wrong.", Toast.LENGTH_SHORT);
+                    toast4.show();
                 break;
             case 1: Toast toast2 = Toast.makeText(this, "Ya password is wrong.", Toast.LENGTH_SHORT);
                     toast2.show();
@@ -119,7 +119,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 break;
 
             default: break;
-        }*/
+        }
 
         //Toast toast2 = Toast.makeText(this, "Message: (blank = log in)" + m, Toast.LENGTH_SHORT);
         //toast2.show();
@@ -141,15 +141,15 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         //Toast.makeText( this, "Button 'New Here' works", Toast.LENGTH_SHORT ).show();
 
-        //dbm.addUser( userName, userPassword );
+        dbm.addUser( userName, userPassword );
 
 
-        /*if(userName.isEmpty() || userPassword.isEmpty())
+        if(userName.isEmpty() || userPassword.isEmpty())
         {
             showAlert( "Ya either ya name or password are empty. Like mee ol' rum." );
         } else {
             dbm.addUser( userName, userPassword );
-        }*/
+        }
 
 
         Intent intent = new Intent(this, MapsActivity.class);
@@ -158,6 +158,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         //intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
 
+
+        Toast toast1 = Toast.makeText(this, "Name: " + userName + " , PWD: " + userPassword, Toast.LENGTH_SHORT);
+        toast1.show();
 
         //"Ya password happens to be wrong. Try again or create user.";
 
