@@ -123,7 +123,7 @@ public class Maps2Activity extends FragmentActivity implements OnMapReadyCallbac
         //mMap.setMyLocationEnabled( true );
 
 
-
+        float hueThemeColor = 0.545098f;
 
 
         // Add a marker in Sydney and move the camera
@@ -131,7 +131,7 @@ public class Maps2Activity extends FragmentActivity implements OnMapReadyCallbac
         LatLng htw = new LatLng( 48.239078, 16.378282 );
 
 
-        mMap.addMarker( new MarkerOptions().position( htw ).title( "Marker at the HTW" ) ).setIcon( BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN) );
+        mMap.addMarker( new MarkerOptions().position( htw ).title( "Marker at the HTW" ) ).setIcon( BitmapDescriptorFactory.defaultMarker(hueThemeColor) );
         mMap.moveCamera( CameraUpdateFactory.newLatLng( htw ) );
         mMap.moveCamera( CameraUpdateFactory.zoomTo( 15 ) );
 

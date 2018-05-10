@@ -253,7 +253,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
         String CHECK_USER_PARTLY_RIGHT =
                 "SELECT * FROM " + TABLE_USERS +
-                        " WHERE " + KEY_USERS_NAME + " = ?";
+                        " WHERE " + KEY_USERS_NAME + " != ?";
 
         Cursor c2 = db.rawQuery( CHECK_USER_PARTLY_RIGHT, new String[]{userName} );
 

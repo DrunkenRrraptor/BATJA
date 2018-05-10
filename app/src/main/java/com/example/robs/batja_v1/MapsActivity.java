@@ -3,6 +3,7 @@ package com.example.robs.batja_v1;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
@@ -20,6 +21,8 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -85,7 +88,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         float hueThemeColor = 0.545098f;
 
-
+        //
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng( -34, 151 );
         LatLng htw = new LatLng( 48.239078, 16.378282 );
@@ -96,6 +99,81 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera( CameraUpdateFactory.zoomTo( 15 ) );
 
         //mMap.moveCamera( CameraUpdateFactory.newLatLng( lm.currentLoc ));
+
+
+        //
+        //  DUMMY DATEN
+        //
+        //
+
+        double lat_dummy_1_strt = 48.239789759281074;       // anfang der tour
+        double lng_dummy_1_strt = 16.377883947562168;
+        double speed_dummy_1_strt = 0;
+        LatLng ltlng = new LatLng (lat_dummy_1_strt, lng_dummy_1_strt);
+
+        double lat_dummy_1_nrt = 48.23961882566993;         // en route
+        double lng_dummy_1_nrt = 16.37805280888142;
+        double speed_dummy_1_nrt = 8.33333333;              //      30 km/h
+
+        double lat_dummy_1_end = 48.23961748587267;         // ende der tour
+        double lng_dummy_1_end = 16.378047109187264;
+        double speed_dummy_1_end = 0;
+
+        // erste linie
+
+        if ( speed_dummy_1_strt <= 5.6 ){                      // 20 km/h
+
+            Polyline pline = mMap.addPolyline( new PolylineOptions()
+                    .add( new LatLng( lat_dummy_1_strt, lng_dummy_1_strt ), new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ) )
+                    .color( Color.RED )
+                    .width( 5 )
+            );
+
+        } else if( speed_dummy_1_strt > 5.6 & speed_dummy_1_strt <= 11.1) {        // 40 km/h
+
+            Polyline pline = mMap.addPolyline( new PolylineOptions()
+                    .add( new LatLng( lat_dummy_1_strt, lng_dummy_1_strt ), new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ) )
+                    .color( Color.YELLOW )
+                    .width( 5 )
+            );
+
+        } else if( speed_dummy_1_strt > 11.1 ) {
+
+            Polyline pline = mMap.addPolyline( new PolylineOptions()
+                    .add( new LatLng( lat_dummy_1_strt, lng_dummy_1_strt ), new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ) )
+                    .color( Color.GREEN )
+                    .width( 5 )
+            );
+        }
+
+        // zweite linie
+
+        if ( speed_dummy_1_nrt <= 5.6 ){                      // 20 km/h
+
+            Polyline pline = mMap.addPolyline( new PolylineOptions()
+                    .add( new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ), new LatLng( lat_dummy_1_end, lng_dummy_1_end ) )
+                    .color( Color.RED )
+                    .width( 5 )
+            );
+
+        } else if( speed_dummy_1_nrt > 5.6 & speed_dummy_1_nrt <= 11.1) {        // 40 km/h
+
+            Polyline pline = mMap.addPolyline( new PolylineOptions()
+                    .add( new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ), new LatLng( lat_dummy_1_end, lng_dummy_1_end ) )
+                    .color( Color.YELLOW )
+                    .width( 5 )
+            );
+
+        } else if( speed_dummy_1_nrt > 11.1 ) {
+
+            Polyline pline = mMap.addPolyline( new PolylineOptions()
+                    .add( new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ), new LatLng( lat_dummy_1_end, lng_dummy_1_end ) )
+                    .color( Color.GREEN )
+                    .width( 5 )
+            );
+        }
+
+
 
 
     }

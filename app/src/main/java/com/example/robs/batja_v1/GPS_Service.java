@@ -23,6 +23,7 @@ public class GPS_Service extends Service {
 
     private LocationListener listener;
     private LocationManager locationManager;
+    private DatabaseManagement dbm;
 
     @Nullable
     @Override
@@ -35,7 +36,7 @@ public class GPS_Service extends Service {
 
         super.onCreate();
 
-        //dbm = new DatabaseManagement( this );
+        dbm = new DatabaseManagement( this );
 
         Log.e( "SRVC", "onCreate Service" );
 
@@ -51,10 +52,11 @@ public class GPS_Service extends Service {
 
                 //currentLoc = new LatLng( location.getLatitude(), location.getLongitude() );
 
-                //double lat = location.getLatitude();
-                //double lng = location.getLongitude();
+                double lat = location.getLatitude();
+                double lng = location.getLongitude();
+                double speed = location.getSpeed();
 
-                //dbm.addLocation( lat, lng );
+                dbm.addLocation( lat, lng, speed );
 
             }
 
