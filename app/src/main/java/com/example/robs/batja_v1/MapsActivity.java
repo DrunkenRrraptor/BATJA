@@ -3,6 +3,8 @@ package com.example.robs.batja_v1;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.renderscript.Sampler;
@@ -31,6 +33,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationManagement lm;
     private UiSettings mUiSettings;
 
+    private DatabaseManagement dbm;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -39,6 +44,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById( R.id.map );
         mapFragment.getMapAsync( this );
+
+        dbm = new DatabaseManagement( this );
+
     }
 
 
@@ -172,6 +180,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .width( 5 )
             );
         }
+
+
+
+
+
+        //
+
+
+
+
+        // fetch location
+
+
+
+
+
 
 
 
