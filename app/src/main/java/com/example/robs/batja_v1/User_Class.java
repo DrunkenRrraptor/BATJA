@@ -4,19 +4,19 @@ package com.example.robs.batja_v1;
  * Created by Robs on 31.03.18.
  */
 
-public class User {
+public class User_Class {
 
     private int id;
     private String name;
     private String password;
 
-    public User(int id, String name, String password) {
+    public User_Class(int id, String name, String password) {
         this.id = id;
         this.name = name;
         this.password = password;
     }
 
-    public User() {
+    public User_Class() {
     }
 
     public int getId() {

@@ -121,7 +121,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // erste linie
 
-        if ( speed_dummy_1_strt <= 5.6 ){                      // 20 km/h
+        if ( speed_dummy_1_strt <= Constants.CONST_SPEED_THRESH_1_MS ){
 
             Polyline pline = mMap.addPolyline( new PolylineOptions()
                     .add( new LatLng( lat_dummy_1_strt, lng_dummy_1_strt ), new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ) )
@@ -129,7 +129,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .width( 5 )
             );
 
-        } else if( speed_dummy_1_strt > 5.6 & speed_dummy_1_strt <= 11.1) {        // 40 km/h
+        } else if( speed_dummy_1_strt > Constants.CONST_SPEED_THRESH_2_MS & speed_dummy_1_strt <= Constants.CONST_SPEED_THRESH_3_MS) {
 
             Polyline pline = mMap.addPolyline( new PolylineOptions()
                     .add( new LatLng( lat_dummy_1_strt, lng_dummy_1_strt ), new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ) )
@@ -137,7 +137,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .width( 5 )
             );
 
-        } else if( speed_dummy_1_strt > 11.1 ) {
+        } else if( speed_dummy_1_strt > Constants.CONST_SPEED_THRESH_3_MS ) {
 
             Polyline pline = mMap.addPolyline( new PolylineOptions()
                     .add( new LatLng( lat_dummy_1_strt, lng_dummy_1_strt ), new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ) )
@@ -148,7 +148,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // zweite linie
 
-        if ( speed_dummy_1_nrt <= 5.6 ){                      // 20 km/h
+        if ( speed_dummy_1_nrt <= Constants.CONST_SPEED_THRESH_1_MS ){
 
             Polyline pline = mMap.addPolyline( new PolylineOptions()
                     .add( new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ), new LatLng( lat_dummy_1_end, lng_dummy_1_end ) )
@@ -156,7 +156,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .width( 5 )
             );
 
-        } else if( speed_dummy_1_nrt > 5.6 & speed_dummy_1_nrt <= 11.1) {        // 40 km/h
+        } else if( speed_dummy_1_nrt > Constants.CONST_SPEED_THRESH_2_MS & speed_dummy_1_nrt <= Constants.CONST_SPEED_THRESH_3_MS) {
 
             Polyline pline = mMap.addPolyline( new PolylineOptions()
                     .add( new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ), new LatLng( lat_dummy_1_end, lng_dummy_1_end ) )
@@ -164,7 +164,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .width( 5 )
             );
 
-        } else if( speed_dummy_1_nrt > 11.1 ) {
+        } else if( speed_dummy_1_nrt > Constants.CONST_SPEED_THRESH_3_MS ) {
 
             Polyline pline = mMap.addPolyline( new PolylineOptions()
                     .add( new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ), new LatLng( lat_dummy_1_end, lng_dummy_1_end ) )

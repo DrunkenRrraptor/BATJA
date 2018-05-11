@@ -46,7 +46,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
     private static final String TABLE_USERS = "users_3";
     private static final String TABLE_GPS = "gps_3";
 
-    // User Table Columns
+    // User_Class Table Columns
     private static final String KEY_USERS_ID = "users_id";
     private static final String KEY_USERS_NAME = "users_name";
     private static final String KEY_USERS_PASSWORD = "users_password";
