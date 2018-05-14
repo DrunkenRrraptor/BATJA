@@ -26,6 +26,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.List;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -109,11 +111,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.moveCamera( CameraUpdateFactory.newLatLng( lm.currentLoc ));
 
 
+
+
+
         //
         //  DUMMY DATEN
         //
         //
 
+
+        dbm.addLocation( 48.239789759281074, 16.377883947562168, 0 );
+        dbm.addLocation( 48.23961882566993, 16.37805280888142, 8.33333333 );
+        dbm.addLocation( 48.23948648443996, 16.378197756512236, 0 );
+
+
+        /*
         double lat_dummy_1_strt = 48.239789759281074;       // anfang der tour
         double lng_dummy_1_strt = 16.377883947562168;
         double speed_dummy_1_strt = 0;
@@ -123,8 +135,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         double lng_dummy_1_nrt = 16.37805280888142;
         double speed_dummy_1_nrt = 8.33333333;              //      30 km/h
 
-        double lat_dummy_1_end = 48.23961748587267;         // ende der tour
-        double lng_dummy_1_end = 16.378047109187264;
+        double lat_dummy_1_end = 48.23948648443996;         // ende der tour
+        double lng_dummy_1_end = 16.378197756512236;
         double speed_dummy_1_end = 0;
 
         // erste linie
@@ -179,7 +191,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .color( Color.GREEN )
                     .width( 5 )
             );
-        }
+        }*/
 
 
 
@@ -189,12 +201,85 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-
         // fetch location
+        // draw polylines
+
+        List<GPS_Class> gps_list = dbm.fetch_gps();
+
+        GPS_Class gps_startLoc = gps_list.get( 0 );
+
+        double plineStartLat = 0;
+        double pLineStartLng = 0;
+        double pLineStartSpeed = 0;
+        double pLineEndLat = 0;
+        double pLineEndLng = 0;
+        double pLineEndSpeed = 0;
+
+        plineStartLat = gps_startLoc.getLoc_lat();
+        pLineStartLng = gps_startLoc.getLoc_lng();
+        pLineStartSpeed = gps_startLoc.getLoc_speed();
+
+        int first_time = 0;
+
+        // schleife
+
+        for (GPS_Class gps_list_iterator : gps_list){
+
+            if(first_time == 0){
+
+                first_time = 1;
+                continue;
+
+            } else if (first_time == 1){
+
+                pLineEndLat = gps_list_iterator.getLoc_lat();
+                pLineEndLng = gps_list_iterator.getLoc_lng();
+                pLineEndSpeed = gps_list_iterator.getLoc_speed();
+
+                first_time = 2;
+
+            } else {
+
+                plineStartLat = pLineEndLat;
+                pLineStartLng = pLineEndLng;
+                pLineStartSpeed = pLineEndSpeed;
+
+                pLineEndLat = gps_list_iterator.getLoc_lat();
+                pLineEndLng = gps_list_iterator.getLoc_lng();
+                pLineEndSpeed = gps_list_iterator.getLoc_speed();
+
+            }
 
 
 
 
+
+            if ( pLineStartSpeed <= Constants.CONST_SPEED_THRESH_1_MS ){
+
+                Polyline pline = mMap.addPolyline( new PolylineOptions()
+                        .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
+                        .color( Color.RED )
+                        .width( Constants.CONST_PLINE_WIDTH )
+                );
+
+            } else if( pLineStartSpeed > Constants.CONST_SPEED_THRESH_2_MS & gps_list_iterator.getLoc_speed() <= Constants.CONST_SPEED_THRESH_3_MS) {
+
+                Polyline pline = mMap.addPolyline( new PolylineOptions()
+                        .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
+                        .color( Color.YELLOW )
+                        .width( Constants.CONST_PLINE_WIDTH )
+                );
+
+            } else if( pLineStartSpeed > Constants.CONST_SPEED_THRESH_3_MS ) {
+
+                Polyline pline = mMap.addPolyline( new PolylineOptions()
+                        .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
+                        .color( Color.GREEN )
+                        .width( Constants.CONST_PLINE_WIDTH )
+                );
+            }
+
+        }
 
 
 

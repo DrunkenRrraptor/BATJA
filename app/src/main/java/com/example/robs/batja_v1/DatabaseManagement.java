@@ -350,11 +350,11 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
         try {
 
-            ADD_GPS = "INSERT INTO " + Constants.TABLE_USERS +
+            ADD_GPS = "INSERT INTO " + Constants.TABLE_GPS +
                     " (" +
                     Constants.KEY_GPS_SYSDATE + ", " +
-                    Constants.KEY_GPS_LAT +
-                    Constants.KEY_GPS_LONG +
+                    Constants.KEY_GPS_LAT + ", " +
+                    Constants.KEY_GPS_LONG + ", " +
                     Constants.KEY_GPS_LAT + ") VALUES ('" +
                     dateString + "', '" +
                     lat + "', '" +
@@ -441,19 +441,22 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         String FETCH_GPS_DATA =
                 "SELECT * FROM " + Constants.TABLE_GPS + ";";
 
-        Cursor c1 = db.rawQuery( FETCH_GPS_DATA, new String[]{} );
+        //Cursor c1 = db.rawQuery( FETCH_GPS_DATA, new String[]{} );
+        Cursor c1 = db.rawQuery( FETCH_GPS_DATA, new String[]{""} );
 
         while(c1.moveToNext()){
 
             try {
                 loc_temp_date = sdf.parse( c1.getString( 2 ) );
 
+                Log.e( "DB-GPS", "TRY: statement fetching gps: " + FETCH_GPS_DATA );
                 Log.e( "DB-GPS", "fetching gps data; date was: " + loc_temp_date );
 
 
             } catch (ParseException e) {
                 e.printStackTrace();
 
+                Log.e( "DB-GPS", "CATCH - ERROR: statement fetching gps: " + FETCH_GPS_DATA );
                 Log.e( "DB-GPS", "ERROR in fetching gps data; date was: " + loc_temp_date );
 
             }

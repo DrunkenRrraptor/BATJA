@@ -110,12 +110,13 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         switch (m){
             case 0: Toast toast4 = Toast.makeText(this, "Ya name and password are wrong.", Toast.LENGTH_SHORT);
                     toast4.show();
+                    break;
             case 1: Intent intent = new Intent(this, MapsActivity.class);
-                startActivity(intent);
-                break;
+                    startActivity(intent);
+                    break;
             case 2: Toast toast2 = Toast.makeText(this, "Ya password is wrong.", Toast.LENGTH_SHORT);
                     toast2.show();
-                break;
+                    break;
 
             default: break;
         }
