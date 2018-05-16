@@ -3,6 +3,7 @@ package com.example.robs.batja_v1;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -36,7 +37,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private UiSettings mUiSettings;
 
     private DatabaseManagement dbm;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,19 +124,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dbm.addLocation( 48.23961882566993, 16.37805280888142, 8.33333333 );
         dbm.addLocation( 48.23948648443996, 16.378197756512236, 0 );
 
+/*
 
-        /*
-        double lat_dummy_1_strt = 48.239789759281074;       // anfang der tour
-        double lng_dummy_1_strt = 16.377883947562168;
+        double lat_dummy_1_strt = 48.23978731239047;       // anfang der tour
+        double lng_dummy_1_strt = 16.377881684593262;
         double speed_dummy_1_strt = 0;
         LatLng ltlng = new LatLng (lat_dummy_1_strt, lng_dummy_1_strt);
 
-        double lat_dummy_1_nrt = 48.23961882566993;         // en route
-        double lng_dummy_1_nrt = 16.37805280888142;
-        double speed_dummy_1_nrt = 8.33333333;              //      30 km/h
+        double lat_dummy_1_nrt = 48.239583663472466;         // en route
+        double lng_dummy_1_nrt = 16.378080168060364;
+        double speed_dummy_1_nrt = 6;
 
-        double lat_dummy_1_end = 48.23948648443996;         // ende der tour
-        double lng_dummy_1_end = 16.378197756512236;
+        double lat_dummy_1_end = 48.23944432427199;         // ende der tour
+        double lng_dummy_1_end = 16.378249147228303;
         double speed_dummy_1_end = 0;
 
         // erste linie
@@ -149,7 +149,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .width( 5 )
             );
 
-        } else if( speed_dummy_1_strt > Constants.CONST_SPEED_THRESH_2_MS & speed_dummy_1_strt <= Constants.CONST_SPEED_THRESH_3_MS) {
+        } else if( speed_dummy_1_strt > Constants.CONST_SPEED_THRESH_1_MS & speed_dummy_1_strt <= Constants.CONST_SPEED_THRESH_2_MS) {
 
             Polyline pline = mMap.addPolyline( new PolylineOptions()
                     .add( new LatLng( lat_dummy_1_strt, lng_dummy_1_strt ), new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ) )
@@ -157,7 +157,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .width( 5 )
             );
 
-        } else if( speed_dummy_1_strt > Constants.CONST_SPEED_THRESH_3_MS ) {
+        } else if( speed_dummy_1_strt > Constants.CONST_SPEED_THRESH_2_MS ) {
 
             Polyline pline = mMap.addPolyline( new PolylineOptions()
                     .add( new LatLng( lat_dummy_1_strt, lng_dummy_1_strt ), new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ) )
@@ -176,7 +176,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .width( 5 )
             );
 
-        } else if( speed_dummy_1_nrt > Constants.CONST_SPEED_THRESH_2_MS & speed_dummy_1_nrt <= Constants.CONST_SPEED_THRESH_3_MS) {
+        } else if( speed_dummy_1_nrt > Constants.CONST_SPEED_THRESH_1_MS & speed_dummy_1_nrt <= Constants.CONST_SPEED_THRESH_2_MS) {
 
             Polyline pline = mMap.addPolyline( new PolylineOptions()
                     .add( new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ), new LatLng( lat_dummy_1_end, lng_dummy_1_end ) )
@@ -184,15 +184,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .width( 5 )
             );
 
-        } else if( speed_dummy_1_nrt > Constants.CONST_SPEED_THRESH_3_MS ) {
+        } else if( speed_dummy_1_nrt > Constants.CONST_SPEED_THRESH_2_MS ) {
 
             Polyline pline = mMap.addPolyline( new PolylineOptions()
                     .add( new LatLng( lat_dummy_1_nrt, lng_dummy_1_nrt ), new LatLng( lat_dummy_1_end, lng_dummy_1_end ) )
                     .color( Color.GREEN )
                     .width( 5 )
             );
-        }*/
-
+        }
+*/
 
 
 
@@ -259,23 +259,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Polyline pline = mMap.addPolyline( new PolylineOptions()
                         .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
                         .color( Color.RED )
-                        .width( Constants.CONST_PLINE_WIDTH )
+                        .width( 5 )
                 );
 
-            } else if( pLineStartSpeed > Constants.CONST_SPEED_THRESH_2_MS & gps_list_iterator.getLoc_speed() <= Constants.CONST_SPEED_THRESH_3_MS) {
+            } else if( pLineStartSpeed > Constants.CONST_SPEED_THRESH_1_MS & pLineStartSpeed <= Constants.CONST_SPEED_THRESH_2_MS) {
 
                 Polyline pline = mMap.addPolyline( new PolylineOptions()
                         .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
                         .color( Color.YELLOW )
-                        .width( Constants.CONST_PLINE_WIDTH )
+                        .width( 5 )
                 );
 
-            } else if( pLineStartSpeed > Constants.CONST_SPEED_THRESH_3_MS ) {
+            } else if( pLineStartSpeed > Constants.CONST_SPEED_THRESH_2_MS ) {
 
                 Polyline pline = mMap.addPolyline( new PolylineOptions()
                         .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
                         .color( Color.GREEN )
-                        .width( Constants.CONST_PLINE_WIDTH )
+                        .width( 5 )
                 );
             }
 

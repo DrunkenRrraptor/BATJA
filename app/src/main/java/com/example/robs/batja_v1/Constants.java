@@ -11,11 +11,11 @@ public class Constants {
     public static final double CONST_SPEED_TRESH_1_KMH = 15;
     public static final double CONST_SPEED_THRESH_1_MS = CONST_SPEED_TRESH_1_KMH / CONST_KMH_TO_MS;
 
-    public static final double CONST_SPEED_TRESH_2_KMH = 35;
+    public static final double CONST_SPEED_TRESH_2_KMH = 30;
     public static final double CONST_SPEED_THRESH_2_MS = CONST_SPEED_TRESH_2_KMH / CONST_KMH_TO_MS;
 
-    public static final double CONST_SPEED_TRESH_3_KMH = 45;
-    public static final double CONST_SPEED_THRESH_3_MS = CONST_SPEED_TRESH_3_KMH / CONST_KMH_TO_MS;
+    //public static final double CONST_SPEED_TRESH_3_KMH = 45;
+    //public static final double CONST_SPEED_THRESH_3_MS = CONST_SPEED_TRESH_3_KMH / CONST_KMH_TO_MS;
 
 
     public static final int CONST_PLINE_WIDTH = 7;
@@ -23,7 +23,7 @@ public class Constants {
 
     // Database Info
     public static final String DATABASE_NAME = "batjaDatabase_";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     // Table Names
     public static final String TABLE_USERS = "users_3";

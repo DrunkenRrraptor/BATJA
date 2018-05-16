@@ -163,7 +163,8 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
             db.execSQL( CREATE_USERS_TABLE );
 
-            String CREATE_GPS_TABLE = "CREATE TABLE " + Constants.TABLE_GPS +
+//            String CREATE_GPS_TABLE = "CREATE TABLE " + Constants.TABLE_GPS +
+            String CREATE_GPS_TABLE = "CREATE TABLE IF NOT EXISTS " + Constants.TABLE_GPS +
                     " (" +
                     Constants.KEY_GPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
                     Constants.KEY_GPS_SYSDATE + " TEXT, " +
@@ -434,40 +435,89 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         Date loc_temp_date = null;
 
         SQLiteDatabase db = getWritableDatabase();
-        GPS_Class gps_data = new GPS_Class(  );
+
 
         List<GPS_Class> gps_list = new ArrayList<>(  );
 
         String FETCH_GPS_DATA =
                 "SELECT * FROM " + Constants.TABLE_GPS + ";";
 
-        //Cursor c1 = db.rawQuery( FETCH_GPS_DATA, new String[]{} );
-        Cursor c1 = db.rawQuery( FETCH_GPS_DATA, new String[]{""} );
+        Log.e( "DB-GPS", "query: " +  FETCH_GPS_DATA);
 
-        while(c1.moveToNext()){
+        Cursor c1 = db.rawQuery( FETCH_GPS_DATA, new String[]{} );
+        //Cursor c1 = db.rawQuery( FETCH_GPS_DATA, new String[]{""} );
+
+        //Cursor c1 = db.query( Constants.TABLE_GPS, null, null, null,  null, null, null);
+
+        int count_rows = c1.getCount();
+
+        Log.e( "DB-GPS", "count rows: " + count_rows );
+
+
+        /*while(c1.moveToNext()){
 
             try {
                 loc_temp_date = sdf.parse( c1.getString( 2 ) );
 
                 Log.e( "DB-GPS", "TRY: statement fetching gps: " + FETCH_GPS_DATA );
-                Log.e( "DB-GPS", "fetching gps data; date was: " + loc_temp_date );
+                Log.e( "DB-GPS", "fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
 
 
             } catch (ParseException e) {
                 e.printStackTrace();
 
                 Log.e( "DB-GPS", "CATCH - ERROR: statement fetching gps: " + FETCH_GPS_DATA );
-                Log.e( "DB-GPS", "ERROR in fetching gps data; date was: " + loc_temp_date );
+                Log.e( "DB-GPS", "ERROR in fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
 
             }
 
             gps_data.setLoc_id( c1.getInt( 1 ) );
-            gps_data.setLoc_date( loc_temp_date );
+            //gps_data.setLoc_date( loc_temp_date );
             gps_data.setLoc_lat( c1.getFloat( 3 ) );
             gps_data.setLoc_lng( c1.getFloat( 4 ) );
             gps_data.setLoc_speed( c1.getFloat( 5 ) );
 
             gps_list.add( gps_data );
+
+            Log.e( "DB-GPS", "row 1 data: " + gps_data.getLoc_id() + gps_data.getLoc_lat() + gps_data.getLoc_lng() + gps_data.getLoc_speed());
+
+
+        }*/
+
+        c1.moveToFirst();
+
+        for (int i = 0; i < count_rows; i++){
+
+            GPS_Class gps_data = new GPS_Class(  );
+
+            /*try {
+                loc_temp_date = sdf.parse( c1.getString( 2 ) );
+
+                Log.e( "DB-GPS", "TRY: statement fetching gps: " + FETCH_GPS_DATA );
+                Log.e( "DB-GPS", "fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
+
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+
+                Log.e( "DB-GPS", "CATCH - ERROR: statement fetching gps: " + FETCH_GPS_DATA );
+                Log.e( "DB-GPS", "ERROR in fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
+
+            }*/
+
+            Log.e( "DB-GPS", "rows: " + c1.getInt( 0 ) + c1.getFloat( 2 ) + c1.getFloat( 3 ) + c1.getFloat( 4 ) );
+
+            gps_data.setLoc_id( c1.getInt( 0 ) );
+            //gps_data.setLoc_date( loc_temp_date );
+            gps_data.setLoc_lat( c1.getFloat( 2 ) );
+            gps_data.setLoc_lng( c1.getFloat( 3 ) );
+            gps_data.setLoc_speed( c1.getFloat( 4 ) );
+
+            gps_list.add( gps_data );
+
+            Log.e( "DB-GPS", "row 1 data: " + gps_data.getLoc_id() + gps_data.getLoc_lat() + gps_data.getLoc_lng() + gps_data.getLoc_speed());
+
+            c1.moveToNext();
 
         }
 
@@ -492,22 +542,22 @@ public class DatabaseManagement extends SQLiteOpenHelper {
                         " WHERE " + Constants.KEY_USERS_NAME + " = ?" +
                         " AND " + Constants.KEY_USERS_PASSWORD + " = ?;";
 
-
         Cursor c1 = db.rawQuery( CHECK_USER_COMPLETELY_RIGHT, new String[]{userName, password} );
 
         String CHECK_USER_PARTLY_RIGHT =
                 "SELECT * FROM " + Constants.TABLE_USERS +
-                        " WHERE " + Constants.KEY_USERS_NAME + " != ?";
+                        " WHERE " + Constants.KEY_USERS_NAME + " = ?" +
+                        " AND " + Constants.KEY_USERS_PASSWORD + " != ?;";
 
-        Cursor c2 = db.rawQuery( CHECK_USER_PARTLY_RIGHT, new String[]{userName} );
+        Cursor c2 = db.rawQuery( CHECK_USER_PARTLY_RIGHT, new String[]{userName, password} );
 
 
-        if (c2.moveToNext()) {
+        if (c1.moveToNext()) {
             // username stimmt, passwort auch
 
             m = 1;                                                                              // m = 1 ... name und passwort stimmen
 
-        } else if (c1.moveToNext()) {
+        } else if (c2.moveToNext()) {
             // username stimmt, passwort nicht                                                  // m = 2 ... name stimmt, passwort nicht
 
             m = 2;

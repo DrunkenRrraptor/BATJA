@@ -2,18 +2,35 @@
 
 <data>
 
-    <location id="1">
+
+    <location>
+
+        <id>
+
+        </id>
+
+
         <datetime>
 
         </datetime>
 
+
         <lat>
 
         </lat>
+
+
         <lng>
 
         </lng>
 
+
+        <speed>
+
+        </speed>
+
+
     </location>
+
 
 </data>
