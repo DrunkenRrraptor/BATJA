@@ -296,6 +296,37 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
     }
 
+    public void addUserFromJSON(int userID, String userName, String password) {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.beginTransaction();
+
+        String ADD_USERS = "";
+
+        try {
+
+            ADD_USERS = "INSERT INTO " + Constants.TABLE_USERS +
+                    " (" +
+                    Constants.KEY_USERS_ID + ", " +
+                    Constants.KEY_USERS_NAME + ", " +
+                    Constants.KEY_USERS_PASSWORD + ") VALUES ('" +
+                    userID + "', '" +
+                    userName + "', '" +
+                    password + "');";
+
+            db.execSQL( ADD_USERS );
+            Log.e( "DB", ADD_USERS);
+            db.setTransactionSuccessful();
+
+        } catch (Exception e) {
+            Log.e( "DB", "error in insert - usersFromJSON" + ADD_USERS);
+        } finally {
+            db.endTransaction();
+        }
+
+    }
+
     /*
     public void addLocation(double lat, double lng, double speed){
 
@@ -527,6 +558,106 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
     }
 
+
+
+    public List<User_Class> fetch_users(){
+
+
+        SQLiteDatabase db = getWritableDatabase();
+
+
+        List<User_Class> user_list = new ArrayList<>(  );
+
+        String FETCH_USR_DATA =
+                "SELECT * FROM " + Constants.TABLE_USERS + ";";
+
+        Log.e( "DB-USR", "query: " +  FETCH_USR_DATA);
+
+        Cursor c1 = db.rawQuery( FETCH_USR_DATA, new String[]{} );
+        //Cursor c1 = db.rawQuery( FETCH_GPS_DATA, new String[]{""} );
+
+        //Cursor c1 = db.query( Constants.TABLE_GPS, null, null, null,  null, null, null);
+
+        int count_rows = c1.getCount();
+
+        Log.e( "DB-USR", "count rows: " + count_rows );
+
+
+        /*while(c1.moveToNext()){
+
+            try {
+                loc_temp_date = sdf.parse( c1.getString( 2 ) );
+
+                Log.e( "DB-GPS", "TRY: statement fetching gps: " + FETCH_GPS_DATA );
+                Log.e( "DB-GPS", "fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
+
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+
+                Log.e( "DB-GPS", "CATCH - ERROR: statement fetching gps: " + FETCH_GPS_DATA );
+                Log.e( "DB-GPS", "ERROR in fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
+
+            }
+
+            gps_data.setLoc_id( c1.getInt( 1 ) );
+            //gps_data.setLoc_date( loc_temp_date );
+            gps_data.setLoc_lat( c1.getFloat( 3 ) );
+            gps_data.setLoc_lng( c1.getFloat( 4 ) );
+            gps_data.setLoc_speed( c1.getFloat( 5 ) );
+
+            gps_list.add( gps_data );
+
+            Log.e( "DB-GPS", "row 1 data: " + gps_data.getLoc_id() + gps_data.getLoc_lat() + gps_data.getLoc_lng() + gps_data.getLoc_speed());
+
+
+        }*/
+
+        c1.moveToFirst();
+
+        for (int i = 0; i < count_rows; i++){
+
+            User_Class user_data = new User_Class(  );
+
+            /*try {
+                loc_temp_date = sdf.parse( c1.getString( 2 ) );
+
+                Log.e( "DB-GPS", "TRY: statement fetching gps: " + FETCH_GPS_DATA );
+                Log.e( "DB-GPS", "fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
+
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+
+                Log.e( "DB-GPS", "CATCH - ERROR: statement fetching gps: " + FETCH_GPS_DATA );
+                Log.e( "DB-GPS", "ERROR in fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
+
+            }*/
+
+            Log.e( "DB-GPS", "rows: " + c1.getInt( 0 ) + c1.getString( 1 ) + c1.getString( 2 ));
+
+            user_data.setUsers_id_global( c1.getInt( 0 ) );
+            //gps_data.setLoc_date( loc_temp_date );
+            user_data.setUsers_name( c1.getString( 1 ) );
+            user_data.setUsers_password( c1.getString( 2 ) );
+
+            user_list.add( user_data );
+
+            Log.e( "DB-GPS", "row 1 data: " + user_data.getUsers_password() + " " + user_data.getUsers_name() + " " + user_data.getUsers_password());
+
+            c1.moveToNext();
+
+        }
+
+
+
+        return user_list;
+
+    }
+
+
+
+
     public int checkUser(String userName, String password) {
 
         SQLiteDatabase db = getWritableDatabase();
@@ -556,9 +687,11 @@ public class DatabaseManagement extends SQLiteOpenHelper {
             // username stimmt, passwort auch
 
             m = 1;                                                                              // m = 1 ... name und passwort stimmen
+                                                                                                        // ... c1
 
         } else if (c2.moveToNext()) {
             // username stimmt, passwort nicht                                                  // m = 2 ... name stimmt, passwort nicht
+                                                                                                        // ... c2
 
             m = 2;
 

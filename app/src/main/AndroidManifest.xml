@@ -47,9 +47,12 @@
         <activity android:name=".MapsActivity" />
         <activity android:name=".Maps2Activity" />
         <activity android:name=".ShowLocActivity" />
-        <activity android:name=".Main3Activity"></activity>
+        <activity android:name=".Main3Activity" />
+
         <service android:name=".GPS_Service" />
         <service android:name=".LocationManagement" />
+
+        <activity android:name=".Acitivity_for_Testing"></activity>
     </application>
 
 </manifest>

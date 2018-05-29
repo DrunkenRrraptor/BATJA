@@ -6,40 +6,40 @@ package com.example.robs.batja_v1;
 
 public class User_Class {
 
-    private int id;
-    private String name;
-    private String password;
+    private int users_id_global;
+    private String users_name;
+    private String users_password;
 
     public User_Class(int id, String name, String password) {
-        this.id = id;
-        this.name = name;
-        this.password = password;
+        this.users_id_global = id;
+        this.users_name = name;
+        this.users_password = password;
     }
 
     public User_Class() {
     }
 
-    public int getId() {
-        return id;
+    public int getUsers_id_global() {
+        return users_id_global;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUsers_id_global(int users_id_global) {
+        this.users_id_global = users_id_global;
     }
 
-    public String getName() {
-        return name;
+    public String getUsers_name() {
+        return users_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsers_name(String users_name) {
+        this.users_name = users_name;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUsers_password() {
+        return users_password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUsers_password(String users_password) {
+        this.users_password = users_password;
     }
 }

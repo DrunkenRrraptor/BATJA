@@ -14,6 +14,28 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Robs on 24.04.18.
@@ -24,6 +46,11 @@ public class GPS_Service extends Service {
     private LocationListener listener;
     private LocationManager locationManager;
     private DatabaseManagement dbm;
+    private TextView txtXml;
+
+    private RequestQueue requestQuestJSONIncoming;
+
+
 
     @Nullable
     @Override
@@ -35,6 +62,8 @@ public class GPS_Service extends Service {
     public void onCreate() {
 
         super.onCreate();
+        requestQuestJSONIncoming = Volley.newRequestQueue( this );
+
 
         dbm = new DatabaseManagement( this );
 
@@ -109,5 +138,63 @@ public class GPS_Service extends Service {
 
         }
     }
+
+
+    private void retrieveJSONonlineUser(){
+
+        String urlJSONUsers = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_users.php";
+
+        JsonObjectRequest requestUsers = new JsonObjectRequest( Request.Method.GET, urlJSONUsers, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("loc");
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+
+                                JSONObject loc = jsonArray.getJSONObject(i);
+
+                                int users_id_global = loc.getInt("loc_id_global");
+                                String users_name = loc.getString("users_id_global");
+                                String users_password = loc.getString("loc_id_global");
+
+
+
+                                //textViewJSONOutput.append(String.valueOf(users_id_global) + ", " + users_name + ", " + users_password + "\n\n");
+
+                                dbm.addUserFromJSON( users_id_global, users_name, users_password );
+
+
+
+                            }
+
+                            List<User_Class> user_listHelp = new ArrayList<>(  );
+                            user_listHelp = dbm.fetch_users();
+
+                            for (int h = 0; h < user_listHelp.size(); h++){
+
+                                Log.e("USR-L", "List of Users: (name) " + user_listHelp.get( h ).getUsers_name());
+                                //textViewJSONOutput.setText( user_listHelp.get( h ).getUsers_name());
+
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        requestQuestJSONIncoming.add(requestUsers);
+
+    }
+
+
 
 }
