@@ -35,6 +35,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -142,7 +143,7 @@ public class GPS_Service extends Service {
 
     private void retrieveJSONonlineUser(){
 
-        String urlJSONUsers = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_users.php";
+        String urlJSONUsers = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_loc.php";
 
         JsonObjectRequest requestUsers = new JsonObjectRequest( Request.Method.GET, urlJSONUsers, null,
                 new Response.Listener<JSONObject>() {
@@ -155,15 +156,20 @@ public class GPS_Service extends Service {
 
                                 JSONObject loc = jsonArray.getJSONObject(i);
 
-                                int users_id_global = loc.getInt("loc_id_global");
-                                String users_name = loc.getString("users_id_global");
-                                String users_password = loc.getString("loc_id_global");
+                                int loc_id_global = loc.getInt("loc_id_global");
+                                int users_id_global = loc.getInt("users_id_global");
+                                //Date sys_date = loc.getString("sys_date" );
+                                double lat = loc.getDouble("lat");
+                                double lng = loc.getDouble("lng");
+                                double speed = loc.getDouble("speed");
 
-
+                                //Date date2 = System.currentTimeMillis();
 
                                 //textViewJSONOutput.append(String.valueOf(users_id_global) + ", " + users_name + ", " + users_password + "\n\n");
 
-                                dbm.addUserFromJSON( users_id_global, users_name, users_password );
+                                GPS_Class gps_class = new GPS_Class( loc_id_global, users_id_global, lat, lng, speed  );
+
+                                dbm.addLocationFromJSON( gps_class );
 
 
 

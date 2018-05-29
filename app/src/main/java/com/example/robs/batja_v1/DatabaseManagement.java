@@ -154,7 +154,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         db.beginTransaction();
 
         try {
-            String CREATE_USERS_TABLE = "CREATE TABLE " + Constants.TABLE_USERS +
+            String CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS " + Constants.TABLE_USERS +
                     " (" +
                     Constants.KEY_USERS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
                     Constants.KEY_USERS_NAME + " TEXT, " +
@@ -163,15 +163,20 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
             db.execSQL( CREATE_USERS_TABLE );
 
-//            String CREATE_GPS_TABLE = "CREATE TABLE " + Constants.TABLE_GPS +
+//          String CREATE_GPS_TABLE = "CREATE TABLE " + Constants.TABLE_GPS +
             String CREATE_GPS_TABLE = "CREATE TABLE IF NOT EXISTS " + Constants.TABLE_GPS +
                     " (" +
                     Constants.KEY_GPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
-                    Constants.KEY_GPS_SYSDATE + " TEXT, " +
+                    Constants.KEY_USERS_ID + " INTEGER, " +
+                    Constants.KEY_GPS_SYSDATE + " TIMESTAMP, " +
                     Constants.KEY_GPS_LAT + " FLOAT, " +
                     Constants.KEY_GPS_LONG + " FLOAT, " +
-                    Constants.KEY_GPS_SPEED + " FLOAT" +
+                    Constants.KEY_GPS_SPEED + " FLOAT, " +
+                    "CONSTRAINT fk_userID FOREIGN KEY (" + Constants.KEY_USERS_ID + ") REFERENCES " + Constants.TABLE_USERS + "(" + Constants.KEY_USERS_ID + ")" +
                     ");";
+
+
+            //CONSTRAINT fk_abt FOREIGN KEY (Abt_Nr) REFERENCES Abteilungen(Abt_Nr)
 
             db.execSQL( CREATE_GPS_TABLE );
             db.setTransactionSuccessful();
@@ -368,6 +373,47 @@ public class DatabaseManagement extends SQLiteOpenHelper {
      */
 
 
+    public void addLocationFromJSON(GPS_Class gps_class){
+
+        long date = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = sdf.format(date);
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String ADD_GPS = "";
+
+        db.beginTransaction();
+
+        try {
+
+            ADD_GPS = "INSERT INTO " + Constants.TABLE_GPS +
+                    " (" +
+                    Constants.KEY_USERS_ID + ", " +
+                    Constants.KEY_GPS_SYSDATE + ", " +
+                    Constants.KEY_GPS_LAT + ", " +
+                    Constants.KEY_GPS_LONG + ", " +
+                    Constants.KEY_GPS_LAT + ") VALUES ('" +
+                    gps_class.getUser_id_fk() + "', '" +
+                    //gps_class.getLoc_date() + "', '" +
+                    gps_class.getLoc_lat() + "', '" +
+                    gps_class.getLoc_lng() + "', '" +
+                    gps_class.getLoc_speed() + "');";
+
+            db.execSQL( ADD_GPS );
+
+            Log.e( "DB", ADD_GPS );
+            db.setTransactionSuccessful();
+
+        } catch (Exception e) {
+            Log.e( "DB", "error in add gps from json" + ADD_GPS );
+        } finally {
+            db.endTransaction();
+        }
+
+    }
+
+
     public void addLocation(double lat, double lng, double speed){
 
         long date = System.currentTimeMillis();
@@ -407,11 +453,15 @@ public class DatabaseManagement extends SQLiteOpenHelper {
     }
 
 
-    public void deleteTable(String db_name) {
+    public void deleteFromTable(String db_name) {
 
         SQLiteDatabase db = getWritableDatabase();
 
-        db.execSQL( "DROP TABLE " + db_name );
+        String statement = "DELETE FROM TABLE " + db_name + ";";
+
+        db.execSQL( statement );
+
+        Log.e( "DB", "delete from table via statement: " + statement);
 
 
     }
@@ -536,17 +586,18 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
             }*/
 
-            Log.e( "DB-GPS", "rows: " + c1.getInt( 0 ) + c1.getFloat( 2 ) + c1.getFloat( 3 ) + c1.getFloat( 4 ) );
+            Log.e( "DB-GPS", "rows: " + c1.getInt( 0 ) + c1.getInt( 1 ) + c1.getFloat( 3 ) + c1.getFloat( 4 ) + c1.getFloat( 5 ) );
 
             gps_data.setLoc_id( c1.getInt( 0 ) );
+            gps_data.setUser_id_fk( c1.getInt( 1 ) );
             //gps_data.setLoc_date( loc_temp_date );
-            gps_data.setLoc_lat( c1.getFloat( 2 ) );
-            gps_data.setLoc_lng( c1.getFloat( 3 ) );
-            gps_data.setLoc_speed( c1.getFloat( 4 ) );
+            gps_data.setLoc_lat( c1.getFloat( 3 ) );
+            gps_data.setLoc_lng( c1.getFloat( 4 ) );
+            gps_data.setLoc_speed( c1.getFloat( 5 ) );
 
             gps_list.add( gps_data );
 
-            Log.e( "DB-GPS", "row 1 data: " + gps_data.getLoc_id() + gps_data.getLoc_lat() + gps_data.getLoc_lng() + gps_data.getLoc_speed());
+            Log.e( "DB-GPS", "row 1 data: " + gps_data.getLoc_id() + " " + gps_data.getUser_id_fk() + " " + gps_data.getLoc_lat() + " " + gps_data.getLoc_lng() + " " + gps_data.getLoc_speed());
 
             c1.moveToNext();
 
@@ -643,7 +694,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
             user_list.add( user_data );
 
-            Log.e( "DB-GPS", "row 1 data: " + user_data.getUsers_password() + " " + user_data.getUsers_name() + " " + user_data.getUsers_password());
+            Log.e( "DB-GPS", "row 1 data: " + user_data.getUsers_id_global() + " " + user_data.getUsers_name() + " " + user_data.getUsers_password());
 
             c1.moveToNext();
 

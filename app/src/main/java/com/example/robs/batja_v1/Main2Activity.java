@@ -58,6 +58,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         dbm.onClearBoth();
 
+        //dbm.deleteFromTable( Constants.TABLE_USERS );
+
     }
 
 
@@ -154,8 +156,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             case 0: Toast toast4 = Toast.makeText(this, "Your name and password are both wrong.", Toast.LENGTH_SHORT);
                     toast4.show();
                     break;
-            case 1: Intent intent = new Intent(this, MapsActivity.class);
-                    Toast toast5 = Toast.makeText(this, "Welcome.", Toast.LENGTH_SHORT);
+            case 1: Toast toast5 = Toast.makeText(this, "Welcome.", Toast.LENGTH_SHORT);
+                    Intent intent = new Intent(this, MapsActivity.class);
+                    toast5.show();
                     startActivity(intent);
                     break;
             case 2: Toast toast2 = Toast.makeText(this, "Your password is wrong.", Toast.LENGTH_SHORT);
