@@ -61,6 +61,12 @@ public class Acitivity_for_Testing extends AppCompatActivity {
 
                 retrieveJSONonlineUser();
 
+
+
+
+
+
+
                 /*Fetch_JSON fetch_json = new Fetch_JSON();
 
                 List<User_Class> users_list;
@@ -75,7 +81,7 @@ public class Acitivity_for_Testing extends AppCompatActivity {
                 }*/
 
 
-                String json_data = "";
+                //String json_data = "";
 
                 //json_data = textViewJSONOutput.getText();
 
@@ -88,7 +94,7 @@ public class Acitivity_for_Testing extends AppCompatActivity {
 
     private void retrieveJSONonlineUser(){
 
-        String urlJSONUsers = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_users.php";
+        String urlJSONUsers = Constants.URL_USERS;
 
         JsonObjectRequest requestUsers = new JsonObjectRequest(Request.Method.GET, urlJSONUsers, null,
                 new Response.Listener<JSONObject>() {
@@ -115,14 +121,27 @@ public class Acitivity_for_Testing extends AppCompatActivity {
 
                             }
 
+
                             List<User_Class> user_listHelp;
+                            user_listHelp = dbm.fetch_users();
+
+                            for (int h = 0; h < user_listHelp.size(); h++){
+
+                                //textViewJSONOutput.setText( user_listHelp.get( h ).getUsers_id_global() + " " + user_listHelp.get( h ).getUsers_name() + " " + user_listHelp.get( h ).getUsers_password());
+                                textViewJSONOutput.append( user_listHelp.get( h ).getUsers_id_global() + " " + user_listHelp.get( h ).getUsers_name() + " " + user_listHelp.get( h ).getUsers_password() + "\n");
+
+
+                            }
+
+
+                            /*List<User_Class> user_listHelp;
                             user_listHelp = dbm.fetch_users();
 
                             for (int h = 0; h < user_listHelp.size(); h++){
 
                                 textViewJSONOutput.setText( user_listHelp.get( h ).getUsers_name());
 
-                            }
+                            }*/
 
 
                         } catch (JSONException e) {
@@ -136,7 +155,14 @@ public class Acitivity_for_Testing extends AppCompatActivity {
             }
         });
 
+
+
+
         requestQuestJSONIncoming.add(requestUsers);
+
+
+
+
 
     }
 

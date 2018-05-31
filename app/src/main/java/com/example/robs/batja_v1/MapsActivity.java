@@ -120,9 +120,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //
 
 
-        dbm.addLocation( 48.239789759281074, 16.377883947562168, 0 );
-        dbm.addLocation( 48.23961882566993, 16.37805280888142, 8.33333333 );
-        dbm.addLocation( 48.23948648443996, 16.378197756512236, 0 );
+        dbm.addLocation( 48.239789759281074, 16.377883947562168, 0, 0 );
+        dbm.addLocation( 48.23961882566993, 16.37805280888142, 8.33333333, 4 );
+        dbm.addLocation( 48.23948648443996, 16.378197756512236, 0, 0 );
 
 /*
 

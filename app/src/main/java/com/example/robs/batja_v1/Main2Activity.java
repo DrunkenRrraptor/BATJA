@@ -58,6 +58,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         dbm.onClearBoth();
 
+        retrieveJSONonlineUser();
+
         //dbm.deleteFromTable( Constants.TABLE_USERS );
 
     }
@@ -128,7 +130,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     public void button1LogOnClickHandler (String userName, String userPassword) {                           // einloggen
 
 
-        retrieveJSONonlineUser();
+
 
 
 
@@ -157,7 +159,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                     toast4.show();
                     break;
             case 1: Toast toast5 = Toast.makeText(this, "Welcome.", Toast.LENGTH_SHORT);
-                    Intent intent = new Intent(this, MapsActivity.class);
+                    Intent intent = new Intent(this, MainMenu.class);
                     toast5.show();
                     startActivity(intent);
                     break;

@@ -16,14 +16,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 
 public class Main3Activity extends AppCompatActivity {
 
 
+    int i = 0;
     private Button btn_start, btn_stop;
     private TextView textView;
     private BroadcastReceiver broadcastReceiver;
+    DatabaseManagement dbm = new DatabaseManagement( this );
+
+    private TextView latView;
+    private TextView lngView;
+    private TextView speedView;
 
     @Override
     protected void onResume() {
@@ -38,7 +45,21 @@ public class Main3Activity extends AppCompatActivity {
                 @Override
                 public void onReceive(Context context, Intent intent) {
 
-                    textView.append("\n" +intent.getExtras().get("coordinates"));
+                    //textView.append("\n" + intent.getExtras().get("coordinates"));
+                    //latView.append("\n" + intent.getExtras().get("coordinates"));
+
+                    latView.setText( " " + Double.toString( intent.getExtras().getDouble( "lat" ) ) );
+                    lngView.setText( " " + Double.toString( intent.getExtras().getDouble( "lng" ) ) );
+                    speedView.setText( " " + Double.toString( intent.getExtras().getDouble( "speed" ) ) );
+
+
+                    List<GPS_Class> gps_list = dbm.fetch_gps();
+
+                    /*textView.append(Double.toString( gps_list.get( i ).getLoc_lat() ) + " " +
+                            Double.toString( gps_list.get( i ).getLoc_lng() ) + " " +
+                            Double.toString( gps_list.get( i ).getLoc_speed() ));*/
+
+                    i++;
 
                 }
             };
@@ -61,7 +82,11 @@ public class Main3Activity extends AppCompatActivity {
 
         btn_start = (Button) findViewById(R.id.button_startS);
         btn_stop = (Button) findViewById(R.id.button_stopS);
-        textView = (TextView) findViewById(R.id.textView_locS);
+
+        //textView = (TextView) findViewById(R.id.textView_locS);
+        latView = (TextView) findViewById( R.id.textView_locS );
+        lngView = (TextView) findViewById( R.id.textView_locS2 );
+        speedView = (TextView) findViewById( R.id.textView_locS3 );
 
         if(!runtime_permissions())
             enable_buttons();

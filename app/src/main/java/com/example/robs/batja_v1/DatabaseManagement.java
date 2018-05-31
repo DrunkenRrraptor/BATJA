@@ -154,7 +154,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         db.beginTransaction();
 
         try {
-            String CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS " + Constants.TABLE_USERS +
+            String CREATE_USERS_TABLE = "CREATE TABLE " + Constants.TABLE_USERS +
                     " (" +
                     Constants.KEY_USERS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
                     Constants.KEY_USERS_NAME + " TEXT, " +
@@ -164,7 +164,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
             db.execSQL( CREATE_USERS_TABLE );
 
 //          String CREATE_GPS_TABLE = "CREATE TABLE " + Constants.TABLE_GPS +
-            String CREATE_GPS_TABLE = "CREATE TABLE IF NOT EXISTS " + Constants.TABLE_GPS +
+            String CREATE_GPS_TABLE = "CREATE TABLE " + Constants.TABLE_GPS +
                     " (" +
                     Constants.KEY_GPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
                     Constants.KEY_USERS_ID + " INTEGER, " +
@@ -172,6 +172,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
                     Constants.KEY_GPS_LAT + " FLOAT, " +
                     Constants.KEY_GPS_LONG + " FLOAT, " +
                     Constants.KEY_GPS_SPEED + " FLOAT, " +
+                    Constants.KEY_GPS_ACCEL + " FLOAT, " +
                     "CONSTRAINT fk_userID FOREIGN KEY (" + Constants.KEY_USERS_ID + ") REFERENCES " + Constants.TABLE_USERS + "(" + Constants.KEY_USERS_ID + ")" +
                     ");";
 
@@ -236,6 +237,15 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         db.execSQL( "DROP TABLE IF EXISTS " + Constants.TABLE_GPS );
+        db.execSQL( "DROP TABLE IF EXISTS " + Constants.TABLE_USERS );
+        onCreate( db );
+
+    }
+
+    public void onClearUser(){
+
+        SQLiteDatabase db = getWritableDatabase();
+
         db.execSQL( "DROP TABLE IF EXISTS " + Constants.TABLE_USERS );
         onCreate( db );
 
@@ -306,6 +316,8 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
+
+
 
         String ADD_USERS = "";
 
@@ -389,16 +401,20 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
             ADD_GPS = "INSERT INTO " + Constants.TABLE_GPS +
                     " (" +
+                    Constants.KEY_GPS_ID + ", " +
                     Constants.KEY_USERS_ID + ", " +
-                    Constants.KEY_GPS_SYSDATE + ", " +
+                    //Constants.KEY_GPS_SYSDATE + ", " +
                     Constants.KEY_GPS_LAT + ", " +
                     Constants.KEY_GPS_LONG + ", " +
-                    Constants.KEY_GPS_LAT + ") VALUES ('" +
+                    Constants.KEY_GPS_SPEED + ", " +
+                    Constants.KEY_GPS_ACCEL + ") VALUES ('" +
+                    gps_class.getLoc_id() + "', '" +
                     gps_class.getUser_id_fk() + "', '" +
                     //gps_class.getLoc_date() + "', '" +
                     gps_class.getLoc_lat() + "', '" +
                     gps_class.getLoc_lng() + "', '" +
-                    gps_class.getLoc_speed() + "');";
+                    gps_class.getLoc_speed() + "', '" +
+                    gps_class.getAccel() + "');";
 
             db.execSQL( ADD_GPS );
 
@@ -414,7 +430,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
     }
 
 
-    public void addLocation(double lat, double lng, double speed){
+    public void addLocation(GPS_Class gps_ins){
 
         long date = System.currentTimeMillis();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -433,11 +449,13 @@ public class DatabaseManagement extends SQLiteOpenHelper {
                     Constants.KEY_GPS_SYSDATE + ", " +
                     Constants.KEY_GPS_LAT + ", " +
                     Constants.KEY_GPS_LONG + ", " +
-                    Constants.KEY_GPS_LAT + ") VALUES ('" +
+                    Constants.KEY_GPS_SPEED + ", " +
+                    Constants.KEY_GPS_ACCEL + ") VALUES ('" +
                     dateString + "', '" +
-                    lat + "', '" +
-                    lng + "', '" +
-                    speed + "');";
+                    gps_ins.getLoc_lat() + "', '" +
+                    gps_ins.getLoc_lng() + "', '" +
+                    gps_ins.getLoc_speed() + "', '" +
+                    gps_ins.getAccel() + "');";
 
                 db.execSQL( ADD_GPS );
 
@@ -457,11 +475,27 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
-        String statement = "DELETE FROM TABLE " + db_name + ";";
+        String statement = "";
 
-        db.execSQL( statement );
 
-        Log.e( "DB", "delete from table via statement: " + statement);
+
+        db.beginTransaction();
+
+        try {
+
+
+            statement = "DELETE FROM TABLE " + db_name;
+
+            db.execSQL( statement );
+
+            Log.e( "DB", "delete from table via statement: " + statement);
+
+        } catch (Exception e) {
+            Log.e( "DB", "error in delete from table " + statement );
+        } finally {
+            db.endTransaction();
+        }
+
 
 
     }
@@ -685,7 +719,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
             }*/
 
-            Log.e( "DB-GPS", "rows: " + c1.getInt( 0 ) + c1.getString( 1 ) + c1.getString( 2 ));
+            Log.e( "DB-USR", "rows: " + c1.getInt( 0 ) + c1.getString( 1 ) + c1.getString( 2 ));
 
             user_data.setUsers_id_global( c1.getInt( 0 ) );
             //gps_data.setLoc_date( loc_temp_date );
@@ -694,9 +728,18 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
             user_list.add( user_data );
 
-            Log.e( "DB-GPS", "row 1 data: " + user_data.getUsers_id_global() + " " + user_data.getUsers_name() + " " + user_data.getUsers_password());
+            Log.e( "DB-GPS", "row " + i + " data: " + user_data.getUsers_id_global() + " " + user_data.getUsers_name() + " " + user_data.getUsers_password());
+
 
             c1.moveToNext();
+
+        }
+
+
+        for (int i = 0; i < user_list.size(); i++){
+
+            Log.e( "DB-GPS", "LIST: row " + i + " data: " + user_list.get( i ).getUsers_id_global() + " " + user_list.get( i ).getUsers_name() + " " + user_list.get( i ).getUsers_password());
+
 
         }
 
