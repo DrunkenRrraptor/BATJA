@@ -22,6 +22,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.DataOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +46,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main2 );
 
-        dbm = new DatabaseManagement( this);
+        //dbm = new DatabaseManagement( this);
+        dbm = DatabaseManagement.getInstance( this );
+
         requestQuestJSONIncoming = Volley.newRequestQueue( this );
 
         Button buttonJSON = (Button) findViewById( R.id.buttonJSONtest );
@@ -75,32 +80,39 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         String userName = textUserName.getText().toString();
         String userPassword = textUserPassword.getText().toString();
 
-        switch (v.getId()){
+        if (userName.matches("" ) || userPassword.matches( "" )) {
+            if (userName.matches( "" )) {
+                Toast.makeText( this, "You did not enter a username", Toast.LENGTH_SHORT ).show();
+                //return;
+            }
+            if (userPassword.matches( "" )) {
+                Toast.makeText( this, "You did not enter a password", Toast.LENGTH_SHORT ).show();
+                //return;
+            }
+            //return;
+        } else {
+            switch (v.getId()){
 
-            case R.id.buttonLog:
-                button1LogOnClickHandler(userName, userPassword);
-                break;
-            case R.id.buttonNew:
-                button2NewOnClickHandler(userName, userPassword);
-                break;
-            /*case R.id.buttonShow:
-                button4ShowOnClickHandler();
-                break;*/
+                case R.id.buttonLog:
+                    button1LogOnClickHandler(userName, userPassword);
+                    break;
+                case R.id.buttonNew:
+                    button2NewOnClickHandler(userName, userPassword);
+                    break;
+                /*case R.id.buttonShow:
+                    button4ShowOnClickHandler();
+                    break;*/
 
-            case R.id.buttonJSONtest:
-                buttonJSONTestHandler();
-                break;
+                case R.id.buttonJSONtest:
+                    buttonJSONTestHandler();
+                    break;
 
-            default: break;
+                default: break;
 
-
+            }
         }
 
-
-
-
     }
-
 
     public void buttonJSONTestHandler(){
 
@@ -112,8 +124,6 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
     }
 
-
-
     /*public void button4ShowOnClickHandler(){
 
         Intent intent = new Intent(this, Main3Activity.class);
@@ -122,18 +132,10 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         //intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
 
-
-
     }*/
 
 
     public void button1LogOnClickHandler (String userName, String userPassword) {                           // einloggen
-
-
-
-
-
-
 
 
         //Toast.makeText( this, "Button 'Log In' works", Toast.LENGTH_SHORT ).show();
@@ -190,7 +192,15 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         //Toast.makeText( this, "Button 'New Here' works", Toast.LENGTH_SHORT ).show();
 
-        dbm.addUser( userName, userPassword );
+        User_Class user = new User_Class( userName, userPassword );
+
+        //dbm.addUser( userName, userPassword );
+
+        postUser( user );
+
+        dbm.onClearBoth();
+
+        retrieveJSONonlineUser();
 
 
         /*if(userName.isEmpty() || userPassword.isEmpty())
@@ -201,13 +211,16 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         }*/
 
 
-        Intent intent = new Intent(this, MapsActivity.class);
+        /*Intent intent = new Intent(this, MainMenu.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
         //String message = editText.getText().toString();
         //intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
+        startActivity(intent);*/
 
-        Toast toast2 = Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT);
+        //Toast toast2 = Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT);
+        //toast2.show();
+
+        Toast toast2 = Toast.makeText(this, "Registration successful. Please sign in", Toast.LENGTH_SHORT);
         toast2.show();
 
 
@@ -303,6 +316,55 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         requestQuestJSONIncoming.add(requestUsers);
 
+    }
+
+
+
+    public void postUser(final User_Class user_ins) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(Constants.URL_POST_USER);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                    conn.setRequestProperty("Accept","application/json");
+                    conn.setDoOutput(true);
+                    conn.setDoInput(true);
+
+                    JSONObject jsonParam = new JSONObject();
+
+                    jsonParam.put( "users_name", user_ins.getUsers_name() );
+                    jsonParam.put( "users_password", user_ins.getUsers_password() );
+
+
+                    /*
+                    jsonParam.put("timestamp", 1488873360);
+                    jsonParam.put("uname", gps_ins.);
+                    jsonParam.put("message", message.getMessage());
+                    jsonParam.put("latitude", 0D);
+                    jsonParam.put("longitude", 0D);*/
+
+                    Log.i("JSON", jsonParam.toString());
+                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                    //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
+                    os.writeBytes(jsonParam.toString());
+
+                    os.flush();
+                    os.close();
+
+                    Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+                    Log.i("MSG" , conn.getResponseMessage());
+
+                    conn.disconnect();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
     }
 
 

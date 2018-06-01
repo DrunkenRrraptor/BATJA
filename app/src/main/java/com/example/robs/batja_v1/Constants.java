@@ -34,8 +34,8 @@ public class Constants {
 
     public static final String URL_USERS = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_users.php";
 
-    public static final String URL_POST_LOC = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/post_loc";
-
+    public static final String URL_POST_LOC = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/post_loc_to_database.php";
+    public static final String URL_POST_USER = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/post_user_to_database.php";
 
 
     public static final int CONST_PLINE_WIDTH = 7;

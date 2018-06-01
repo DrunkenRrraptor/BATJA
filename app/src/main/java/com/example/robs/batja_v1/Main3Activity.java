@@ -26,7 +26,7 @@ public class Main3Activity extends AppCompatActivity {
     private Button btn_start, btn_stop;
     private TextView textView;
     private BroadcastReceiver broadcastReceiver;
-    DatabaseManagement dbm = new DatabaseManagement( this );
+    DatabaseManagement dbm = DatabaseManagement.getInstance( this );
 
     private TextView latView;
     private TextView lngView;

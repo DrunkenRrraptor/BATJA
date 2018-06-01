@@ -71,7 +71,27 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
     private static DatabaseManagement sInstance;
 
-        /*public DatabaseHelper() {
+    private User_Class user_logged = new User_Class(  );
+
+    public User_Class getUser_logged() {
+        return user_logged;
+    }
+
+    public void setUser_logged(User_Class user_logged) {
+        this.user_logged = user_logged;
+    }
+
+    private int user_id;
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    /*public DatabaseHelper() {
             super();
         }*/
 
@@ -782,6 +802,9 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
             m = 1;                                                                              // m = 1 ... name und passwort stimmen
                                                                                                         // ... c1
+            setUser_id( c1.getInt( 0 ) );
+            setUser_logged( new User_Class(c1.getInt( 0 ), c1.getString( 1 ), c1.getString( 2 )) );
+
 
         } else if (c2.moveToNext()) {
             // username stimmt, passwort nicht                                                  // m = 2 ... name stimmt, passwort nicht

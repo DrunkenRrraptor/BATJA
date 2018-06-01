@@ -80,7 +80,8 @@ public class GPS_Service extends Service implements SensorEventListener{
         super.onCreate();
         requestQuestJSONIncoming = Volley.newRequestQueue( this );
 
-        dbm = new DatabaseManagement( this );
+        //dbm = new DatabaseManagement( this );
+        dbm = DatabaseManagement.getInstance( this );
 
 
         sm = (SensorManager)getSystemService(SENSOR_SERVICE);
@@ -126,7 +127,7 @@ public class GPS_Service extends Service implements SensorEventListener{
                 GPS_Class gps_instance = new GPS_Class( lat, lng, speed, accel_maxNotG);
                 dbm.addLocation( gps_instance );
 
-                //postLoc(gps_instance);
+                postLoc(gps_instance);
 
             }
 
@@ -302,6 +303,7 @@ public class GPS_Service extends Service implements SensorEventListener{
 
                     JSONObject jsonParam = new JSONObject();
 
+                    jsonParam.put("users_id_global", dbm.getUser_logged().getUsers_id_global());
                     jsonParam.put( "lat", gps_ins.getLoc_lat() );
                     jsonParam.put( "lng", gps_ins.getLoc_lng() );
                     jsonParam.put( "speed", gps_ins.getLoc_speed() );

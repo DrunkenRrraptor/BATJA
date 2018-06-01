@@ -47,7 +47,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById( R.id.map );
         mapFragment.getMapAsync( this );
 
-        dbm = new DatabaseManagement( this );
+        //dbm = new DatabaseManagement( this );
+        dbm = DatabaseManagement.getInstance( this );
 
     }
 
