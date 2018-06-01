@@ -46,14 +46,22 @@ public class Main3Activity extends AppCompatActivity {
                 public void onReceive(Context context, Intent intent) {
 
                     //textView.append("\n" + intent.getExtras().get("coordinates"));
-                    //latView.append("\n" + intent.getExtras().get("coordinates"));
+                    latView.append("\n" + intent.getExtras().get("coordinates"));
 
-                    latView.setText( " " + Double.toString( intent.getExtras().getDouble( "lat" ) ) );
-                    lngView.setText( " " + Double.toString( intent.getExtras().getDouble( "lng" ) ) );
-                    speedView.setText( " " + Double.toString( intent.getExtras().getDouble( "speed" ) ) );
+                    /*latView.append( Double.toString( (Double) intent.getExtras().get( "lat" ) ) + "\n");
+                    lngView.append( Double.toString( (Double) intent.getExtras().get( "lng" ) ) + "\n");
+                    speedView.append( Double.toString( (Double) intent.getExtras().get( "speed" ) ) + "\n");*/
+
+                    /*latView.setText( latView.getText() + Double.toString( (Double) intent.getExtras().get( "lat" ) ) + "\n");
+                    lngView.setText( lngView.getText() + Double.toString( (Double) intent.getExtras().get( "lng" ) ) + "\n");
+                    speedView.setText( speedView.getText() + Double.toString( (Double) intent.getExtras().get( "speed" ) ) + "\n");*/
 
 
-                    List<GPS_Class> gps_list = dbm.fetch_gps();
+                    /*List<GPS_Class> gps_list = dbm.fetch_gps();
+
+                    latView.append( Double.toString( gps_list.get( i ).getLoc_lat() ) + "\n" );
+                    lngView.append( Double.toString( gps_list.get( i ).getLoc_lng() ) + "\n" );
+                    speedView.append( Double.toString( gps_list.get( i ).getLoc_speed() ) + "\n" );*/
 
                     /*textView.append(Double.toString( gps_list.get( i ).getLoc_lat() ) + " " +
                             Double.toString( gps_list.get( i ).getLoc_lng() ) + " " +

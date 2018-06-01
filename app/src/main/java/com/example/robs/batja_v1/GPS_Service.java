@@ -99,11 +99,11 @@ public class GPS_Service extends Service implements SensorEventListener{
                 double lng = location.getLongitude();
                 double speed = location.getSpeed();
 
-                //i.putExtra( "coordinates", location.getLongitude() + " " + location.getLatitude() + " " + location.getSpeed() );
-                i.putExtra( "lat", lat );
+                i.putExtra( "coordinates", (String)(location.getLongitude() + " " + location.getLatitude() + " " + location.getSpeed()) );
+                /*i.putExtra( "lat", lat );
                 i.putExtra( "lng", lng );
                 i.putExtra( "speed", speed );
-                i.putExtra( "accel", accel );
+                i.putExtra( "accel", accel );*/
 
                 /*Bundle bundle = new Bundle(  );
 

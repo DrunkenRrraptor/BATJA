@@ -51,10 +51,10 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         Button button1Log = (Button) findViewById( R.id.buttonLog );
         Button button2New = (Button) findViewById( R.id.buttonNew );
-        Button button4Show = (Button) findViewById( R.id.buttonShow );
+        //Button button4Show = (Button) findViewById( R.id.buttonShow );
         button1Log.setOnClickListener( this );
         button2New.setOnClickListener( this );
-        button4Show.setOnClickListener( this );
+        //button4Show.setOnClickListener( this );
 
         dbm.onClearBoth();
 
@@ -83,9 +83,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             case R.id.buttonNew:
                 button2NewOnClickHandler(userName, userPassword);
                 break;
-            case R.id.buttonShow:
+            /*case R.id.buttonShow:
                 button4ShowOnClickHandler();
-                break;
+                break;*/
 
             case R.id.buttonJSONtest:
                 buttonJSONTestHandler();
@@ -114,7 +114,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
 
 
-    public void button4ShowOnClickHandler(){
+    /*public void button4ShowOnClickHandler(){
 
         Intent intent = new Intent(this, Main3Activity.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
@@ -124,7 +124,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
 
 
-    }
+    }*/
 
 
     public void button1LogOnClickHandler (String userName, String userPassword) {                           // einloggen
@@ -207,7 +207,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         //intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
 
-        Toast toast2 = Toast.makeText(this, "Welcome on boarrrrd", Toast.LENGTH_SHORT);
+        Toast toast2 = Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT);
         toast2.show();
 
 

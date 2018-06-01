@@ -119,10 +119,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //
         //
 
+        GPS_Class gps_ins1 = new GPS_Class( 48.239789759281074, 48.239789759281074, 0, 0 );
+        GPS_Class gps_ins2 = new GPS_Class( 48.23961882566993, 16.37805280888142, 8.3333333333, 0 );
+        GPS_Class gps_ins3 = new GPS_Class( 48.23948648443996, 16.378197756512236, 0, 0 );
 
-        dbm.addLocation( 48.239789759281074, 16.377883947562168, 0, 0 );
-        dbm.addLocation( 48.23961882566993, 16.37805280888142, 8.33333333, 4 );
-        dbm.addLocation( 48.23948648443996, 16.378197756512236, 0, 0 );
 
 /*
 
