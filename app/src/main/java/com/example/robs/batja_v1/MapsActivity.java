@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -101,11 +102,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng( -34, 151 );
+        //LatLng sydney = new LatLng( -34, 151 );
         LatLng htw = new LatLng( 48.239078, 16.378282 );
 
 
-        mMap.addMarker( new MarkerOptions().position( htw ).title( "Marker at the HTW" ) ).setIcon( BitmapDescriptorFactory.defaultMarker(hueThemeColor));
+        //mMap.addMarker( new MarkerOptions().position( htw ).title( "Marker at the HTW" ) ).setIcon( BitmapDescriptorFactory.defaultMarker(hueThemeColor));
         mMap.moveCamera( CameraUpdateFactory.newLatLng( htw ) );
         mMap.moveCamera( CameraUpdateFactory.zoomTo( 15 ) );
 
@@ -207,6 +208,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         List<GPS_Class> gps_list = dbm.fetch_gps();
 
+        Log.e("MAP", "gps_list size: "+ gps_list.size());
+
         GPS_Class gps_startLoc = gps_list.get( 0 );
 
         double plineStartLat = 0;
@@ -249,6 +252,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 pLineEndLng = gps_list_iterator.getLoc_lng();
                 pLineEndSpeed = gps_list_iterator.getLoc_speed();
 
+                first_time++;
+
             }
 
 
@@ -279,6 +284,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .width( 5 )
                 );
             }
+
+
+            Log.e( "MAP", "Iteration: " + first_time + "Start Loc: " + plineStartLat + ", " + pLineStartLng + ", " + pLineStartSpeed );
+            Log.e( "MAP", "Iteration: " + first_time + "Start End: " + pLineEndLat + ", " + pLineEndLng + ", " + pLineEndSpeed );
+
+
 
         }
 

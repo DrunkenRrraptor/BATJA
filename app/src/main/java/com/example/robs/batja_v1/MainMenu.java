@@ -185,7 +185,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                         try {
                             JSONArray jsonArray = response.getJSONArray("loc");
 
-                            Log.e( "JSON", "json array length "+ jsonArray.length());
+                            Log.e( "JSON", "json array length " + jsonArray.length());
 
                             for (int i = 0; i < jsonArray.length(); i++) {
 
@@ -206,6 +206,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
                                 GPS_Class gps_class = new GPS_Class( loc_id_global, users_id_global,
                                         lat, lng, speed, accel);
+
 
                                 dbm.addLocationFromJSON( gps_class );
 
@@ -236,13 +237,19 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
 
                         } catch (JSONException e) {
+
                             e.printStackTrace();
+                            Log.e( "VLY-LOC", "error in volley loc - json exception" );
+
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 error.printStackTrace();
+                Log.e( "VLY-LOC", "error in volley loc - error response" );
+
             }
         });
 

@@ -140,7 +140,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         //Toast.makeText( this, "Button 'Log In' works", Toast.LENGTH_SHORT ).show();
 
-        Toast toast1 = Toast.makeText(this, "Name: " + userName + " , PWD: " + userPassword, Toast.LENGTH_SHORT);
+        Toast toast1 = Toast.makeText(this, "Name: " + userName + ", PWD: " + userPassword, Toast.LENGTH_SHORT);
         toast1.show();
 
         /*if(userName.isEmpty() || userPassword.isEmpty())

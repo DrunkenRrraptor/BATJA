@@ -62,6 +62,11 @@ public class GPS_Service extends Service implements SensorEventListener{
     double[] accel = new double[3];
     double accel_maxNotG = 0;
     int accel_maxNotG_dir = 0;
+    double accel_maxG = 0;
+    int accel_maxG_dir = 0;
+    double accel_leastG = 0;
+    int accel_leastG_dir = 0;
+    double accel_norm = 0;
 
 
     private RequestQueue requestQuestJSONIncoming;
@@ -124,7 +129,7 @@ public class GPS_Service extends Service implements SensorEventListener{
 
                 //dbm.addLocation( lat, lng, speed );
 
-                GPS_Class gps_instance = new GPS_Class( lat, lng, speed, accel_maxNotG);
+                GPS_Class gps_instance = new GPS_Class( lat, lng, speed, accel_norm);
                 dbm.addLocation( gps_instance );
 
                 postLoc(gps_instance);
@@ -200,22 +205,40 @@ public class GPS_Service extends Service implements SensorEventListener{
 
 
         if (accel[0] > accel[1]){
-            if (accel[1] > accel[2])
+            if (accel[1] > accel[2]){
+                accel_maxG_dir = 0;
                 accel_maxNotG_dir = 1;
+                accel_leastG_dir = 2;
+            }
             else {
-                if (accel[0] > accel[2])
+                if (accel[0] > accel[2]){
+                    accel_maxG_dir = 0;
                     accel_maxNotG_dir = 2;
-                else
+                    accel_leastG_dir = 1;
+                }
+                else {
+                    accel_maxG_dir = 2;
                     accel_maxNotG_dir = 0;
+                    accel_leastG_dir = 1;
+                }
             }
         } else {
-            if (accel[0] > accel[2])
-                accel_maxNotG_dir = 1;
+            if (accel[0] > accel[2]) {
+                accel_maxG_dir = 1;
+                accel_maxNotG_dir = 0;
+                accel_leastG_dir = 2;
+            }
             else {
-                if (accel[1] > accel[2])
+                if (accel[1] > accel[2]) {
+                    accel_maxG_dir = 1;
                     accel_maxNotG_dir = 2;
-                else
+                    accel_leastG_dir = 0;
+                }
+                else {
+                    accel_maxG_dir = 2;
                     accel_maxNotG_dir = 1;
+                    accel_leastG_dir = 0;
+                }
             }
         }
 
@@ -272,8 +295,11 @@ public class GPS_Service extends Service implements SensorEventListener{
         }*/
 
 
+        accel_maxG = accel[accel_maxG_dir] - (SensorManager.GRAVITY_EARTH);
         accel_maxNotG = accel[accel_maxNotG_dir];
+        accel_leastG = accel[accel_leastG_dir];
 
+        accel_norm = Math.sqrt( Math.pow( accel_maxG, 2 ) * Math.pow( accel_maxNotG, 2 ) * Math.pow( accel_leastG, 2 ));
 
     }
 
