@@ -28,9 +28,10 @@ public class Constants {
  */
 
     // URL
-    public static final String URL_15MIN_NOW = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_loc_moc_full.php";
-    public static final String URL_TODAY = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_loc_moc_1h.php";
-    public static final String URL_HIST = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_loc_sys_hist_1h_1.php";
+    public static final String URL_1H_NOW = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_loc_moc_1h.php";
+    public static final String URL_TODAY = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_loc_moc_day.php";
+    public static final String URL_HIST = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_loc_moc_hist_1h.php";
+    public static final String URL_FULL = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_loc_moc_full.php";
 
     public static final String URL_USERS = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_users.php";
 

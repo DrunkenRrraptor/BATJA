@@ -3,6 +3,7 @@ package com.example.robs.batja_v1;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -37,15 +38,16 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         requestQuestJSONIncoming = Volley.newRequestQueue( this );
 
 
-
         Button button_menu_track = (Button) findViewById( R.id.button_menu_track );
         Button button_menu_map_now = (Button) findViewById( R.id.button_menu_mapNow );
         Button button_menu_map_today = (Button) findViewById( R.id.button_menu_mapToday );
         Button button_menu_map_hist = (Button) findViewById( R.id.button_menu_mapHist );
+        Button button_menu_map_big_bang = (Button) findViewById( R.id.button_menu_map_big_bang );
         button_menu_track.setOnClickListener( this );
         button_menu_map_now.setOnClickListener( this );
         button_menu_map_today.setOnClickListener( this );
         button_menu_map_hist.setOnClickListener( this );
+        button_menu_map_big_bang.setOnClickListener( this );
 
         //Button button_menu_track = (Button) findViewById( R.id.button_menu_track );
         //button_menu_track.setOnClickListener( this );
@@ -71,8 +73,11 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
             case R.id.button_menu_mapHist:
                 buttonMenuMapHistOnClickHandler();
                 break;
+            case R.id.button_menu_map_big_bang:
+                buttonMenuMapBigBang();
+                break;
 
-                default: break;
+            default: break;
 
 
         }
@@ -80,12 +85,11 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
     }
 
 
-
     private void buttonMenuMapNowOnClickHandler() {
 
         arg = 0;
 
-        retrieveJSONonlineLoc(arg);
+        retrieveJSONonlineLoc( arg );
 
         Intent intent = new Intent(this, MapsActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
@@ -100,7 +104,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
         arg = 1;
 
-        retrieveJSONonlineLoc(arg);
+        retrieveJSONonlineLoc( arg );
 
         Intent intent = new Intent(this, MapsActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
@@ -114,7 +118,21 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
         arg = 2;
 
-        retrieveJSONonlineLoc(arg);
+        retrieveJSONonlineLoc( arg );
+
+        Intent intent = new Intent(this, MapsActivity.class);
+        //EditText editText = (EditText) findViewById(R.id.editText);
+        //String message = editText.getText().toString();
+        //intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
+
+    }
+
+    private void buttonMenuMapBigBang() {
+
+        arg = 3;
+
+        retrieveJSONonlineLoc( arg );
 
         Intent intent = new Intent(this, MapsActivity.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
@@ -140,20 +158,23 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
     private void retrieveJSONonlineLoc(int arg){
 
+        //dbm.onClearBoth();
+
         String urlJSONloc = "";
 
-        urlJSONloc = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_loc_moc_full.php";
+        //urlJSONloc = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_loc_moc_full.php";
 
-        /*
+
         if(arg == 0)
-            urlJSONloc = Constants.URL_15MIN_NOW;
+            urlJSONloc = Constants.URL_1H_NOW;
         else if(arg == 1)
             //urlJSONloc = Constants.URL_TODAY;
-            urlJSONloc = Constants.URL_15MIN_NOW;
+            urlJSONloc = Constants.URL_TODAY;
         else if(arg == 2)
             //urlJSONloc = Constants.URL_HIST;
-            urlJSONloc = Constants.URL_15MIN_NOW;
-        */
+            urlJSONloc = Constants.URL_HIST;
+        else if (arg == 3)
+            urlJSONloc = Constants.URL_FULL;
 
 
 
@@ -163,6 +184,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray jsonArray = response.getJSONArray("loc");
+
+                            Log.e( "JSON", "json array length "+ jsonArray.length());
 
                             for (int i = 0; i < jsonArray.length(); i++) {
 
@@ -187,11 +210,10 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                                 dbm.addLocationFromJSON( gps_class );
 
 
-
                             }
 
 
-                            List<GPS_Class> gps_listHelp;
+                            /*List<GPS_Class> gps_listHelp;
                             gps_listHelp = dbm.fetch_gps();
 
                             for (int h = 0; h < gps_listHelp.size(); h++){
@@ -200,7 +222,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                                 //textViewJSONOutput.append( user_listHelp.get( h ).getUsers_id_global() + " " + user_listHelp.get( h ).getUsers_name() + " " + user_listHelp.get( h ).getUsers_password() + "\n");
 
 
-                            }
+                            }*/
 
 
                             /*List<User_Class> user_listHelp;

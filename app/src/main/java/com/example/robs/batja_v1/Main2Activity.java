@@ -51,8 +51,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         requestQuestJSONIncoming = Volley.newRequestQueue( this );
 
-        Button buttonJSON = (Button) findViewById( R.id.buttonJSONtest );
-        buttonJSON.setOnClickListener( this );
+        //Button buttonJSON = (Button) findViewById( R.id.buttonJSONtest );
+        //buttonJSON.setOnClickListener( this );
 
         Button button1Log = (Button) findViewById( R.id.buttonLog );
         Button button2New = (Button) findViewById( R.id.buttonNew );
@@ -103,9 +103,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                     button4ShowOnClickHandler();
                     break;*/
 
-                case R.id.buttonJSONtest:
+                /*case R.id.buttonJSONtest:
                     buttonJSONTestHandler();
-                    break;
+                    break;*/
 
                 default: break;
 
@@ -114,7 +114,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    public void buttonJSONTestHandler(){
+    /*public void buttonJSONTestHandler(){
 
         Intent intent = new Intent(this, Acitivity_for_Testing.class);
         //EditText editText = (EditText) findViewById(R.id.editText);
@@ -122,7 +122,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         //intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
 
-    }
+    }*/
 
     /*public void button4ShowOnClickHandler(){
 
