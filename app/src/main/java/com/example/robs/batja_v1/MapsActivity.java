@@ -208,7 +208,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         List<GPS_Class> gps_list = dbm.fetch_gps();
 
-        Log.e("MAP", "gps_list size: "+ gps_list.size());
+        Log.e("MAP", "gps_list size: " + gps_list.size());
 
         GPS_Class gps_startLoc = gps_list.get( 0 );
 
@@ -257,33 +257,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
 
+            if(latlngDist( plineStartLat, pLineStartLng, pLineEndLat, pLineEndLng ) < 500){
 
+                if ( pLineStartSpeed <= Constants.CONST_SPEED_THRESH_1_MS ){
 
+                    Polyline pline = mMap.addPolyline( new PolylineOptions()
+                            .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
+                            .color( Color.RED )
+                            .width( 5 )
+                    );
 
-            if ( pLineStartSpeed <= Constants.CONST_SPEED_THRESH_1_MS ){
+                } else if( pLineStartSpeed > Constants.CONST_SPEED_THRESH_1_MS & pLineStartSpeed <= Constants.CONST_SPEED_THRESH_2_MS) {
 
-                Polyline pline = mMap.addPolyline( new PolylineOptions()
-                        .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
-                        .color( Color.RED )
-                        .width( 5 )
-                );
+                    Polyline pline = mMap.addPolyline( new PolylineOptions()
+                            .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
+                            .color( Color.YELLOW )
+                            .width( 5 )
+                    );
 
-            } else if( pLineStartSpeed > Constants.CONST_SPEED_THRESH_1_MS & pLineStartSpeed <= Constants.CONST_SPEED_THRESH_2_MS) {
+                } else if( pLineStartSpeed > Constants.CONST_SPEED_THRESH_2_MS ) {
 
-                Polyline pline = mMap.addPolyline( new PolylineOptions()
-                        .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
-                        .color( Color.YELLOW )
-                        .width( 5 )
-                );
+                    Polyline pline = mMap.addPolyline( new PolylineOptions()
+                            .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
+                            .color( Color.GREEN )
+                            .width( 5 )
+                    );
+                }
 
-            } else if( pLineStartSpeed > Constants.CONST_SPEED_THRESH_2_MS ) {
-
-                Polyline pline = mMap.addPolyline( new PolylineOptions()
-                        .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
-                        .color( Color.GREEN )
-                        .width( 5 )
-                );
             }
+
+
+
 
 
             Log.e( "MAP", "Iteration: " + first_time + "Start Loc: " + plineStartLat + ", " + pLineStartLng + ", " + pLineStartSpeed );
@@ -297,6 +301,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
+    }
+
+    public static double latlngDist(double lat1, double lng1, double lat2, double lng2) {
+
+        double dLat = Math.toRadians(lat2-lat1);
+        double dLng = Math.toRadians(lng2-lng1);
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLng/2) * Math.sin(dLng/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double dist = (float) (Constants.EARTH_RADIUS * c);
+
+        return dist;
     }
 
 /*

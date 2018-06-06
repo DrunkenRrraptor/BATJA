@@ -63,4 +63,6 @@ public class Constants {
     public static final String KEY_GPS_SPEED = "gps_speed";
     public static final String KEY_GPS_ACCEL = "gps_accel";
 
+    public static final double EARTH_RADIUS = 637000.785;
+
 }

@@ -43,11 +43,13 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         Button button_menu_map_today = (Button) findViewById( R.id.button_menu_mapToday );
         Button button_menu_map_hist = (Button) findViewById( R.id.button_menu_mapHist );
         Button button_menu_map_big_bang = (Button) findViewById( R.id.button_menu_map_big_bang );
+        Button button_menu_stats = (Button) findViewById( R.id.button_menu_stats );
         button_menu_track.setOnClickListener( this );
         button_menu_map_now.setOnClickListener( this );
         button_menu_map_today.setOnClickListener( this );
         button_menu_map_hist.setOnClickListener( this );
         button_menu_map_big_bang.setOnClickListener( this );
+        button_menu_stats.setOnClickListener( this );
 
         //Button button_menu_track = (Button) findViewById( R.id.button_menu_track );
         //button_menu_track.setOnClickListener( this );
@@ -75,6 +77,9 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                 break;
             case R.id.button_menu_map_big_bang:
                 buttonMenuMapBigBang();
+                break;
+            case R.id.button_menu_stats:
+
                 break;
 
             default: break;
@@ -254,15 +259,26 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         });
 
 
-
-
         requestQuestJSONIncoming.add(requestloc);
 
+    }
 
+
+
+
+
+    // SOAP client: retrieving loc-data from the user for stats
+
+    public void retrieveSOAPlocStats(){
 
 
 
     }
+
+
+
+
+
 
 
 
