@@ -1,10 +1,12 @@
 package com.example.robs.batja_v1;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import com.android.volley.Request;
@@ -14,18 +16,34 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+import org.ksoap2.transport.HttpsTransportSE;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 public class MainMenu extends AppCompatActivity implements View.OnClickListener {
 
     int arg;
-    DatabaseManagement dbm;
+    DatabaseManagement dbm = DatabaseManagement.getInstance( this );
     private RequestQueue requestQuestJSONIncoming;
+    String resp = "";
 
 
     @Override
@@ -33,7 +51,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main_menu );
 
-        dbm = new DatabaseManagement( this );
 
         requestQuestJSONIncoming = Volley.newRequestQueue( this );
 
@@ -79,7 +96,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                 buttonMenuMapBigBang();
                 break;
             case R.id.button_menu_stats:
-
+                buttonMenuStatsOnClickHandler();
                 break;
 
             default: break;
@@ -156,6 +173,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         startActivity(intent);
 
     }
+
+
 
 
 
@@ -265,15 +284,106 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
 
 
+    private void buttonMenuStatsOnClickHandler() {
+
+        SOAPlocStatsAsynchTask soapLocATask = new SOAPlocStatsAsynchTask();
+        soapLocATask.execute(  );
+        //parseXML();
+
+    }
+
+
+    class SOAPlocStatsAsynchTask extends AsyncTask{
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            retrieveSOAPlocStats();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute( o );
+        }
+    }
+
+
+
 
 
     // SOAP client: retrieving loc-data from the user for stats
 
     public void retrieveSOAPlocStats(){
 
+        String wsdl_url = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/soap_service_stats.php?wsdl";
+        String soap_action = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/soap_service_stats.php/getlocinfo";
+        String name_space = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/soap_service_stats.php";
+        String method_name = "getlocinfo";
 
+        SoapObject soapObject = new SoapObject( name_space, method_name );
+        soapObject.addProperty( "users_id_global", dbm.getUser_logged().getUsers_id_global() );
+
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope( SoapEnvelope.VER11 );
+        envelope.dotNet = true;
+        envelope.setOutputSoapObject( soapObject );
+
+        //HttpsTransportSE httpsTransportSE = new HttpsTransportSE( wsdl_url );
+        HttpTransportSE httpTransportSE = new HttpTransportSE( wsdl_url );
+        try {
+            httpTransportSE.call( soap_action, envelope );
+
+            SoapObject obj = (SoapObject) envelope.bodyIn;
+            resp = obj.getProperty( 0 ).toString();
+            System.out.print( resp );
+            Log.e( "SOAP", "" + resp );
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
 
     }
+
+
+    /*public void parseXML(){
+
+
+        try {
+            SAXParserFactory saxFactory = SAXParserFactory.newInstance();
+            SAXParser saxParser = saxFactory.newSAXParser(  );
+            saxParser.parse( IOUtils.toInputStream( resp ), new DefaultHandler(){
+                ArrayList<String> list = new ArrayList<>(  );
+                String msg = "";
+                @Override
+                public void characters(char[] ch, int start, int length) throws SAXException {
+                    super.characters( ch, start, length );
+                    msg = new String( ch, start, length );
+                }
+
+                @Override
+                public void endElement(String uri, String localName, String qName) throws SAXException {
+                    super.endElement( uri, localName, qName );
+
+                    if (qName.equals( "loc_id_global" )){
+                        list.add( msg );
+                    }
+                    if (qName.equals( "return" )){
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>( MainMenu.this, android.R.layout.simple_list_item_single_choice );
+                    }
+                }
+            } );
+
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }*/
 
 
 
