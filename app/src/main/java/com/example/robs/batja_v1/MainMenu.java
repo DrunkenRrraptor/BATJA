@@ -324,12 +324,15 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         soapObject.addProperty( "users_id_global", dbm.getUser_logged().getUsers_id_global() );
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope( SoapEnvelope.VER11 );
-        envelope.dotNet = true;
+        //envelope.dotNet = true;
         envelope.setOutputSoapObject( soapObject );
+
+
 
         //HttpsTransportSE httpsTransportSE = new HttpsTransportSE( wsdl_url );
         HttpTransportSE httpTransportSE = new HttpTransportSE( wsdl_url );
         try {
+            httpTransportSE.debug = true;
             httpTransportSE.call( soap_action, envelope );
 
             SoapObject obj = (SoapObject) envelope.bodyIn;
@@ -337,11 +340,52 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
             System.out.print( resp );
             Log.e( "SOAP", "" + resp );
 
+            handleSOAPstring( resp );
+
+            /*if(envelope != null){
+                SoapObject soapResponse = (SoapObject) envelope.bodyIn;
+
+                //SoapObject objectR = (SoapObject) soapObject.getProperty( 0 );
+
+                SoapObject soapLocData = (SoapObject) soapResponse.getProperty( "LocListe" );
+
+                Log.e( "SOAP", "response: " + soapResponse );
+
+                Log.e( "SOAP", "property 1: " + soapLocData.getProperty( "loc_id_global" ));
+                Log.e( "SOAP", "property 2: " + soapLocData.getProperty( "users_id_global" ));
+                Log.e( "SOAP", "property 3: " + soapLocData.getProperty( "lat" ));
+                Log.e( "SOAP", "property 4: " + soapLocData.getProperty( "lng" ));
+                Log.e( "SOAP", "property 5: " + soapLocData.getProperty( "speed" ));
+                Log.e( "SOAP", "property 6: " + soapLocData.getProperty( "accel" ));
+            }else
+            {
+                Log.d("WS", "Response Envelop Error");
+            }*/
+
+
+
+
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         }
+
+    }
+
+
+
+    public void handleSOAPstring(String soapResp){
+
+        String regex_loc = "Loc";
+        String regex_loc_id = "loc_id_global";
+        String regex_users_id = "users_id_global";
+        String regex_lat = "lat";
+        String regex_lng = "lng";
+        String regex_speed = "speed";
+        String regex_accel = "accel";
+
 
     }
 
