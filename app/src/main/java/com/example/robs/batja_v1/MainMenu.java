@@ -286,9 +286,17 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
     private void buttonMenuStatsOnClickHandler() {
 
-        SOAPlocStatsAsynchTask soapLocATask = new SOAPlocStatsAsynchTask();
-        soapLocATask.execute(  );
+        //SOAPlocStatsAsynchTask soapLocATask = new SOAPlocStatsAsynchTask();
+        //soapLocATask.execute(  );
         //parseXML();
+
+        retrieveJSONonlineLoc( 3 );
+
+        Intent intent = new Intent(this, Stats4.class);
+        //EditText editText = (EditText) findViewById(R.id.editText);
+        //String message = editText.getText().toString();
+        //intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
 
     }
 
@@ -393,12 +401,12 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         String regex_curly_close = "}";
         String add_quote = "\"";
 
-        String[] split_Loc = soapResp.split( regex_Loc );
+        /*String[] split_Loc = soapResp.split( regex_Loc );
 
         //Log.e( "SOAP", "String Split 'LOC': " + split_Loc );
 
 
-        /*String loc_add_quote = resp.replaceAll( regex_Loc, "" );
+        String loc_add_quote = resp.replaceAll( regex_Loc, "" );
         loc_add_quote = loc_add_quote.replace( "[", "{\"Loc\":[" );
         loc_add_quote = loc_add_quote.replaceAll( regex_loc_id, "\"" + regex_loc_id + "\"" );
         loc_add_quote = loc_add_quote.replaceAll( regex_users_id, "\"" + regex_users_id + "\"" );
@@ -408,10 +416,13 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         loc_add_quote = loc_add_quote.replaceAll( regex_accel, "\"accel\"" );
         loc_add_quote = loc_add_quote.replace( "]", "]}" );
         loc_add_quote = loc_add_quote.replaceAll( ";", "," );
-        loc_add_quote = loc_add_quote.replaceAll( "=", ":" );*/
+        loc_add_quote = loc_add_quote.replaceAll( " ", "" );
+        loc_add_quote = loc_add_quote.replaceAll( ",}", "}" );
+        loc_add_quote = loc_add_quote.replaceAll( "=", ":" );
+
         //loc_add_quote = loc_add_quote.replaceAll( regex_Loc_first, add_quote + regex_Loc + add_quote );
 
-        //Log.e( "SOAP", "with quotes" + loc_add_quote);
+        Log.e( "SOAP", "with quotes" + loc_add_quote);*/
 
 
 
@@ -426,11 +437,11 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
 
 
-        for (String split_Loc_for : split_Loc){
+        /*for (String split_Loc_for : split_Loc){
 
 
 
-        }
+        }*/
 
 
 

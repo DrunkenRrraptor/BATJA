@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/batja_bg_img_app"
+    android:background="@drawable/batja_bg_img_app_90"
     tools:context="com.example.robs.batja_v1.MainMenu">
 
     <Button
@@ -63,7 +63,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@color/colorTransparentBackground"
+        android:background="@color/colorTransparentBackground2"
         android:text="Add to Database and ..."
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -81,7 +81,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textAlignment="center"
-        android:background="@color/colorTransparentBackground"
+        android:background="@color/colorTransparentBackground2"
         android:text="Show in Google Maps\n the Data from ..."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
