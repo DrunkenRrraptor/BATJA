@@ -378,13 +378,127 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
     public void handleSOAPstring(String soapResp){
 
-        String regex_loc = "Loc";
+        String regex_Loc = "Loc";
+        String regex_Loc_first = "[Loc";
         String regex_loc_id = "loc_id_global";
         String regex_users_id = "users_id_global";
         String regex_lat = "lat";
         String regex_lng = "lng";
         String regex_speed = "speed";
         String regex_accel = "accel";
+        String regex_semicolon = ";";
+        String regex_bracket_open = "[";
+        String regex_bracket_close = "]";
+        String regex_curly_open = "{";
+        String regex_curly_close = "}";
+        String add_quote = "\"";
+
+        String[] split_Loc = soapResp.split( regex_Loc );
+
+        //Log.e( "SOAP", "String Split 'LOC': " + split_Loc );
+
+
+        /*String loc_add_quote = resp.replaceAll( regex_Loc, "" );
+        loc_add_quote = loc_add_quote.replace( "[", "{\"Loc\":[" );
+        loc_add_quote = loc_add_quote.replaceAll( regex_loc_id, "\"" + regex_loc_id + "\"" );
+        loc_add_quote = loc_add_quote.replaceAll( regex_users_id, "\"" + regex_users_id + "\"" );
+        loc_add_quote = loc_add_quote.replaceAll( regex_lat, "\"lat\"" );
+        loc_add_quote = loc_add_quote.replaceAll( regex_lng, "\"lng\"" );
+        loc_add_quote = loc_add_quote.replaceAll( regex_speed, "\"speed\"" );
+        loc_add_quote = loc_add_quote.replaceAll( regex_accel, "\"accel\"" );
+        loc_add_quote = loc_add_quote.replace( "]", "]}" );
+        loc_add_quote = loc_add_quote.replaceAll( ";", "," );
+        loc_add_quote = loc_add_quote.replaceAll( "=", ":" );*/
+        //loc_add_quote = loc_add_quote.replaceAll( regex_Loc_first, add_quote + regex_Loc + add_quote );
+
+        //Log.e( "SOAP", "with quotes" + loc_add_quote);
+
+
+
+        /*for (String split_loc_for : split_Loc){
+
+            String[] split_loc_id = split_loc_for.split( regex_loc_id );
+
+
+
+        }*/
+
+
+
+
+        for (String split_Loc_for : split_Loc){
+
+
+
+        }
+
+
+
+
+        /*for (String split_loc_for : split_Loc){
+
+            String[] split_loc_id = split_loc_for.split( regex_loc_id );
+
+            Log.e( "SOAP", "split_loc_for = " + split_loc_for + " ///// split_loc_id = " + split_loc_id);
+
+            for (String split_loc_id_for : split_loc_id){
+
+                String[] split_users_id = split_loc_id_for.split( regex_users_id );
+
+                Log.e( "SOAP", "split_loc_for = " + split_loc_for + " ///// split_loc_id = " + split_loc_id + " ///// split_users_id = " + split_users_id);
+
+            }
+
+        }*/
+
+
+
+
+
+        /*for (String split_Loc_loop : split_Loc){
+
+            String[] split_loc_id = split_Loc_loop.split( regex_loc_id );
+
+            for (String split_loc_id_loop : split_loc_id){
+
+                String[] split_users_id = split_loc_id_loop.split( regex_users_id );
+
+                for (String split_users_id_loop : split_users_id){
+
+                    String[] split_lat = split_users_id_loop.split( regex_lat );
+
+                    for (String split_lat_loop : split_lat){
+
+                        String[] split_lng = split_lat_loop.split( regex_lat );
+
+                        for (String split_lng_loop : split_lng){
+
+                            String[] split_speed = split_lng_loop.split( regex_lat );
+
+                            for (String split_speed_loop : split_speed){
+
+                                String[] split_accel = split_speed_loop.split( regex_lat );
+
+                                for (String split_accel_loop : split_accel){
+
+                                    String[] split_accel_data = split_accel_loop.split( regex_semicolon );
+
+                                    Log.e( "SOAP", "loc_id: " + split_loc_id_loop + "/ users_id: " + split_users_id_loop + "/ lat: " + split_lat_loop + "/ lng: " + split_lng_loop + "/ speed: " + split_speed_loop + "/ accel: " + split_accel + "/ accel_semicolon: " + split_accel_data );
+
+                                }
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }*/
+
+
 
 
     }

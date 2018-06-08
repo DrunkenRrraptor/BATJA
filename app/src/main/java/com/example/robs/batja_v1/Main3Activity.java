@@ -46,11 +46,11 @@ public class Main3Activity extends AppCompatActivity {
                 public void onReceive(Context context, Intent intent) {
 
                     //textView.append("\n" + intent.getExtras().get("coordinates"));
-                    latView.append("\n" + intent.getExtras().get("coordinates"));
+                    //latView.append("\n" + intent.getExtras().get("coordinates"));
 
-                    /*latView.append( Double.toString( (Double) intent.getExtras().get( "lat" ) ) + "\n");
+                    latView.append( Double.toString( (Double) intent.getExtras().get( "lat" ) ) + "\n");
                     lngView.append( Double.toString( (Double) intent.getExtras().get( "lng" ) ) + "\n");
-                    speedView.append( Double.toString( (Double) intent.getExtras().get( "speed" ) ) + "\n");*/
+                    speedView.append( Double.toString( (Double) intent.getExtras().get( "speed" ) ) + "\n");
 
                     /*latView.setText( latView.getText() + Double.toString( (Double) intent.getExtras().get( "lat" ) ) + "\n");
                     lngView.setText( lngView.getText() + Double.toString( (Double) intent.getExtras().get( "lng" ) ) + "\n");
