@@ -105,11 +105,11 @@ public class GPS_Service extends Service implements SensorEventListener{
                 double lng = location.getLongitude();
                 double speed = location.getSpeed();
 
-                i.putExtra( "coordinates", (String)(location.getLongitude() + " " + location.getLatitude() + " " + location.getSpeed()) );
-                /*i.putExtra( "lat", lat );
+                //i.putExtra( "coordinates", (String)(location.getLongitude() + " " + location.getLatitude() + " " + location.getSpeed()) );
+                i.putExtra( "lat", lat );
                 i.putExtra( "lng", lng );
                 i.putExtra( "speed", speed );
-                i.putExtra( "accel", accel );*/
+                //i.putExtra( "accel", accel );
 
                 /*Bundle bundle = new Bundle(  );
 
@@ -200,7 +200,7 @@ public class GPS_Service extends Service implements SensorEventListener{
         accel[1] = event.values[1];             // y
         accel[2] = event.values[2];             // z
 
-        // suche zweithöchste beschleunigung, weil hächste beschleunigung G ist
+        // suche zweithöchste beschleunigung, weil höchste beschleunigung G ist
 
 
 
@@ -395,7 +395,7 @@ public class GPS_Service extends Service implements SensorEventListener{
 
                                 GPS_Class gps_class = new GPS_Class( loc_id_global, users_id_global, lat, lng, speed  );
 
-                                dbm.addLocationFromJSON( gps_class );
+                                dbm.addLocationFromJSON( gps_class, Constants.TABLE_GPS );
 
 
 

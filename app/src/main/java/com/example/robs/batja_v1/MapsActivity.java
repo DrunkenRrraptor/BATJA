@@ -215,13 +215,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         double plineStartLat = 0;
         double pLineStartLng = 0;
         double pLineStartSpeed = 0;
+        double pLineStartAccel = 0;
         double pLineEndLat = 0;
         double pLineEndLng = 0;
         double pLineEndSpeed = 0;
+        double pLineEndAccel = 0;
 
         plineStartLat = gps_startLoc.getLoc_lat();
         pLineStartLng = gps_startLoc.getLoc_lng();
         pLineStartSpeed = gps_startLoc.getLoc_speed();
+        pLineStartAccel = gps_startLoc.getAccel();
 
         int first_time = 0;
 
@@ -239,6 +242,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 pLineEndLat = gps_list_iterator.getLoc_lat();
                 pLineEndLng = gps_list_iterator.getLoc_lng();
                 pLineEndSpeed = gps_list_iterator.getLoc_speed();
+                pLineEndAccel = gps_list_iterator.getAccel();
 
                 first_time = 2;
 
@@ -247,51 +251,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 plineStartLat = pLineEndLat;
                 pLineStartLng = pLineEndLng;
                 pLineStartSpeed = pLineEndSpeed;
+                pLineStartAccel = pLineEndAccel;
 
                 pLineEndLat = gps_list_iterator.getLoc_lat();
                 pLineEndLng = gps_list_iterator.getLoc_lng();
                 pLineEndSpeed = gps_list_iterator.getLoc_speed();
+                pLineEndAccel = gps_list_iterator.getAccel();
 
                 first_time++;
 
             }
 
+            Log.e( "MAP", "Iteration: " + first_time + "Start Loc: " + plineStartLat + ", " + pLineStartLng + ", " + pLineStartSpeed + ", " + pLineStartAccel);
+            Log.e( "MAP", "Iteration: " + first_time + "Start End: " + pLineEndLat + ", " + pLineEndLng + ", " + pLineEndSpeed + ", " + pLineEndAccel );
 
-            if(latlngDist( plineStartLat, pLineStartLng, pLineEndLat, pLineEndLng ) < 500){
+            if (latlngDist( plineStartLat, pLineStartLng, pLineEndLat, pLineEndLng ) > 500)
+                continue;
 
-                if ( pLineStartSpeed <= Constants.CONST_SPEED_THRESH_1_MS ){
+            if ( pLineStartSpeed <= Constants.CONST_SPEED_THRESH_1_MS ){
 
+                if ( pLineStartAccel < 0.5 ){
+                    Polyline pline = mMap.addPolyline( new PolylineOptions()
+                            .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
+                            .color( Color.BLACK )
+                            .width( 5 )
+                    );
+                } else {
                     Polyline pline = mMap.addPolyline( new PolylineOptions()
                             .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
                             .color( Color.RED )
                             .width( 5 )
                     );
-
-                } else if( pLineStartSpeed > Constants.CONST_SPEED_THRESH_1_MS & pLineStartSpeed <= Constants.CONST_SPEED_THRESH_2_MS) {
-
-                    Polyline pline = mMap.addPolyline( new PolylineOptions()
-                            .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
-                            .color( Color.YELLOW )
-                            .width( 5 )
-                    );
-
-                } else if( pLineStartSpeed > Constants.CONST_SPEED_THRESH_2_MS ) {
-
-                    Polyline pline = mMap.addPolyline( new PolylineOptions()
-                            .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
-                            .color( Color.GREEN )
-                            .width( 5 )
-                    );
                 }
 
+            } else if( pLineStartSpeed > Constants.CONST_SPEED_THRESH_1_MS & pLineStartSpeed <= Constants.CONST_SPEED_THRESH_2_MS) {
+
+                Polyline pline = mMap.addPolyline( new PolylineOptions()
+                        .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
+                        .color( Color.YELLOW )
+                        .width( 5 )
+                );
+
+            } else if( pLineStartSpeed > Constants.CONST_SPEED_THRESH_2_MS ) {
+
+                Polyline pline = mMap.addPolyline( new PolylineOptions()
+                        .add( new LatLng( plineStartLat, pLineStartLng ), new LatLng( pLineEndLat, pLineEndLng ) )
+                        .color( Color.GREEN )
+                        .width( 5 )
+                );
             }
 
 
 
 
 
-            Log.e( "MAP", "Iteration: " + first_time + "Start Loc: " + plineStartLat + ", " + pLineStartLng + ", " + pLineStartSpeed );
-            Log.e( "MAP", "Iteration: " + first_time + "Start End: " + pLineEndLat + ", " + pLineEndLng + ", " + pLineEndSpeed );
+
+
 
 
 
@@ -307,9 +322,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         double dLat = Math.toRadians(lat2-lat1);
         double dLng = Math.toRadians(lng2-lng1);
-        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                        Math.sin(dLng/2) * Math.sin(dLng/2);
+        double a =          Math.sin(dLat/2) * Math.sin(dLat/2) +
+                            Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                            Math.sin(dLng/2) * Math.sin(dLng/2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         double dist = (float) (Constants.EARTH_RADIUS * c);
 

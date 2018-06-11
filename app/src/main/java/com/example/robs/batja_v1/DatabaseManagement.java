@@ -68,6 +68,15 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
     private static final String DB_FULL_PATH = "";
 
+    private List<GPS_Class> gps_list = new ArrayList<>(  );
+
+    public List<GPS_Class> getGps_list() {
+        return gps_list;
+    }
+
+    public void setGps_list(List<GPS_Class> gps_list) {
+        this.gps_list = gps_list;
+    }
 
     private static DatabaseManagement sInstance;
 
@@ -91,6 +100,151 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         this.user_id = user_id;
     }
 
+    private int count_number_users = 0;
+    private int count_loops = 0;
+    private int count_records_all = 0;
+    private int count_records_user = 0;
+    private double min_lat = -90;                   // apply those only for logged in user
+    private double min_lat_temp = -90;
+    private double max_lat = 90;
+    private double max_lat_temp = 90;
+    private double min_lng = -90;
+    private double min_lng_temp = -90;
+    private double max_lng = 90;
+    private double max_lng_temp = 90;
+    private double avg_speed_user = 0;
+    private double avg_speed_all = 0;
+    private double avg_accel_user = 0;
+    private double avg_accel_all = 0;
+
+    public int getCount_number_users() {
+        return count_number_users;
+    }
+
+    public void setCount_number_users(int count_number_users) {
+        this.count_number_users = count_number_users;
+    }
+
+    public int getCount_loops() {
+        return count_loops;
+    }
+
+    public void setCount_loops(int count_loops) {
+        this.count_loops = count_loops;
+    }
+
+    public int getCount_records_all() {
+        return count_records_all;
+    }
+
+    public void setCount_records_all(int count_records_all) {
+        this.count_records_all = count_records_all;
+    }
+
+    public int getCount_records_user() {
+        return count_records_user;
+    }
+
+    public void setCount_records_user(int count_records_user) {
+        this.count_records_user = count_records_user;
+    }
+
+    public double getMin_lat() {
+        return min_lat;
+    }
+
+    public void setMin_lat(double min_lat) {
+        this.min_lat = min_lat;
+    }
+
+    public double getMin_lat_temp() {
+        return min_lat_temp;
+    }
+
+    public void setMin_lat_temp(double min_lat_temp) {
+        this.min_lat_temp = min_lat_temp;
+    }
+
+    public double getMax_lat() {
+        return max_lat;
+    }
+
+    public void setMax_lat(double max_lat) {
+        this.max_lat = max_lat;
+    }
+
+    public double getMax_lat_temp() {
+        return max_lat_temp;
+    }
+
+    public void setMax_lat_temp(double max_lat_temp) {
+        this.max_lat_temp = max_lat_temp;
+    }
+
+    public double getMin_lng() {
+        return min_lng;
+    }
+
+    public void setMin_lng(double min_lng) {
+        this.min_lng = min_lng;
+    }
+
+    public double getMin_lng_temp() {
+        return min_lng_temp;
+    }
+
+    public void setMin_lng_temp(double min_lng_temp) {
+        this.min_lng_temp = min_lng_temp;
+    }
+
+    public double getMax_lng() {
+        return max_lng;
+    }
+
+    public void setMax_lng(double max_lng) {
+        this.max_lng = max_lng;
+    }
+
+    public double getMax_lng_temp() {
+        return max_lng_temp;
+    }
+
+    public void setMax_lng_temp(double max_lng_temp) {
+        this.max_lng_temp = max_lng_temp;
+    }
+
+    public double getAvg_speed_user() {
+        return avg_speed_user;
+    }
+
+    public void setAvg_speed_user(double avg_speed_user) {
+        this.avg_speed_user = avg_speed_user;
+    }
+
+    public double getAvg_speed_all() {
+        return avg_speed_all;
+    }
+
+    public void setAvg_speed_all(double avg_speed_all) {
+        this.avg_speed_all = avg_speed_all;
+    }
+
+    public double getAvg_accel_user() {
+        return avg_accel_user;
+    }
+
+    public void setAvg_accel_user(double avg_accel_user) {
+        this.avg_accel_user = avg_accel_user;
+    }
+
+    public double getAvg_accel_all() {
+        return avg_accel_all;
+    }
+
+    public void setAvg_accel_all(double avg_accel_all) {
+        this.avg_accel_all = avg_accel_all;
+    }
+
     /*public DatabaseHelper() {
             super();
         }*/
@@ -111,7 +265,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
     }
      */
 
-    public DatabaseManagement(Context context) {
+    private DatabaseManagement(Context context) {
         super( context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION );
     }
 
@@ -196,14 +350,28 @@ public class DatabaseManagement extends SQLiteOpenHelper {
                     "CONSTRAINT fk_userID FOREIGN KEY (" + Constants.KEY_USERS_ID + ") REFERENCES " + Constants.TABLE_USERS + "(" + Constants.KEY_USERS_ID + ")" +
                     ");";
 
+            String CREATE_GPS_TABLE_STATS = "CREATE TABLE " + Constants.TABLE_GPS_STATS +
+                    " (" +
+                    Constants.KEY_GPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
+                    Constants.KEY_USERS_ID + " INTEGER, " +
+                    Constants.KEY_GPS_SYSDATE + " TIMESTAMP, " +
+                    Constants.KEY_GPS_LAT + " FLOAT, " +
+                    Constants.KEY_GPS_LONG + " FLOAT, " +
+                    Constants.KEY_GPS_SPEED + " FLOAT, " +
+                    Constants.KEY_GPS_ACCEL + " FLOAT, " +
+                    "CONSTRAINT fk_userID FOREIGN KEY (" + Constants.KEY_USERS_ID + ") REFERENCES " + Constants.TABLE_USERS + "(" + Constants.KEY_USERS_ID + ")" +
+                    ");";
+
 
             //CONSTRAINT fk_abt FOREIGN KEY (Abt_Nr) REFERENCES Abteilungen(Abt_Nr)
 
             db.execSQL( CREATE_GPS_TABLE );
+            db.execSQL( CREATE_GPS_TABLE_STATS);
             db.setTransactionSuccessful();
 
             Log.e( "DB", CREATE_GPS_TABLE );
             Log.e( "DB", CREATE_USERS_TABLE );
+            Log.e( "DB", CREATE_GPS_TABLE_STATS );
 
 
         } catch (Exception e) {
@@ -236,6 +404,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
             // Simplest implementation is to drop all old tables and recreate them
             db.execSQL( "DROP TABLE IF EXISTS " + Constants.TABLE_GPS );
             db.execSQL( "DROP TABLE IF EXISTS " + Constants.TABLE_USERS );
+            db.execSQL( "DROP TABLE IF EXISTS " + Constants.TABLE_GPS_STATS );
             onCreate( db );
         }
 
@@ -256,7 +425,9 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
+
         db.execSQL( "DROP TABLE IF EXISTS " + Constants.TABLE_GPS );
+        db.execSQL( "DROP TABLE IF EXISTS " + Constants.TABLE_GPS_STATS );
         db.execSQL( "DROP TABLE IF EXISTS " + Constants.TABLE_USERS );
         onCreate( db );
 
@@ -267,6 +438,15 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         db.execSQL( "DROP TABLE IF EXISTS " + Constants.TABLE_USERS );
+        onCreate( db );
+
+    }
+
+    public void onClearGPS(){
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.execSQL( "DROP TABLE IF EXISTS " + Constants.TABLE_GPS );
         onCreate( db );
 
     }
@@ -405,7 +585,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
      */
 
 
-    public void addLocationFromJSON(GPS_Class gps_class){
+    public void addLocationFromJSON(GPS_Class gps_class, String table){
 
         long date = System.currentTimeMillis();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -419,7 +599,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
         try {
 
-            ADD_GPS = "INSERT INTO " + Constants.TABLE_GPS +
+            ADD_GPS = "INSERT INTO " + table +
                     " (" +
                     Constants.KEY_GPS_ID + ", " +
                     Constants.KEY_USERS_ID + ", " +
@@ -586,6 +766,12 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
         int count_rows = c1.getCount();
 
+        if(count_rows == 0){
+            GPS_Class returnOnZero = new GPS_Class( 48.239078, 16.378282, 5, 1.5 );
+            gps_list.add( returnOnZero );
+            return gps_list;
+        }
+
         Log.e( "DB-GPS", "count rows: " + count_rows );
 
 
@@ -648,10 +834,11 @@ public class DatabaseManagement extends SQLiteOpenHelper {
             gps_data.setLoc_lat( c1.getFloat( 3 ) );
             gps_data.setLoc_lng( c1.getFloat( 4 ) );
             gps_data.setLoc_speed( c1.getFloat( 5 ) );
+            gps_data.setAccel( c1.getFloat( 6 ) );
 
             gps_list.add( gps_data );
 
-            Log.e( "DB-GPS", "row 1 data: " + gps_data.getLoc_id() + " " + gps_data.getUser_id_fk() + " " + gps_data.getLoc_lat() + " " + gps_data.getLoc_lng() + " " + gps_data.getLoc_speed());
+            Log.e( "DB-GPS", "row 1 data: " + gps_data.getLoc_id() + " " + gps_data.getUser_id_fk() + " " + gps_data.getLoc_lat() + " " + gps_data.getLoc_lng() + " " + gps_data.getLoc_speed() + " " + gps_data.getAccel());
 
             c1.moveToNext();
 
@@ -875,6 +1062,61 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         }*/
 
     // }
+
+
+
+    public void calculateMyStats(){
+
+        count_records_all = gps_list.size();
+
+/*        min_lat = gps_list.get( 0 ).getLoc_lat();
+        max_lat = gps_list.get( 0 ).getLoc_lat();
+        min_lng = gps_list.get( 0 ).getLoc_lng();
+        max_lng = gps_list.get( 0 ).getLoc_lng();*/
+
+        for (GPS_Class gps_list_inst : gps_list){
+
+            count_loops++;
+
+            avg_speed_all = avg_speed_all + gps_list_inst.getLoc_speed();
+            avg_accel_all = avg_accel_all + gps_list_inst.getAccel();
+
+            if (gps_list_inst.getUser_id_fk() == getUser_logged().getUsers_id_global()){
+
+                count_records_user++;
+
+                avg_speed_user = avg_speed_user + gps_list_inst.getLoc_speed();
+                avg_accel_user = avg_accel_user + gps_list_inst.getAccel();
+
+                min_lat_temp = gps_list_inst.getLoc_lat();
+                max_lat_temp = gps_list_inst.getLoc_lat();
+                min_lng_temp = gps_list_inst.getLoc_lng();
+                max_lng_temp = gps_list_inst.getLoc_lng();
+
+                if (min_lat_temp < min_lat)
+                    min_lat = min_lat_temp;
+                if (max_lat_temp > max_lat)
+                    max_lat = max_lat_temp;
+                if (min_lng_temp < min_lng)
+                    min_lng = min_lng_temp;
+                if (max_lng_temp > max_lng)
+                    max_lng = max_lng_temp;
+
+            }
+
+            if (count_loops == count_records_all){
+
+                avg_speed_all = avg_speed_all / count_records_all;
+                avg_accel_all = avg_accel_all / count_records_all;
+                avg_speed_user = avg_speed_user / count_records_user;
+                avg_accel_user = avg_accel_user / count_records_user;
+
+            }
+
+        }
+
+    }
+
 
 
 }

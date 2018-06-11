@@ -49,6 +49,7 @@ public class Constants {
     // Table Names
     public static final String TABLE_USERS = "users_3";
     public static final String TABLE_GPS = "gps_3";
+    public static final String TABLE_GPS_STATS = "gps_3_stats";
 
     // User_Class Table Columns
     public static final String KEY_USERS_ID = "users_id";

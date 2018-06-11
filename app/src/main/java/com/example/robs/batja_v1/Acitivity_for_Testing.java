@@ -38,7 +38,7 @@ public class Acitivity_for_Testing extends AppCompatActivity {
         textViewJSONOutput = findViewById( R.id.test_json_text );
         buttonParseJSON = findViewById( R.id.test_json_button );
 
-        dbm = new DatabaseManagement( this );
+        dbm = DatabaseManagement.getInstance( this );
 
 
         requestQuestJSONIncoming = Volley.newRequestQueue( this );
