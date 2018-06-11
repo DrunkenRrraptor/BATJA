@@ -73,6 +73,13 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        dbm.onClearGPS();
+
+    }
 
     @Override
     public void onClick(View v) {
@@ -216,7 +223,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         else if (arg == 3)
             urlJSONloc = Constants.URL_FULL;
 
-
+        Log.e( "JSON", "chosen url: " + urlJSONloc );
 
         JsonObjectRequest requestloc = new JsonObjectRequest( Request.Method.GET, urlJSONloc, null,
                 new Response.Listener<JSONObject>() {
