@@ -197,7 +197,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                             JSONArray jsonArray = response.getJSONArray("loc");
 
                             arraySize = jsonArray.length();
-                            dbm.setCount_records_all( arraySize );
+                            //dbm.setCount_records_all( arraySize );
 
                             Log.e( "JSON", "json array length " + jsonArray.length());
 
@@ -229,7 +229,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
                             }
 
-                            dbm.setGps_list( dbm.fetch_gps() );
+                            //dbm.setGps_list( dbm.fetch_gps() );
 
 
                             /*List<GPS_Class> gps_listHelp;
@@ -282,8 +282,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
         //Toast.makeText( this, "Button 'Log In' works", Toast.LENGTH_SHORT ).show();
 
-        Toast toast1 = Toast.makeText(this, "Name: " + userName + ", PWD: " + userPassword, Toast.LENGTH_SHORT);
-        toast1.show();
+        //Toast toast1 = Toast.makeText(this, "Name: " + userName + ", PWD: " + userPassword, Toast.LENGTH_SHORT);
+        //toast1.show();
 
         /*if(userName.isEmpty() || userPassword.isEmpty())
         {
@@ -302,10 +302,10 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             case 0: Toast toast4 = Toast.makeText(this, "Your name and password are both wrong.", Toast.LENGTH_SHORT);
                     toast4.show();
                     break;
-            case 1: Toast toast5 = Toast.makeText(this, "Welcome.", Toast.LENGTH_SHORT);
+            case 1: Toast toast5 = Toast.makeText(this, "Welcome. Please wait for a few seconds...", Toast.LENGTH_SHORT);
                     Intent intent = new Intent(this, MainMenu.class);
-                    retrieveJSONonlineLoc();
                     toast5.show();
+                    retrieveJSONonlineLoc();
                     startActivity(intent);
                     break;
             case 2: Toast toast2 = Toast.makeText(this, "Your password is wrong.", Toast.LENGTH_SHORT);
@@ -417,7 +417,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                         try {
                             JSONArray jsonArray = response.getJSONArray("users");
 
-                            dbm.setCount_number_users( jsonArray.length() );
+                            int number_users = jsonArray.length();
+                            dbm.setCount_number_users( number_users );
 
                             for (int i = 0; i < jsonArray.length(); i++) {
 
@@ -584,11 +585,11 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 avg_accel_all = avg_accel_all / arraySize;
                 avg_speed_user = avg_speed_user / count_records_user;
                 avg_accel_user = avg_accel_user / count_records_user;
+                dbm.setCount_records_user( count_records_user );
+                dbm.setCount_records_all( count_records_all );
 
             }
 
-            dbm.setCount_records_user( count_records_user );
-            dbm.setCount_records_all( count_records_all );
             dbm.setMin_lat( min_lat );
             dbm.setMax_lat( max_lat );
             dbm.setMin_lng( min_lng );

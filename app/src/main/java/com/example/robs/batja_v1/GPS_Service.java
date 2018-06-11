@@ -39,6 +39,8 @@ import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -99,16 +101,31 @@ public class GPS_Service extends Service implements SensorEventListener{
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Intent i = new Intent( "location_update" );
+
+                Intent i = new Intent("location_update");
+                i.putExtra("coordinates",Double.toString( round( location.getLongitude(), 5 ) ) + " // " + Double.toString( round( location.getLatitude(), 5 ) ) + " // " + Double.toString( round( location.getSpeed() * Constants.CONST_KMH_TO_MS, 1 )  ) + " km/h");
+                sendBroadcast(i);
+
+                /*Intent i = new Intent( "location_update" );
 
                 double lat = location.getLatitude();
                 double lng = location.getLongitude();
-                double speed = location.getSpeed();
+                double speed = location.getSpeed();*/
+
+                /*Intent intent = new Intent("location_update");
+                Bundle extras = new Bundle();
+                extras.putString("EXTRA_LAT", Double.toString( location.getLatitude() ));
+                extras.putString("EXTRA_LNG", Double.toString( location.getLatitude() ));
+                extras.putString("EXTRA_SPEED", Double.toString( location.getSpeed() ));
+                intent.putExtras(extras);*/
+                //startActivity(intent);
+
+                //sendBroadcast( intent );
 
                 //i.putExtra( "coordinates", (String)(location.getLongitude() + " " + location.getLatitude() + " " + location.getSpeed()) );
-                i.putExtra( "lat", lat );
-                i.putExtra( "lng", lng );
-                i.putExtra( "speed", speed );
+                //i.putExtra( "lat", lat );
+                //i.putExtra( "lng", lng );
+                //i.putExtra( "speed", speed );
                 //i.putExtra( "accel", accel );
 
                 /*Bundle bundle = new Bundle(  );
@@ -116,23 +133,21 @@ public class GPS_Service extends Service implements SensorEventListener{
                 bundle.putString( "lat", String.valueOf( lat ) );
                 bundle.putString( "lng", String.valueOf( lng ) );
                 bundle.putString( "speed", String.valueOf( speed ) );
-                //bundle.putString( "accel", String.valueOf( accel_maxNotG ) );
+                //bundle.putString( "accel", String.valueOf( accel_maxNotG ) );*/
 
-                sendBroadcast( i );*/
+                sendBroadcast( i );
 
                 Log.e("SRVC", "onLocChanged");
 
 
                 //currentLoc = new LatLng( location.getLatitude(), location.getLongitude() );
 
-
-
                 //dbm.addLocation( lat, lng, speed );
 
-                GPS_Class gps_instance = new GPS_Class( lat, lng, speed, accel_norm);
+                /*GPS_Class gps_instance = new GPS_Class( lat, lng, speed, accel_norm);
                 dbm.addLocation( gps_instance );
 
-                postLoc(gps_instance);
+                postLoc(gps_instance);*/
 
             }
 
@@ -425,6 +440,15 @@ public class GPS_Service extends Service implements SensorEventListener{
 
         requestQuestJSONIncoming.add(requestUsers);
 
+    }
+
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
 

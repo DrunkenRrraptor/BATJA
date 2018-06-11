@@ -310,8 +310,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
 
 
-
-
+    /*
     class SOAPlocStatsAsynchTask extends AsyncTask{
 
         @Override
@@ -325,245 +324,246 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
             super.onPostExecute( o );
         }
     }
-
+    */
 
 
 
 
     // SOAP client: retrieving loc-data from the user for stats
 
-    public void retrieveSOAPlocStats(){
 
-        String wsdl_url = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/soap_service_stats.php?wsdl";
-        String soap_action = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/soap_service_stats.php/getlocinfo";
-        String name_space = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/soap_service_stats.php";
-        String method_name = "getlocinfo";
-
-        SoapObject soapObject = new SoapObject( name_space, method_name );
-        soapObject.addProperty( "users_id_global", dbm.getUser_logged().getUsers_id_global() );
-
-        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope( SoapEnvelope.VER11 );
-        //envelope.dotNet = true;
-        envelope.setOutputSoapObject( soapObject );
-
-
-
-        //HttpsTransportSE httpsTransportSE = new HttpsTransportSE( wsdl_url );
-        HttpTransportSE httpTransportSE = new HttpTransportSE( wsdl_url );
-        try {
-            httpTransportSE.debug = true;
-            httpTransportSE.call( soap_action, envelope );
-
-            SoapObject obj = (SoapObject) envelope.bodyIn;
-            resp = obj.getProperty( 0 ).toString();
-            System.out.print( resp );
-            Log.e( "SOAP", "" + resp );
-
-            handleSOAPstring( resp );
-
-            if(envelope != null){
-                SoapObject soapResponse = (SoapObject) envelope.bodyIn;
-
-                SoapObject objectR = (SoapObject) soapObject.getProperty( 0 );
-
-                //SoapObject soapLocData = (SoapObject) soapResponse.getProperty( "Loc" );
-
-                /*Log.e( "SOAP", "response: " + soapResponse );
-
-                Log.e( "SOAP", "property 1: " + soapLocData.getProperty( "loc_id_global" ));
-                Log.e( "SOAP", "property 2: " + soapLocData.getProperty( "users_id_global" ));
-                Log.e( "SOAP", "property 3: " + soapLocData.getProperty( "lat" ));
-                Log.e( "SOAP", "property 4: " + soapLocData.getProperty( "lng" ));
-                Log.e( "SOAP", "property 5: " + soapLocData.getProperty( "speed" ));
-                Log.e( "SOAP", "property 6: " + soapLocData.getProperty( "accel" ));*/
-            }else
-            {
-                Log.d("WS", "Response Envelop Error");
-            }
-
-
-
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-
-    public void handleSOAPstring(String soapResp){
-
-        String regex_Loc = "Loc";
-        String regex_Loc_first = "[Loc";
-        String regex_loc_id = "loc_id_global";
-        String regex_users_id = "users_id_global";
-        String regex_lat = "lat";
-        String regex_lng = "lng";
-        String regex_speed = "speed";
-        String regex_accel = "accel";
-        String regex_semicolon = ";";
-        String regex_bracket_open = "[";
-        String regex_bracket_close = "]";
-        String regex_curly_open = "{";
-        String regex_curly_close = "}";
-        String add_quote = "\"";
-
-        String[] split_Loc = soapResp.split( regex_Loc );
-
-        //Log.e( "SOAP", "String Split 'LOC': " + split_Loc );
-
-
-        /*String loc_add_quote = resp.replaceAll( regex_Loc, "" );
-        loc_add_quote = loc_add_quote.replace( "[", "{\"Loc\":[" );
-        loc_add_quote = loc_add_quote.replaceAll( regex_loc_id, "\"" + regex_loc_id + "\"" );
-        loc_add_quote = loc_add_quote.replaceAll( regex_users_id, "\"" + regex_users_id + "\"" );
-        loc_add_quote = loc_add_quote.replaceAll( regex_lat, "\"lat\"" );
-        loc_add_quote = loc_add_quote.replaceAll( regex_lng, "\"lng\"" );
-        loc_add_quote = loc_add_quote.replaceAll( regex_speed, "\"speed\"" );
-        loc_add_quote = loc_add_quote.replaceAll( regex_accel, "\"accel\"" );
-        loc_add_quote = loc_add_quote.replace( "]", "]}" );
-        loc_add_quote = loc_add_quote.replaceAll( ";", "," );
-        loc_add_quote = loc_add_quote.replaceAll( " ", "" );
-        loc_add_quote = loc_add_quote.replaceAll( ",}", "}" );
-        loc_add_quote = loc_add_quote.replaceAll( "=", ":" );*/
-
-        //loc_add_quote = loc_add_quote.replaceAll( regex_Loc_first, add_quote + regex_Loc + add_quote );
-
-        //Log.e( "SOAP", "with quotes" + loc_add_quote);
-
-
-
-        /*for (String split_loc_for : split_Loc){
-
-            String[] split_loc_id = split_loc_for.split( regex_loc_id );
-
-
-
-        }*/
-
-
-
-
-        /*for (String split_Loc_for : split_Loc){
-
-
-
-        }*/
-
-
-
-
-        /*for (String split_loc_for : split_Loc){
-
-            String[] split_loc_id = split_loc_for.split( regex_loc_id );
-
-            Log.e( "SOAP", "split_loc_for = " + split_loc_for + " ///// split_loc_id = " + split_loc_id);
-
-            for (String split_loc_id_for : split_loc_id){
-
-                String[] split_users_id = split_loc_id_for.split( regex_users_id );
-
-                Log.e( "SOAP", "split_loc_for = " + split_loc_for + " ///// split_loc_id = " + split_loc_id + " ///// split_users_id = " + split_users_id);
-
-            }
-
-        }*/
-
-
-
-
-
-        /*for (String split_Loc_loop : split_Loc){
-
-            String[] split_loc_id = split_Loc_loop.split( regex_loc_id );
-
-            for (String split_loc_id_loop : split_loc_id){
-
-                String[] split_users_id = split_loc_id_loop.split( regex_users_id );
-
-                for (String split_users_id_loop : split_users_id){
-
-                    String[] split_lat = split_users_id_loop.split( regex_lat );
-
-                    for (String split_lat_loop : split_lat){
-
-                        String[] split_lng = split_lat_loop.split( regex_lat );
-
-                        for (String split_lng_loop : split_lng){
-
-                            String[] split_speed = split_lng_loop.split( regex_lat );
-
-                            for (String split_speed_loop : split_speed){
-
-                                String[] split_accel = split_speed_loop.split( regex_lat );
-
-                                for (String split_accel_loop : split_accel){
-
-                                    String[] split_accel_data = split_accel_loop.split( regex_semicolon );
-
-                                    Log.e( "SOAP", "loc_id: " + split_loc_id_loop + "/ users_id: " + split_users_id_loop + "/ lat: " + split_lat_loop + "/ lng: " + split_lng_loop + "/ speed: " + split_speed_loop + "/ accel: " + split_accel + "/ accel_semicolon: " + split_accel_data );
-
-                                }
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }*/
-
-
-
-
-    }
-
-
-    /*public void parseXML(){
-
-
-        try {
-            SAXParserFactory saxFactory = SAXParserFactory.newInstance();
-            SAXParser saxParser = saxFactory.newSAXParser(  );
-            saxParser.parse( IOUtils.toInputStream( resp ), new DefaultHandler(){
-                ArrayList<String> list = new ArrayList<>(  );
-                String msg = "";
-                @Override
-                public void characters(char[] ch, int start, int length) throws SAXException {
-                    super.characters( ch, start, length );
-                    msg = new String( ch, start, length );
-                }
-
-                @Override
-                public void endElement(String uri, String localName, String qName) throws SAXException {
-                    super.endElement( uri, localName, qName );
-
-                    if (qName.equals( "loc_id_global" )){
-                        list.add( msg );
-                    }
-                    if (qName.equals( "return" )){
-                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>( MainMenu.this, android.R.layout.simple_list_item_single_choice );
-                    }
-                }
-            } );
-
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }*/
+//    public void retrieveSOAPlocStats(){
+//
+//        String wsdl_url = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/soap_service_stats.php?wsdl";
+//        String soap_action = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/soap_service_stats.php/getlocinfo";
+//        String name_space = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/soap_service_stats.php";
+//        String method_name = "getlocinfo";
+//
+//        SoapObject soapObject = new SoapObject( name_space, method_name );
+//        soapObject.addProperty( "users_id_global", dbm.getUser_logged().getUsers_id_global() );
+//
+//        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope( SoapEnvelope.VER11 );
+//        //envelope.dotNet = true;
+//        envelope.setOutputSoapObject( soapObject );
+//
+//
+//
+//        //HttpsTransportSE httpsTransportSE = new HttpsTransportSE( wsdl_url );
+//        HttpTransportSE httpTransportSE = new HttpTransportSE( wsdl_url );
+//        try {
+//            httpTransportSE.debug = true;
+//            httpTransportSE.call( soap_action, envelope );
+//
+//            SoapObject obj = (SoapObject) envelope.bodyIn;
+//            resp = obj.getProperty( 0 ).toString();
+//            System.out.print( resp );
+//            Log.e( "SOAP", "" + resp );
+//
+//            handleSOAPstring( resp );
+//
+//            if(envelope != null){
+//                SoapObject soapResponse = (SoapObject) envelope.bodyIn;
+//
+//                SoapObject objectR = (SoapObject) soapObject.getProperty( 0 );
+//
+//                //SoapObject soapLocData = (SoapObject) soapResponse.getProperty( "Loc" );
+//
+//                /*Log.e( "SOAP", "response: " + soapResponse );
+//
+//                Log.e( "SOAP", "property 1: " + soapLocData.getProperty( "loc_id_global" ));
+//                Log.e( "SOAP", "property 2: " + soapLocData.getProperty( "users_id_global" ));
+//                Log.e( "SOAP", "property 3: " + soapLocData.getProperty( "lat" ));
+//                Log.e( "SOAP", "property 4: " + soapLocData.getProperty( "lng" ));
+//                Log.e( "SOAP", "property 5: " + soapLocData.getProperty( "speed" ));
+//                Log.e( "SOAP", "property 6: " + soapLocData.getProperty( "accel" ));*/
+//            }else
+//            {
+//                Log.d("WS", "Response Envelop Error");
+//            }
+//
+//
+//
+//
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (XmlPullParserException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+//
+//
+//
+//    public void handleSOAPstring(String soapResp){
+//
+//        String regex_Loc = "Loc";
+//        String regex_Loc_first = "[Loc";
+//        String regex_loc_id = "loc_id_global";
+//        String regex_users_id = "users_id_global";
+//        String regex_lat = "lat";
+//        String regex_lng = "lng";
+//        String regex_speed = "speed";
+//        String regex_accel = "accel";
+//        String regex_semicolon = ";";
+//        String regex_bracket_open = "[";
+//        String regex_bracket_close = "]";
+//        String regex_curly_open = "{";
+//        String regex_curly_close = "}";
+//        String add_quote = "\"";
+//
+//        String[] split_Loc = soapResp.split( regex_Loc );
+//
+//        //Log.e( "SOAP", "String Split 'LOC': " + split_Loc );
+//
+//
+//        /*String loc_add_quote = resp.replaceAll( regex_Loc, "" );
+//        loc_add_quote = loc_add_quote.replace( "[", "{\"Loc\":[" );
+//        loc_add_quote = loc_add_quote.replaceAll( regex_loc_id, "\"" + regex_loc_id + "\"" );
+//        loc_add_quote = loc_add_quote.replaceAll( regex_users_id, "\"" + regex_users_id + "\"" );
+//        loc_add_quote = loc_add_quote.replaceAll( regex_lat, "\"lat\"" );
+//        loc_add_quote = loc_add_quote.replaceAll( regex_lng, "\"lng\"" );
+//        loc_add_quote = loc_add_quote.replaceAll( regex_speed, "\"speed\"" );
+//        loc_add_quote = loc_add_quote.replaceAll( regex_accel, "\"accel\"" );
+//        loc_add_quote = loc_add_quote.replace( "]", "]}" );
+//        loc_add_quote = loc_add_quote.replaceAll( ";", "," );
+//        loc_add_quote = loc_add_quote.replaceAll( " ", "" );
+//        loc_add_quote = loc_add_quote.replaceAll( ",}", "}" );
+//        loc_add_quote = loc_add_quote.replaceAll( "=", ":" );*/
+//
+//        //loc_add_quote = loc_add_quote.replaceAll( regex_Loc_first, add_quote + regex_Loc + add_quote );
+//
+//        //Log.e( "SOAP", "with quotes" + loc_add_quote);
+//
+//
+//
+//        /*for (String split_loc_for : split_Loc){
+//
+//            String[] split_loc_id = split_loc_for.split( regex_loc_id );
+//
+//
+//
+//        }*/
+//
+//
+//
+//
+//        /*for (String split_Loc_for : split_Loc){
+//
+//
+//
+//        }*/
+//
+//
+//
+//
+//        /*for (String split_loc_for : split_Loc){
+//
+//            String[] split_loc_id = split_loc_for.split( regex_loc_id );
+//
+//            Log.e( "SOAP", "split_loc_for = " + split_loc_for + " ///// split_loc_id = " + split_loc_id);
+//
+//            for (String split_loc_id_for : split_loc_id){
+//
+//                String[] split_users_id = split_loc_id_for.split( regex_users_id );
+//
+//                Log.e( "SOAP", "split_loc_for = " + split_loc_for + " ///// split_loc_id = " + split_loc_id + " ///// split_users_id = " + split_users_id);
+//
+//            }
+//
+//        }*/
+//
+//
+//
+//
+//
+//        /*for (String split_Loc_loop : split_Loc){
+//
+//            String[] split_loc_id = split_Loc_loop.split( regex_loc_id );
+//
+//            for (String split_loc_id_loop : split_loc_id){
+//
+//                String[] split_users_id = split_loc_id_loop.split( regex_users_id );
+//
+//                for (String split_users_id_loop : split_users_id){
+//
+//                    String[] split_lat = split_users_id_loop.split( regex_lat );
+//
+//                    for (String split_lat_loop : split_lat){
+//
+//                        String[] split_lng = split_lat_loop.split( regex_lat );
+//
+//                        for (String split_lng_loop : split_lng){
+//
+//                            String[] split_speed = split_lng_loop.split( regex_lat );
+//
+//                            for (String split_speed_loop : split_speed){
+//
+//                                String[] split_accel = split_speed_loop.split( regex_lat );
+//
+//                                for (String split_accel_loop : split_accel){
+//
+//                                    String[] split_accel_data = split_accel_loop.split( regex_semicolon );
+//
+//                                    Log.e( "SOAP", "loc_id: " + split_loc_id_loop + "/ users_id: " + split_users_id_loop + "/ lat: " + split_lat_loop + "/ lng: " + split_lng_loop + "/ speed: " + split_speed_loop + "/ accel: " + split_accel + "/ accel_semicolon: " + split_accel_data );
+//
+//                                }
+//                            }
+//
+//                        }
+//
+//                    }
+//
+//                }
+//
+//            }
+//
+//        }*/
+//
+//
+//
+//
+//    }
+//
+//
+//    /*public void parseXML(){
+//
+//
+//        try {
+//            SAXParserFactory saxFactory = SAXParserFactory.newInstance();
+//            SAXParser saxParser = saxFactory.newSAXParser(  );
+//            saxParser.parse( IOUtils.toInputStream( resp ), new DefaultHandler(){
+//                ArrayList<String> list = new ArrayList<>(  );
+//                String msg = "";
+//                @Override
+//                public void characters(char[] ch, int start, int length) throws SAXException {
+//                    super.characters( ch, start, length );
+//                    msg = new String( ch, start, length );
+//                }
+//
+//                @Override
+//                public void endElement(String uri, String localName, String qName) throws SAXException {
+//                    super.endElement( uri, localName, qName );
+//
+//                    if (qName.equals( "loc_id_global" )){
+//                        list.add( msg );
+//                    }
+//                    if (qName.equals( "return" )){
+//                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>( MainMenu.this, android.R.layout.simple_list_item_single_choice );
+//                    }
+//                }
+//            } );
+//
+//        } catch (ParserConfigurationException e) {
+//            e.printStackTrace();
+//        } catch (SAXException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//    }*/
 
 
 

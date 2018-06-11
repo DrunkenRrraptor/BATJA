@@ -28,9 +28,6 @@ public class Main3Activity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver;
     DatabaseManagement dbm = DatabaseManagement.getInstance( this );
 
-    private TextView latView;
-    private TextView lngView;
-    private TextView speedView;
 
     @Override
     protected void onResume() {
@@ -45,12 +42,28 @@ public class Main3Activity extends AppCompatActivity {
                 @Override
                 public void onReceive(Context context, Intent intent) {
 
+                    if (i == 0){
+                        textView.setText( "" );
+                        i = 1;
+                    }
+
+                    textView.append("\n" + intent.getExtras().get("coordinates"));
+
+                    /*Bundle extras = getIntent().getExtras();
+                    String lat_string = extras.getString("EXTRA_LAT");
+                    String lng_string = extras.getString("EXTRA_LNG");
+                    String speed_string = extras.getString("EXTRA_SPEED");*/
+
+                    /*latView.setText( lat_string );
+                    lngView.setText( lng_string );
+                    speedView.setText( speed_string );*/
+
                     //textView.append("\n" + intent.getExtras().get("coordinates"));
                     //latView.append("\n" + intent.getExtras().get("coordinates"));
 
-                    latView.append( Double.toString( (Double) intent.getExtras().get( "lat" ) ) + "\n");
-                    lngView.append( Double.toString( (Double) intent.getExtras().get( "lng" ) ) + "\n");
-                    speedView.append( Double.toString( (Double) intent.getExtras().get( "speed" ) ) + "\n");
+                    //latView.append( Double.toString( (Double) intent.getExtras().get( "lat" ) ) + "\n");
+                    //lngView.append( Double.toString( (Double) intent.getExtras().get( "lng" ) ) + "\n");
+                    //speedView.append( Double.toString( (Double) intent.getExtras().get( "speed" ) ) + "\n");
 
                     /*latView.setText( latView.getText() + Double.toString( (Double) intent.getExtras().get( "lat" ) ) + "\n");
                     lngView.setText( lngView.getText() + Double.toString( (Double) intent.getExtras().get( "lng" ) ) + "\n");
@@ -67,7 +80,11 @@ public class Main3Activity extends AppCompatActivity {
                             Double.toString( gps_list.get( i ).getLoc_lng() ) + " " +
                             Double.toString( gps_list.get( i ).getLoc_speed() ));*/
 
-                    i++;
+                    //i++;
+
+                    Log.e( "TRACK", "tracking activity" );
+
+
 
                 }
             };
@@ -88,13 +105,16 @@ public class Main3Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
 
+        textView = (TextView) findViewById(R.id.textView);
+        textView.setText( "no data yet" );
+
+        i = 0;
+
         btn_start = (Button) findViewById(R.id.button_startS);
         btn_stop = (Button) findViewById(R.id.button_stopS);
 
         //textView = (TextView) findViewById(R.id.textView_locS);
-        latView = (TextView) findViewById( R.id.textView_locS );
-        lngView = (TextView) findViewById( R.id.textView_locS2 );
-        speedView = (TextView) findViewById( R.id.textView_locS3 );
+
 
         if(!runtime_permissions())
             enable_buttons();
