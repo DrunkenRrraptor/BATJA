@@ -103,14 +103,14 @@ public class GPS_Service extends Service implements SensorEventListener{
             public void onLocationChanged(Location location) {
 
                 Intent i = new Intent("location_update");
-                i.putExtra("coordinates",Double.toString( round( location.getLongitude(), 5 ) ) + " // " + Double.toString( round( location.getLatitude(), 5 ) ) + " // " + Double.toString( round( location.getSpeed() * Constants.CONST_KMH_TO_MS, 1 )  ) + " km/h");
+                i.putExtra("coordinates",Double.toString( round( location.getLatitude(), 5 ) ) + " // " + Double.toString( round( location.getLongitude(), 5 ) ) + " // " + Double.toString( round( location.getSpeed() * Constants.CONST_KMH_TO_MS, 1 )  ) + " km/h");
                 sendBroadcast(i);
 
-                /*Intent i = new Intent( "location_update" );
+                //Intent i = new Intent( "location_update" );
 
                 double lat = location.getLatitude();
                 double lng = location.getLongitude();
-                double speed = location.getSpeed();*/
+                double speed = location.getSpeed();
 
                 /*Intent intent = new Intent("location_update");
                 Bundle extras = new Bundle();
@@ -144,10 +144,10 @@ public class GPS_Service extends Service implements SensorEventListener{
 
                 //dbm.addLocation( lat, lng, speed );
 
-                /*GPS_Class gps_instance = new GPS_Class( lat, lng, speed, accel_norm);
+                GPS_Class gps_instance = new GPS_Class( lat, lng, speed, accel_norm);
                 dbm.addLocation( gps_instance );
 
-                postLoc(gps_instance);*/
+                postLoc(gps_instance);
 
             }
 

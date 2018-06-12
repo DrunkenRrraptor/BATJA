@@ -43,6 +43,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     int m;
     private RequestQueue requestQuestJSONIncoming;
 
+    private List<GPS_Class> gps_listAll = new ArrayList<>(  );
+    private GPS_Class gps_class_instance = new GPS_Class();
+
     private int arraySize = 0;
 
     private int count_loops = 0;
@@ -197,7 +200,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                             JSONArray jsonArray = response.getJSONArray("loc");
 
                             arraySize = jsonArray.length();
-                            //dbm.setCount_records_all( arraySize );
+                            dbm.setCount_records_all( arraySize );
 
                             Log.e( "JSON", "json array length " + jsonArray.length());
 
@@ -223,6 +226,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
 
                                 dbm.addLocationFromJSON( gps_class, Constants.TABLE_GPS_STATS );
+                                gps_listAll.add( gps_class );
 
                                 calculateMyStats(users_id_global, lat, lng, speed, accel);
 
@@ -302,7 +306,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             case 0: Toast toast4 = Toast.makeText(this, "Your name and password are both wrong.", Toast.LENGTH_SHORT);
                     toast4.show();
                     break;
-            case 1: Toast toast5 = Toast.makeText(this, "Welcome. Please wait for a few seconds...", Toast.LENGTH_SHORT);
+            case 1: Toast toast5 = Toast.makeText(this, "Welcome // Loading data ...", Toast.LENGTH_SHORT);
                     Intent intent = new Intent(this, MainMenu.class);
                     toast5.show();
                     retrieveJSONonlineLoc();
@@ -408,9 +412,9 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
 
     private void retrieveJSONonlineUser(){
 
-        String urlJSONUsers = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_users.php";
+        //String urlJSONUsers = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_users.php";
 
-        JsonObjectRequest requestUsers = new JsonObjectRequest( Request.Method.GET, urlJSONUsers, null,
+        JsonObjectRequest requestUsers = new JsonObjectRequest( Request.Method.GET, Constants.URL_USERS, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -587,6 +591,11 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                 avg_accel_user = avg_accel_user / count_records_user;
                 dbm.setCount_records_user( count_records_user );
                 dbm.setCount_records_all( count_records_all );
+                dbm.setGps_listAll( gps_listAll );
+                dbm.setCount_loops( count_loops );
+                dbm.setCount_records_all( arraySize );
+
+                Log.e( "M2A", "countLoops: " + dbm.getCount_loops() + ", recordsAll: " + dbm.getCount_records_all() );
 
             }
 

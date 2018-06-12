@@ -78,6 +78,16 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         this.gps_list = gps_list;
     }
 
+    private List<GPS_Class> gps_listAll = new ArrayList<>(  );
+
+    public List<GPS_Class> getGps_listAll() {
+        return gps_listAll;
+    }
+
+    public void setGps_listAll(List<GPS_Class> gps_list) {
+        this.gps_listAll = gps_list;
+    }
+
     private static DatabaseManagement sInstance;
 
     private User_Class user_logged = new User_Class(  );
@@ -447,7 +457,35 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         db.execSQL( "DROP TABLE IF EXISTS " + Constants.TABLE_GPS );
-        onCreate( db );
+
+        db.beginTransaction();
+
+        try {
+
+            String CREATE_GPS_TABLE = "CREATE TABLE " + Constants.TABLE_GPS +
+                    " (" +
+                    Constants.KEY_GPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
+                    Constants.KEY_USERS_ID + " INTEGER, " +
+                    Constants.KEY_GPS_SYSDATE + " TIMESTAMP, " +
+                    Constants.KEY_GPS_LAT + " FLOAT, " +
+                    Constants.KEY_GPS_LONG + " FLOAT, " +
+                    Constants.KEY_GPS_SPEED + " FLOAT, " +
+                    Constants.KEY_GPS_ACCEL + " FLOAT, " +
+                    "CONSTRAINT fk_userID FOREIGN KEY (" + Constants.KEY_USERS_ID + ") REFERENCES " + Constants.TABLE_USERS + "(" + Constants.KEY_USERS_ID + ")" +
+                    ");";
+
+
+
+            db.execSQL( CREATE_GPS_TABLE );
+            db.setTransactionSuccessful();
+
+            Log.e( "DB", CREATE_GPS_TABLE );
+
+        } catch (Exception e) {
+            Log.e( "DB", "error in on create table gps again");
+        } finally {
+            db.endTransaction();
+        }
 
     }
 
@@ -671,7 +709,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
     }
 
 
-    public void deleteFromTable(String db_name) {
+    public void deleteFromTable(String table_name) {
 
         SQLiteDatabase db = getWritableDatabase();
 
@@ -684,7 +722,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         try {
 
 
-            statement = "DELETE FROM TABLE " + db_name;
+            statement = "DELETE FROM " + table_name;
 
             db.execSQL( statement );
 
@@ -838,7 +876,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
             gps_list.add( gps_data );
 
-            Log.e( "DB-GPS", "row 1 data: " + gps_data.getLoc_id() + " " + gps_data.getUser_id_fk() + " " + gps_data.getLoc_lat() + " " + gps_data.getLoc_lng() + " " + gps_data.getLoc_speed() + " " + gps_data.getAccel());
+            Log.e( "DB-GPS", "row " + i + " data: " + gps_data.getLoc_id() + " " + gps_data.getUser_id_fk() + " " + gps_data.getLoc_lat() + " " + gps_data.getLoc_lng() + " " + gps_data.getLoc_speed() + " " + gps_data.getAccel());
 
             c1.moveToNext();
 
@@ -1005,6 +1043,16 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
     }
 
+
+    public void addToGPSList(GPS_Class gps_instance){
+
+        List<GPS_Class> gps_list = new ArrayList<>(  );
+
+        gps_list.add( gps_instance );
+
+    }
+
+
         /*public long addOrUpdateUser(String userName, String password) {
             // The database connection is cached so it's not expensive to call getWriteableDatabase() multiple times.
             SQLiteDatabase db = getWritableDatabase();
@@ -1065,57 +1113,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
 
 
-    public void calculateMyStats(){
 
-        count_records_all = gps_list.size();
-
-/*        min_lat = gps_list.get( 0 ).getLoc_lat();
-        max_lat = gps_list.get( 0 ).getLoc_lat();
-        min_lng = gps_list.get( 0 ).getLoc_lng();
-        max_lng = gps_list.get( 0 ).getLoc_lng();*/
-
-        for (GPS_Class gps_list_inst : gps_list){
-
-            count_loops++;
-
-            avg_speed_all = avg_speed_all + gps_list_inst.getLoc_speed();
-            avg_accel_all = avg_accel_all + gps_list_inst.getAccel();
-
-            if (gps_list_inst.getUser_id_fk() == getUser_logged().getUsers_id_global()){
-
-                count_records_user++;
-
-                avg_speed_user = avg_speed_user + gps_list_inst.getLoc_speed();
-                avg_accel_user = avg_accel_user + gps_list_inst.getAccel();
-
-                min_lat_temp = gps_list_inst.getLoc_lat();
-                max_lat_temp = gps_list_inst.getLoc_lat();
-                min_lng_temp = gps_list_inst.getLoc_lng();
-                max_lng_temp = gps_list_inst.getLoc_lng();
-
-                if (min_lat_temp < min_lat)
-                    min_lat = min_lat_temp;
-                if (max_lat_temp > max_lat)
-                    max_lat = max_lat_temp;
-                if (min_lng_temp < min_lng)
-                    min_lng = min_lng_temp;
-                if (max_lng_temp > max_lng)
-                    max_lng = max_lng_temp;
-
-            }
-
-            if (count_loops == count_records_all){
-
-                avg_speed_all = avg_speed_all / count_records_all;
-                avg_accel_all = avg_accel_all / count_records_all;
-                avg_speed_user = avg_speed_user / count_records_user;
-                avg_accel_user = avg_accel_user / count_records_user;
-
-            }
-
-        }
-
-    }
 
 
 
