@@ -28,8 +28,6 @@ public class Acitivity_for_Testing extends AppCompatActivity {
 
     DatabaseManagement dbm;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );

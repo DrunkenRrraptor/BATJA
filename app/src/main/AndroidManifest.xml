@@ -45,12 +45,9 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".MapsActivity" />
-        <activity android:name=".Maps2Activity" />
-        <activity android:name=".ShowLocActivity" />
         <activity android:name=".Main3Activity" />
 
         <service android:name=".GPS_Service" />
-        <service android:name=".LocationManagement" />
 
         <activity android:name=".Acitivity_for_Testing" />
         <activity android:name=".MainMenu" />

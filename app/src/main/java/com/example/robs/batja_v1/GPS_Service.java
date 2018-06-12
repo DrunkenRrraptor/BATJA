@@ -70,10 +70,7 @@ public class GPS_Service extends Service implements SensorEventListener{
     int accel_leastG_dir = 0;
     double accel_norm = 0;
 
-
     private RequestQueue requestQuestJSONIncoming;
-
-
 
     @Nullable
     @Override
@@ -87,14 +84,11 @@ public class GPS_Service extends Service implements SensorEventListener{
         super.onCreate();
         requestQuestJSONIncoming = Volley.newRequestQueue( this );
 
-        //dbm = new DatabaseManagement( this );
         dbm = DatabaseManagement.getInstance( this );
-
 
         sm = (SensorManager)getSystemService(SENSOR_SERVICE);
         accelSensor = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sm.registerListener(this, accelSensor, SensorManager.SENSOR_DELAY_NORMAL);
-
 
         Log.e( "SRVC", "onCreate Service" );
 
@@ -106,43 +100,13 @@ public class GPS_Service extends Service implements SensorEventListener{
                 i.putExtra("coordinates",Double.toString( round( location.getLatitude(), 5 ) ) + " // " + Double.toString( round( location.getLongitude(), 5 ) ) + " // " + Double.toString( round( location.getSpeed() * Constants.CONST_KMH_TO_MS, 1 )  ) + " km/h");
                 sendBroadcast(i);
 
-                //Intent i = new Intent( "location_update" );
-
                 double lat = location.getLatitude();
                 double lng = location.getLongitude();
                 double speed = location.getSpeed();
 
-                /*Intent intent = new Intent("location_update");
-                Bundle extras = new Bundle();
-                extras.putString("EXTRA_LAT", Double.toString( location.getLatitude() ));
-                extras.putString("EXTRA_LNG", Double.toString( location.getLatitude() ));
-                extras.putString("EXTRA_SPEED", Double.toString( location.getSpeed() ));
-                intent.putExtras(extras);*/
-                //startActivity(intent);
-
-                //sendBroadcast( intent );
-
-                //i.putExtra( "coordinates", (String)(location.getLongitude() + " " + location.getLatitude() + " " + location.getSpeed()) );
-                //i.putExtra( "lat", lat );
-                //i.putExtra( "lng", lng );
-                //i.putExtra( "speed", speed );
-                //i.putExtra( "accel", accel );
-
-                /*Bundle bundle = new Bundle(  );
-
-                bundle.putString( "lat", String.valueOf( lat ) );
-                bundle.putString( "lng", String.valueOf( lng ) );
-                bundle.putString( "speed", String.valueOf( speed ) );
-                //bundle.putString( "accel", String.valueOf( accel_maxNotG ) );*/
-
                 sendBroadcast( i );
 
                 Log.e("SRVC", "onLocChanged");
-
-
-                //currentLoc = new LatLng( location.getLatitude(), location.getLongitude() );
-
-                //dbm.addLocation( lat, lng, speed );
 
                 GPS_Class gps_instance = new GPS_Class( lat, lng, speed, accel_norm);
                 dbm.addLocation( gps_instance );
@@ -201,12 +165,7 @@ public class GPS_Service extends Service implements SensorEventListener{
         }
     }
 
-
-
-
-
-
-    // Sensor Management
+    // Acceleration Sensor Management
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -214,10 +173,6 @@ public class GPS_Service extends Service implements SensorEventListener{
         accel[0] = event.values[0];             // x
         accel[1] = event.values[1];             // y
         accel[2] = event.values[2];             // z
-
-        // suche zweithöchste beschleunigung, weil höchste beschleunigung G ist
-
-
 
         if (accel[0] > accel[1]){
             if (accel[1] > accel[2]){
@@ -257,59 +212,6 @@ public class GPS_Service extends Service implements SensorEventListener{
             }
         }
 
-
-
-        /*if (accel[0] > accel[1]){
-            if (accel[0] > accel[2]){
-                if (accel[1] > accel[2]){
-                    accel_maxNotG_dir = 1;
-                } else {
-                    accel_maxNotG_dir = 2;
-                }
-            }
-            else {
-                if (accel[2] > accel[0]){
-                    accel_maxNotG_dir = 0;
-                } else {
-                    if (accel[1] > accel[2]){
-                        accel_maxNotG_dir = 1;
-                    }
-                    else {
-                        accel_maxNotG_dir = 2;
-                    }
-                }
-            }
-        } else if (accel[0] > accel[2]){
-            if (accel[1] > accel[2]){
-                if (accel[0] > accel[1]){
-                    accel_maxNotG_dir = 1;
-                } else {
-                    accel_maxNotG_dir = 0;
-                }
-            } else {
-                accel_maxNotG_dir = 1;
-            }
-        }*/
-
-
-
-
-             /*
-            } else {
-                accel_maxNotG = accel[0];
-                accel_maxNotG_dir = 0;
-            }
-        } else if (accel[1] > accel[2]){
-            if (accel[1] > accel[0]){
-                accel_maxNotG = accel[0];
-                accel_maxNotG_dir = 0;
-            } else {
-                accel_maxNotG = accel[1];
-                accel_maxNotG_dir = 1;
-            }
-        }*/
-
-
         accel_maxG = accel[accel_maxG_dir] - (SensorManager.GRAVITY_EARTH);
         accel_maxNotG = accel[accel_maxNotG_dir];
         accel_leastG = accel[accel_leastG_dir];
@@ -322,12 +224,6 @@ public class GPS_Service extends Service implements SensorEventListener{
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-
-
-
-
-
-
 
     public void postLoc(final GPS_Class gps_ins) {
         Thread thread = new Thread(new Runnable() {
@@ -350,16 +246,8 @@ public class GPS_Service extends Service implements SensorEventListener{
                     jsonParam.put( "speed", gps_ins.getLoc_speed() );
                     jsonParam.put( "accel", gps_ins.getAccel() );
 
-                    /*
-                    jsonParam.put("timestamp", 1488873360);
-                    jsonParam.put("uname", gps_ins.);
-                    jsonParam.put("message", message.getMessage());
-                    jsonParam.put("latitude", 0D);
-                    jsonParam.put("longitude", 0D);*/
-
                     Log.i("JSON", jsonParam.toString());
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                    //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
                     os.writeBytes(jsonParam.toString());
 
                     os.flush();
@@ -378,71 +266,6 @@ public class GPS_Service extends Service implements SensorEventListener{
         thread.start();
     }
 
-
-
-
-
-    private void retrieveJSONonlineUser(){
-
-        String urlJSONUsers = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_loc.php";
-
-        JsonObjectRequest requestUsers = new JsonObjectRequest( Request.Method.GET, urlJSONUsers, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("loc");
-
-                            for (int i = 0; i < jsonArray.length(); i++) {
-
-                                JSONObject loc = jsonArray.getJSONObject(i);
-
-                                int loc_id_global = loc.getInt("loc_id_global");
-                                int users_id_global = loc.getInt("users_id_global");
-                                //Date sys_date = loc.getString("sys_date" );
-                                double lat = loc.getDouble("lat");
-                                double lng = loc.getDouble("lng");
-                                double speed = loc.getDouble("speed");
-
-                                //Date date2 = System.currentTimeMillis();
-
-                                //textViewJSONOutput.append(String.valueOf(users_id_global) + ", " + users_name + ", " + users_password + "\n\n");
-
-                                GPS_Class gps_class = new GPS_Class( loc_id_global, users_id_global, lat, lng, speed  );
-
-                                dbm.addLocationFromJSON( gps_class, Constants.TABLE_GPS );
-
-
-
-                            }
-
-                            List<User_Class> user_listHelp = new ArrayList<>(  );
-                            user_listHelp = dbm.fetch_users();
-
-                            for (int h = 0; h < user_listHelp.size(); h++){
-
-                                Log.e("USR-L", "List of Users: (name) " + user_listHelp.get( h ).getUsers_name());
-                                //textViewJSONOutput.setText( user_listHelp.get( h ).getUsers_name());
-
-                            }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-
-        requestQuestJSONIncoming.add(requestUsers);
-
-    }
-
-
     public static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
@@ -450,7 +273,5 @@ public class GPS_Service extends Service implements SensorEventListener{
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
-
-
 
 }

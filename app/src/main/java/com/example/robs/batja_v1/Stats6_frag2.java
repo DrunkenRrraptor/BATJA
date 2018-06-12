@@ -18,7 +18,12 @@ import java.math.RoundingMode;
  */
 
 public class Stats6_frag2 extends Fragment {
-    private static final String TAG = "Stats6 - Frag2";
+
+    //
+    //
+    // STATS -> fragment for user general data
+    //
+    //
 
     private TextView textRecordsAll;
     private TextView textSpeedAll;
@@ -48,6 +53,7 @@ public class Stats6_frag2 extends Fragment {
 
     public void setTextsForAllStats(){
 
+        // set text in text views to data from dbm singleton
         textRecordsAll.setText( Integer.toString( dbm.getCount_records_all() ) );
         textSpeedAll.setText( Double.toString( round((dbm.getAvg_speed_all() * Constants.CONST_KMH_TO_MS), 2) ) + " km/h" );
         textAccelAll.setText( Double.toString( round((dbm.getAvg_accel_all()), 2)  ) + " m/s^2" );

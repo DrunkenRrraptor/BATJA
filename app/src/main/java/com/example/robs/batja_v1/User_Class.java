@@ -6,6 +6,12 @@ package com.example.robs.batja_v1;
 
 public class User_Class {
 
+    //
+    //
+    //  USER class
+    //
+    //
+
     private int users_id_global;
     private String users_name;
     private String users_password;

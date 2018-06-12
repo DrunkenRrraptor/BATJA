@@ -42,11 +42,15 @@ import javax.xml.parsers.SAXParserFactory;
 
 public class MainMenu extends AppCompatActivity implements View.OnClickListener {
 
+    //
+    //
+    // MAIN MENU to be shown after log in
+    //
+    //
+
     int arg;
     DatabaseManagement dbm = DatabaseManagement.getInstance( this );
     private RequestQueue requestQuestJSONIncoming;
-    String resp = "";
-    private List<GPS_Class> gps_list = new ArrayList<>(  );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +70,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         button_menu_map_big_bang.setOnClickListener( this );
         button_menu_stats.setOnClickListener( this );
 
-        //Button button_menu_track = (Button) findViewById( R.id.button_menu_track );
-        //button_menu_track.setOnClickListener( this );
-
     }
 
     @Override
@@ -81,18 +82,10 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         //gps_list.clear();
         //dbm.setGps_list( gps_list );
 
-        //GPS_Class gps_class = new GPS_Class( 0, 1, 48.239078, 16.378282, 0, 0 );
-
-        //gps_list.clear();
-        //gps_list.add( gps_class );
-        //dbm.setGps_list( gps_list );
-
-
     }
 
     @Override
     public void onClick(View v) {
-
 
         switch (v.getId()){
 
@@ -111,11 +104,11 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
             default: break;
 
-
         }
 
     }
 
+    // send via extra in intent information which data user wants to see in map
 
     private void buttonMenuMapNowOnClickHandler() {
 
@@ -142,13 +135,11 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         intent.putExtra( "VAL", arg );
         startActivity(intent);
 
-
-        //startActivityForResult( intent, 1 );
-
-
     }
 
     private void buttonMenuStatsOnClickHandler() {
+
+        // undo these comments fro SOAP
 
         //SOAPlocStatsAsynchTask soapLocATask = new SOAPlocStatsAsynchTask();
         //soapLocATask.execute(  );
@@ -170,12 +161,9 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
     private void retrieveJSONonlineLoc(int arg){
 
-        //dbm.onClearBoth();
-
         String urlJSONloc = "";
 
         //urlJSONloc = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_loc_moc_full.php";
-
 
         if(arg == 0)
             urlJSONloc = Constants.URL_1H_NOW;
@@ -199,12 +187,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
                             Log.e( "JSON", "json array length " + jsonArray.length());
 
-                            /*if (jsonArray.length() == 0){
-                                GPS_Class gps_class = new GPS_Class( 0, 1, 48.239078, 16.378282, 0, 0 );
-                                gps_list.add( gps_class );
-
-                            }*/
-
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject loc = jsonArray.getJSONObject(i);
@@ -217,51 +199,12 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                                 double speed = loc.getDouble( "speed" );
                                 double accel = loc.getDouble( "accel" );
 
-
-                                //textViewJSONOutput.append(String.valueOf(users_id_global) + ", " + users_name + ", " + users_password + "\n\n");
-
-                                //dbm.addUserFromJSON( users_id_global, users_name, users_password );
-
                                 GPS_Class gps_class = new GPS_Class( loc_id_global, users_id_global,
                                         lat, lng, speed, accel);
 
-
                                 dbm.addLocationFromJSON( gps_class, Constants.TABLE_GPS );
-                                //dbm.addToGPSList( gps_class );
-
-
-                                //gps_list.add( gps_class );
-
 
                             }
-
-                            //dbm.setGps_list( gps_list );
-
-
-                            //dbm.setGps_list( dbm.fetch_gps() );
-
-
-                            /*List<GPS_Class> gps_listHelp;
-                            gps_listHelp = dbm.fetch_gps();
-
-                            for (int h = 0; h < gps_listHelp.size(); h++){
-
-                                //textViewJSONOutput.setText( user_listHelp.get( h ).getUsers_id_global() + " " + user_listHelp.get( h ).getUsers_name() + " " + user_listHelp.get( h ).getUsers_password());
-                                //textViewJSONOutput.append( user_listHelp.get( h ).getUsers_id_global() + " " + user_listHelp.get( h ).getUsers_name() + " " + user_listHelp.get( h ).getUsers_password() + "\n");
-
-
-                            }*/
-
-
-                            /*List<User_Class> user_listHelp;
-                            user_listHelp = dbm.fetch_users();
-
-                            for (int h = 0; h < user_listHelp.size(); h++){
-
-                                textViewJSONOutput.setText( user_listHelp.get( h ).getUsers_name());
-
-                            }*/
-
 
                         } catch (JSONException e) {
 
@@ -286,6 +229,13 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
     }
 
+
+
+    //
+    //
+    // SOAP
+    //
+    //
 
 
 

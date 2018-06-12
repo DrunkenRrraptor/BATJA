@@ -21,13 +21,17 @@ import java.util.concurrent.BrokenBarrierException;
 
 public class Main3Activity extends AppCompatActivity {
 
+    //
+    //
+    // SHOW CURRENT TRACKED LOCATION
+    //
+    //
 
     int i = 0;
     private Button btn_start, btn_stop;
     private TextView textView;
     private BroadcastReceiver broadcastReceiver;
     DatabaseManagement dbm = DatabaseManagement.getInstance( this );
-
 
     @Override
     protected void onResume() {
@@ -47,49 +51,16 @@ public class Main3Activity extends AppCompatActivity {
                         i = 1;
                     }
 
+                    // get data in already formatted string from gps service via broadcast
+
                     textView.append("\n" + intent.getExtras().get("coordinates"));
 
-                    /*Bundle extras = getIntent().getExtras();
-                    String lat_string = extras.getString("EXTRA_LAT");
-                    String lng_string = extras.getString("EXTRA_LNG");
-                    String speed_string = extras.getString("EXTRA_SPEED");*/
-
-                    /*latView.setText( lat_string );
-                    lngView.setText( lng_string );
-                    speedView.setText( speed_string );*/
-
-                    //textView.append("\n" + intent.getExtras().get("coordinates"));
-                    //latView.append("\n" + intent.getExtras().get("coordinates"));
-
-                    //latView.append( Double.toString( (Double) intent.getExtras().get( "lat" ) ) + "\n");
-                    //lngView.append( Double.toString( (Double) intent.getExtras().get( "lng" ) ) + "\n");
-                    //speedView.append( Double.toString( (Double) intent.getExtras().get( "speed" ) ) + "\n");
-
-                    /*latView.setText( latView.getText() + Double.toString( (Double) intent.getExtras().get( "lat" ) ) + "\n");
-                    lngView.setText( lngView.getText() + Double.toString( (Double) intent.getExtras().get( "lng" ) ) + "\n");
-                    speedView.setText( speedView.getText() + Double.toString( (Double) intent.getExtras().get( "speed" ) ) + "\n");*/
-
-
-                    /*List<GPS_Class> gps_list = dbm.fetch_gps();
-
-                    latView.append( Double.toString( gps_list.get( i ).getLoc_lat() ) + "\n" );
-                    lngView.append( Double.toString( gps_list.get( i ).getLoc_lng() ) + "\n" );
-                    speedView.append( Double.toString( gps_list.get( i ).getLoc_speed() ) + "\n" );*/
-
-                    /*textView.append(Double.toString( gps_list.get( i ).getLoc_lat() ) + " " +
-                            Double.toString( gps_list.get( i ).getLoc_lng() ) + " " +
-                            Double.toString( gps_list.get( i ).getLoc_speed() ));*/
-
-                    //i++;
-
                     Log.e( "TRACK", "tracking activity" );
-
-
 
                 }
             };
         }
-        registerReceiver(broadcastReceiver,new IntentFilter("location_update"));
+        registerReceiver(broadcastReceiver, new IntentFilter("location_update"));
     }
 
     @Override
@@ -113,14 +84,12 @@ public class Main3Activity extends AppCompatActivity {
         btn_start = (Button) findViewById(R.id.button_startS);
         btn_stop = (Button) findViewById(R.id.button_stopS);
 
-        //textView = (TextView) findViewById(R.id.textView_locS);
-
-
         if(!runtime_permissions())
             enable_buttons();
 
     }
 
+    // start/stop tracking
     public void enable_buttons() {
 
         Log.e("LOC", "enableButtons");
@@ -136,7 +105,6 @@ public class Main3Activity extends AppCompatActivity {
             }
         });
 
-
         btn_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,6 +119,7 @@ public class Main3Activity extends AppCompatActivity {
 
     }
 
+    // check for permissions
     private boolean runtime_permissions() {
         if(Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
 
@@ -162,7 +131,6 @@ public class Main3Activity extends AppCompatActivity {
         }
         return false;
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

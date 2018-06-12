@@ -20,54 +20,6 @@ import java.util.zip.CheckedOutputStream;
 
 public class DatabaseManagement extends SQLiteOpenHelper {
 
-
-   /* DatabaseHelper dbHelper;
-
-    public DatabaseManagement(Context applicationContext) {
-        super();
-
-        dbHelper = new DatabaseHelper( applicationContext );
-
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-    }
-
-
-    static class DatabaseHelper extends SQLiteOpenHelper {*/
-
-    /*
-    // Database Info
-    private static final String DATABASE_NAME = "batjaDatabase_";
-    private static final int DATABASE_VERSION = 1;
-
-    // Table Names
-    private static final String TABLE_USERS = "users_3";
-    private static final String TABLE_GPS = "gps_3";
-
-    // User_Class Table Columns
-    private static final String KEY_USERS_ID = "users_id";
-    private static final String KEY_USERS_NAME = "users_name";
-    private static final String KEY_USERS_PASSWORD = "users_password";
-
-    // GPS Table Columns
-    private static final String KEY_GPS_ID = "gps_id";
-    private static final String KEY_GPS_SYSDATE = "gps_sys_date";
-    private static final String KEY_GPS_LAT = "gps_lat";
-    private static final String KEY_GPS_LONG = "gps_long";
-    private static final String KEY_GPS_SPEED = "gps_speed";
-    */
-
-
-    private static final String DB_FULL_PATH = "";
-
     private List<GPS_Class> gps_list = new ArrayList<>(  );
 
     public List<GPS_Class> getGps_list() {
@@ -255,10 +207,6 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         this.avg_accel_all = avg_accel_all;
     }
 
-    /*public DatabaseHelper() {
-            super();
-        }*/
-
     public static synchronized DatabaseManagement getInstance(Context context) {
         // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
@@ -268,12 +216,6 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         }
         return sInstance;
     }
-
-    /*
-    public DatabaseManagement(Context context) {
-        super( context, DATABASE_NAME, null, DATABASE_VERSION );
-    }
-     */
 
     private DatabaseManagement(Context context) {
         super( context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION );
@@ -285,51 +227,6 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         db.setForeignKeyConstraintsEnabled( true );
     }
 
-
-    /*
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-
-        Log.i("DB", "START");
-
-        db.beginTransaction();
-
-        try {
-            String CREATE_USERS_TABLE = "CREATE TABLE " + TABLE_USERS +
-                    " (" +
-                    KEY_USERS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
-                    KEY_USERS_NAME + " TEXT, " +
-                    KEY_USERS_PASSWORD + " TEXT" +
-                    ");";
-
-            db.execSQL( CREATE_USERS_TABLE );
-
-            String CREATE_GPS_TABLE = "CREATE TABLE " + TABLE_GPS +
-                    " (" +
-                    KEY_GPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
-                    KEY_GPS_SYSDATE + " TEXT, " +
-                    KEY_GPS_LAT + " FLOAT, " +
-                    KEY_GPS_LONG + " FLOAT, " +
-                    KEY_GPS_SPEED + " FLOAT" +
-                    ");";
-
-            db.execSQL( CREATE_GPS_TABLE );
-            db.setTransactionSuccessful();
-
-            Log.e( "DB", CREATE_GPS_TABLE );
-            Log.e( "DB", CREATE_USERS_TABLE );
-
-
-        } catch (Exception e) {
-            Log.e( "DB", "error in on create tables");
-        } finally {
-            db.endTransaction();
-        }
-
-
-    }
-     */
-
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -340,40 +237,36 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         try {
             String CREATE_USERS_TABLE = "CREATE TABLE " + Constants.TABLE_USERS +
                     " (" +
-                    Constants.KEY_USERS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
+                    Constants.KEY_USERS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // primary key
                     Constants.KEY_USERS_NAME + " TEXT, " +
                     Constants.KEY_USERS_PASSWORD + " TEXT" +
                     ");";
 
             db.execSQL( CREATE_USERS_TABLE );
 
-//          String CREATE_GPS_TABLE = "CREATE TABLE " + Constants.TABLE_GPS +
             String CREATE_GPS_TABLE = "CREATE TABLE " + Constants.TABLE_GPS +
                     " (" +
-                    Constants.KEY_GPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
+                    Constants.KEY_GPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // primary key
                     Constants.KEY_USERS_ID + " INTEGER, " +
                     Constants.KEY_GPS_SYSDATE + " TIMESTAMP, " +
                     Constants.KEY_GPS_LAT + " FLOAT, " +
                     Constants.KEY_GPS_LONG + " FLOAT, " +
                     Constants.KEY_GPS_SPEED + " FLOAT, " +
                     Constants.KEY_GPS_ACCEL + " FLOAT, " +
-                    "CONSTRAINT fk_userID FOREIGN KEY (" + Constants.KEY_USERS_ID + ") REFERENCES " + Constants.TABLE_USERS + "(" + Constants.KEY_USERS_ID + ")" +
+                    "CONSTRAINT fk_userID FOREIGN KEY (" + Constants.KEY_USERS_ID + ") REFERENCES " + Constants.TABLE_USERS + "(" + Constants.KEY_USERS_ID + ")" + // foreign key user_id references from loc to user
                     ");";
 
             String CREATE_GPS_TABLE_STATS = "CREATE TABLE " + Constants.TABLE_GPS_STATS +
                     " (" +
-                    Constants.KEY_GPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
+                    Constants.KEY_GPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // primary key
                     Constants.KEY_USERS_ID + " INTEGER, " +
                     Constants.KEY_GPS_SYSDATE + " TIMESTAMP, " +
                     Constants.KEY_GPS_LAT + " FLOAT, " +
                     Constants.KEY_GPS_LONG + " FLOAT, " +
                     Constants.KEY_GPS_SPEED + " FLOAT, " +
                     Constants.KEY_GPS_ACCEL + " FLOAT, " +
-                    "CONSTRAINT fk_userID FOREIGN KEY (" + Constants.KEY_USERS_ID + ") REFERENCES " + Constants.TABLE_USERS + "(" + Constants.KEY_USERS_ID + ")" +
+                    "CONSTRAINT fk_userID FOREIGN KEY (" + Constants.KEY_USERS_ID + ") REFERENCES " + Constants.TABLE_USERS + "(" + Constants.KEY_USERS_ID + ")" + // foreign key user_id references from loc to user
                     ");";
-
-
-            //CONSTRAINT fk_abt FOREIGN KEY (Abt_Nr) REFERENCES Abteilungen(Abt_Nr)
 
             db.execSQL( CREATE_GPS_TABLE );
             db.execSQL( CREATE_GPS_TABLE_STATS);
@@ -390,22 +283,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
             db.endTransaction();
         }
 
-
     }
-
-    /*
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        if (oldVersion != newVersion) {
-            // Simplest implementation is to drop all old tables and recreate them
-            db.execSQL( "DROP TABLE IF EXISTS " + TABLE_GPS );
-            db.execSQL( "DROP TABLE IF EXISTS " + TABLE_USERS );
-            onCreate( db );
-        }
-
-    }
-     */
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -420,21 +298,9 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
     }
 
-    /*
     public void onClearBoth(){
 
         SQLiteDatabase db = getWritableDatabase();
-
-        db.execSQL( "DROP TABLE IF EXISTS " + TABLE_GPS );
-        db.execSQL( "DROP TABLE IF EXISTS " + TABLE_USERS );
-        onCreate( db );
-
-    }*/
-
-    public void onClearBoth(){
-
-        SQLiteDatabase db = getWritableDatabase();
-
 
         db.execSQL( "DROP TABLE IF EXISTS " + Constants.TABLE_GPS );
         db.execSQL( "DROP TABLE IF EXISTS " + Constants.TABLE_GPS_STATS );
@@ -464,17 +330,15 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
             String CREATE_GPS_TABLE = "CREATE TABLE " + Constants.TABLE_GPS +
                     " (" +
-                    Constants.KEY_GPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // Define a primary key
+                    Constants.KEY_GPS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + // primary key
                     Constants.KEY_USERS_ID + " INTEGER, " +
                     Constants.KEY_GPS_SYSDATE + " TIMESTAMP, " +
                     Constants.KEY_GPS_LAT + " FLOAT, " +
                     Constants.KEY_GPS_LONG + " FLOAT, " +
                     Constants.KEY_GPS_SPEED + " FLOAT, " +
                     Constants.KEY_GPS_ACCEL + " FLOAT, " +
-                    "CONSTRAINT fk_userID FOREIGN KEY (" + Constants.KEY_USERS_ID + ") REFERENCES " + Constants.TABLE_USERS + "(" + Constants.KEY_USERS_ID + ")" +
+                    "CONSTRAINT fk_userID FOREIGN KEY (" + Constants.KEY_USERS_ID + ") REFERENCES " + Constants.TABLE_USERS + "(" + Constants.KEY_USERS_ID + ")" + // foreign key user_id references from loc to user
                     ");";
-
-
 
             db.execSQL( CREATE_GPS_TABLE );
             db.setTransactionSuccessful();
@@ -488,37 +352,6 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         }
 
     }
-
-    /*
-    public void addUser(String userName, String password) {
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        db.beginTransaction();
-
-        String ADD_USERS = "";
-
-        try {
-
-            ADD_USERS = "INSERT INTO " + TABLE_USERS +
-                    " (" +
-                    KEY_USERS_NAME + ", " +
-                    KEY_USERS_PASSWORD + ") VALUES ('" +
-                    userName + "', '" +
-                    password + "');";
-
-            db.execSQL( ADD_USERS );
-            Log.e( "DB", ADD_USERS);
-            db.setTransactionSuccessful();
-
-        } catch (Exception e) {
-            Log.e( "DB", "error in insert - users" + ADD_USERS);
-        } finally {
-            db.endTransaction();
-        }
-
-    }
-     */
 
     public void addUser(String userName, String password) {
 
@@ -555,8 +388,6 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
         db.beginTransaction();
 
-
-
         String ADD_USERS = "";
 
         try {
@@ -581,47 +412,6 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         }
 
     }
-
-    /*
-    public void addLocation(double lat, double lng, double speed){
-
-        long date = System.currentTimeMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString = sdf.format(date);
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        String ADD_GPS = "";
-
-        db.beginTransaction();
-
-        try {
-
-            ADD_GPS = "INSERT INTO " + TABLE_USERS +
-                    " (" +
-                    KEY_GPS_SYSDATE + ", " +
-                    KEY_GPS_LAT +
-                    KEY_GPS_LONG +
-                    KEY_GPS_LAT + ") VALUES ('" +
-                    dateString + "', '" +
-                    lat + "', '" +
-                    lng + "', '" +
-                    speed + "');";
-
-                db.execSQL( ADD_GPS );
-
-                Log.e( "DB", ADD_GPS );
-                db.setTransactionSuccessful();
-
-        } catch (Exception e) {
-            Log.e( "DB", "error in add gps" + ADD_GPS );
-        } finally {
-            db.endTransaction();
-        }
-
-    }
-     */
-
 
     public void addLocationFromJSON(GPS_Class gps_class, String table){
 
@@ -667,7 +457,6 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
     }
 
-
     public void addLocation(GPS_Class gps_ins){
 
         long date = System.currentTimeMillis();
@@ -708,19 +497,15 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
     }
 
-
     public void deleteFromTable(String table_name) {
 
         SQLiteDatabase db = getWritableDatabase();
 
         String statement = "";
 
-
-
         db.beginTransaction();
 
         try {
-
 
             statement = "DELETE FROM " + table_name;
 
@@ -734,52 +519,7 @@ public class DatabaseManagement extends SQLiteOpenHelper {
             db.endTransaction();
         }
 
-
-
     }
-
-    /*
-    public int checkUser(String userName, String password) {
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        int m = 0;                                                                              // m = 0 ... nichts stimmt
-
-        //  String CHECK_USER_COMPLETLY_RIGHT = "SELECT * FROM " + TABLE_USERS +
-        //        " WHERE " + KEY_USERS_NAME + " = " + userName +
-        //      " AND " + KEY_USERS_PASSWORD + " = " + password + ";";
-
-        String CHECK_USER_COMPLETELY_RIGHT =
-                "SELECT * FROM " + TABLE_USERS +
-                        " WHERE " + KEY_USERS_NAME + " = ?" +
-                        " AND " + KEY_USERS_PASSWORD + " = ?;";
-
-
-        Cursor c1 = db.rawQuery( CHECK_USER_COMPLETELY_RIGHT, new String[]{userName, password} );
-
-        String CHECK_USER_PARTLY_RIGHT =
-                "SELECT * FROM " + TABLE_USERS +
-                        " WHERE " + KEY_USERS_NAME + " != ?";
-
-        Cursor c2 = db.rawQuery( CHECK_USER_PARTLY_RIGHT, new String[]{userName} );
-
-
-        if (c2.moveToNext()) {
-            // username stimmt, passwort auch
-
-            m = 1;                                                                              // m = 1 ... name und passwort stimmen
-
-        } else if (c1.moveToNext()) {
-            // username stimmt, passwort nicht                                                  // m = 2 ... name stimmt, passwort nicht
-
-            m = 2;
-
-        }
-
-        return m;
-
-    }
-     */
 
     public List<GPS_Class> fetch_gps(){
 
@@ -789,7 +529,6 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
-
         List<GPS_Class> gps_list = new ArrayList<>(  );
 
         String FETCH_GPS_DATA =
@@ -798,9 +537,6 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         Log.e( "DB-GPS", "query: " +  FETCH_GPS_DATA);
 
         Cursor c1 = db.rawQuery( FETCH_GPS_DATA, new String[]{} );
-        //Cursor c1 = db.rawQuery( FETCH_GPS_DATA, new String[]{""} );
-
-        //Cursor c1 = db.query( Constants.TABLE_GPS, null, null, null,  null, null, null);
 
         int count_rows = c1.getCount();
 
@@ -812,57 +548,11 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
         Log.e( "DB-GPS", "count rows: " + count_rows );
 
-
-        /*while(c1.moveToNext()){
-
-            try {
-                loc_temp_date = sdf.parse( c1.getString( 2 ) );
-
-                Log.e( "DB-GPS", "TRY: statement fetching gps: " + FETCH_GPS_DATA );
-                Log.e( "DB-GPS", "fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
-
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-
-                Log.e( "DB-GPS", "CATCH - ERROR: statement fetching gps: " + FETCH_GPS_DATA );
-                Log.e( "DB-GPS", "ERROR in fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
-
-            }
-
-            gps_data.setLoc_id( c1.getInt( 1 ) );
-            //gps_data.setLoc_date( loc_temp_date );
-            gps_data.setLoc_lat( c1.getFloat( 3 ) );
-            gps_data.setLoc_lng( c1.getFloat( 4 ) );
-            gps_data.setLoc_speed( c1.getFloat( 5 ) );
-
-            gps_list.add( gps_data );
-
-            Log.e( "DB-GPS", "row 1 data: " + gps_data.getLoc_id() + gps_data.getLoc_lat() + gps_data.getLoc_lng() + gps_data.getLoc_speed());
-
-
-        }*/
-
         c1.moveToFirst();
 
         for (int i = 0; i < count_rows; i++){
 
             GPS_Class gps_data = new GPS_Class(  );
-
-            /*try {
-                loc_temp_date = sdf.parse( c1.getString( 2 ) );
-
-                Log.e( "DB-GPS", "TRY: statement fetching gps: " + FETCH_GPS_DATA );
-                Log.e( "DB-GPS", "fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
-
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-
-                Log.e( "DB-GPS", "CATCH - ERROR: statement fetching gps: " + FETCH_GPS_DATA );
-                Log.e( "DB-GPS", "ERROR in fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
-
-            }*/
 
             Log.e( "DB-GPS", "rows: " + c1.getInt( 0 ) + c1.getInt( 1 ) + c1.getFloat( 3 ) + c1.getFloat( 4 ) + c1.getFloat( 5 ) );
 
@@ -882,19 +572,13 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
         }
 
-
-
         return gps_list;
 
     }
 
-
-
     public List<User_Class> fetch_users(){
 
-
         SQLiteDatabase db = getWritableDatabase();
-
 
         List<User_Class> user_list = new ArrayList<>(  );
 
@@ -904,65 +588,16 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         Log.e( "DB-USR", "query: " +  FETCH_USR_DATA);
 
         Cursor c1 = db.rawQuery( FETCH_USR_DATA, new String[]{} );
-        //Cursor c1 = db.rawQuery( FETCH_GPS_DATA, new String[]{""} );
-
-        //Cursor c1 = db.query( Constants.TABLE_GPS, null, null, null,  null, null, null);
 
         int count_rows = c1.getCount();
 
         Log.e( "DB-USR", "count rows: " + count_rows );
-
-
-        /*while(c1.moveToNext()){
-
-            try {
-                loc_temp_date = sdf.parse( c1.getString( 2 ) );
-
-                Log.e( "DB-GPS", "TRY: statement fetching gps: " + FETCH_GPS_DATA );
-                Log.e( "DB-GPS", "fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
-
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-
-                Log.e( "DB-GPS", "CATCH - ERROR: statement fetching gps: " + FETCH_GPS_DATA );
-                Log.e( "DB-GPS", "ERROR in fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
-
-            }
-
-            gps_data.setLoc_id( c1.getInt( 1 ) );
-            //gps_data.setLoc_date( loc_temp_date );
-            gps_data.setLoc_lat( c1.getFloat( 3 ) );
-            gps_data.setLoc_lng( c1.getFloat( 4 ) );
-            gps_data.setLoc_speed( c1.getFloat( 5 ) );
-
-            gps_list.add( gps_data );
-
-            Log.e( "DB-GPS", "row 1 data: " + gps_data.getLoc_id() + gps_data.getLoc_lat() + gps_data.getLoc_lng() + gps_data.getLoc_speed());
-
-
-        }*/
 
         c1.moveToFirst();
 
         for (int i = 0; i < count_rows; i++){
 
             User_Class user_data = new User_Class(  );
-
-            /*try {
-                loc_temp_date = sdf.parse( c1.getString( 2 ) );
-
-                Log.e( "DB-GPS", "TRY: statement fetching gps: " + FETCH_GPS_DATA );
-                Log.e( "DB-GPS", "fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
-
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-
-                Log.e( "DB-GPS", "CATCH - ERROR: statement fetching gps: " + FETCH_GPS_DATA );
-                Log.e( "DB-GPS", "ERROR in fetching gps data; date was: " + loc_temp_date + c1.getString( 2 ) );
-
-            }*/
 
             Log.e( "DB-USR", "rows: " + c1.getInt( 0 ) + c1.getString( 1 ) + c1.getString( 2 ));
 
@@ -975,37 +610,25 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
             Log.e( "DB-GPS", "row " + i + " data: " + user_data.getUsers_id_global() + " " + user_data.getUsers_name() + " " + user_data.getUsers_password());
 
-
             c1.moveToNext();
 
         }
-
 
         for (int i = 0; i < user_list.size(); i++){
 
             Log.e( "DB-GPS", "LIST: row " + i + " data: " + user_list.get( i ).getUsers_id_global() + " " + user_list.get( i ).getUsers_name() + " " + user_list.get( i ).getUsers_password());
 
-
         }
-
-
 
         return user_list;
 
     }
-
-
-
 
     public int checkUser(String userName, String password) {
 
         SQLiteDatabase db = getWritableDatabase();
 
         int m = 0;                                                                              // m = 0 ... nichts stimmt
-
-        //  String CHECK_USER_COMPLETLY_RIGHT = "SELECT * FROM " + TABLE_USERS +
-        //        " WHERE " + KEY_USERS_NAME + " = " + userName +
-        //      " AND " + KEY_USERS_PASSWORD + " = " + password + ";";
 
         String CHECK_USER_COMPLETELY_RIGHT =
                 "SELECT * FROM " + Constants.TABLE_USERS +
@@ -1021,7 +644,6 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
         Cursor c2 = db.rawQuery( CHECK_USER_PARTLY_RIGHT, new String[]{userName, password} );
 
-
         if (c1.moveToNext()) {
             // username stimmt, passwort auch
 
@@ -1030,11 +652,9 @@ public class DatabaseManagement extends SQLiteOpenHelper {
             setUser_id( c1.getInt( 0 ) );
             setUser_logged( new User_Class(c1.getInt( 0 ), c1.getString( 1 ), c1.getString( 2 )) );
 
-
         } else if (c2.moveToNext()) {
             // username stimmt, passwort nicht                                                  // m = 2 ... name stimmt, passwort nicht
                                                                                                         // ... c2
-
             m = 2;
 
         }
@@ -1043,7 +663,6 @@ public class DatabaseManagement extends SQLiteOpenHelper {
 
     }
 
-
     public void addToGPSList(GPS_Class gps_instance){
 
         List<GPS_Class> gps_list = new ArrayList<>(  );
@@ -1051,70 +670,5 @@ public class DatabaseManagement extends SQLiteOpenHelper {
         gps_list.add( gps_instance );
 
     }
-
-
-        /*public long addOrUpdateUser(String userName, String password) {
-            // The database connection is cached so it's not expensive to call getWriteableDatabase() multiple times.
-            SQLiteDatabase db = getWritableDatabase();
-            long userId = -1;
-
-            db.beginTransaction();
-            try {
-                ContentValues values = new ContentValues();
-                values.put(KEY_USERS_NAME, userName);
-
-                // First try to update the user in case the user already exists in the database
-                // This assumes userNames are unique
-                int rows = db.update(TABLE_USERS, values, KEY_USERS_NAME + "= ?", new String[]{userName});
-
-                // Check if update succeeded
-                if (rows == 1) {
-                    // Get the primary key of the user we just updated
-                    String usersSelectQuery = String.format("SELECT %s FROM %s WHERE %s = ?",
-                            KEY_USERS_ID, TABLE_USERS, KEY_USERS_NAME);
-                    Cursor cursor = db.rawQuery(usersSelectQuery, new String[]{String.valueOf(userName)});
-                    try {
-                        if (cursor.moveToFirst()) {
-                            userId = cursor.getInt(0);
-                            db.setTransactionSuccessful();
-                        }
-                    } finally {
-                        if (cursor != null && !cursor.isClosed()) {
-                            cursor.close();
-                        }
-                    }
-                } else {
-                    // user with this userName did not already exist, so insert new user
-                    userId = db.insertOrThrow(TABLE_USERS, null, values);
-                    db.setTransactionSuccessful();
-                }
-            } catch (Exception e) {
-                Log.d(TAG, "Error while trying to add or update user");
-            } finally {
-                db.endTransaction();
-            }
-            return userId;
-        }*/
-
-       /* private boolean checkDataBase() {
-            SQLiteDatabase checkDB = null;
-            try {
-                checkDB = SQLiteDatabase.openDatabase();
-                checkDB = SQLiteDatabase.openDatabase(DB_FULL_PATH, null,
-                        SQLiteDatabase.OPEN_READONLY);
-                checkDB.close();
-            } catch (SQLiteException e) {
-                // database doesn't exist yet.
-            }
-            return checkDB != null;
-        }*/
-
-    // }
-
-
-
-
-
-
 
 }

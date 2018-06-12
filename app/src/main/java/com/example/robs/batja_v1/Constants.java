@@ -14,18 +14,7 @@ public class Constants {
     public static final double CONST_SPEED_TRESH_2_KMH = 30;
     public static final double CONST_SPEED_THRESH_2_MS = CONST_SPEED_TRESH_2_KMH / CONST_KMH_TO_MS;
 
-    //public static final double CONST_SPEED_TRESH_3_KMH = 45;
-    //public static final double CONST_SPEED_THRESH_3_MS = CONST_SPEED_TRESH_3_KMH / CONST_KMH_TO_MS;
-
-/*TODO
-
-    - URL ändern auf richtige URL.
-        - bei 15min ist json falsch formatiert
-        - bei hist muss name geändert werden
-    - überlegen, welche werte sinnvoll sind
-        - statt hist ownData?
-
- */
+    public static final float HUE_THEME_COLOR = 0.545098f;
 
     // URL
     public static final String URL_1H_NOW = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/query_loc_moc_1h.php";
@@ -38,11 +27,7 @@ public class Constants {
     public static final String URL_POST_LOC = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/post_loc_to_database.php";
     public static final String URL_POST_USER = "https://ieslamp.technikum-wien.at/2018-bvu-sys-teamb/batja/post_user_to_database.php";
 
-
-    public static final int CONST_PLINE_WIDTH = 7;
-
-
-    // Database Info
+    // Database information
     public static final String DATABASE_NAME = "batjaDatabase_";
     public static final int DATABASE_VERSION = 2;
 
